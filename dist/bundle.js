@@ -590,7 +590,7 @@ class Controller {
 
   renderHTML() {
     let renderer = new _renderers_html_renderer__WEBPACK_IMPORTED_MODULE_0__["HTMLRenderer"](this.data);
-    renderer.createhtml(this.rendererId);
+    renderer.createhtml(this.renderer_id);
   }
 }
 
@@ -806,7 +806,9 @@ class HTMLRenderer {
     div.style.top = node.top + 'px';
     div.style.height = node.height + 'px';
     div.style.width = node.width + 'px';
-    div.addEventListener('hover', _utils_utils__WEBPACK_IMPORTED_MODULE_1__["Utils"].onHover);
+    div.style.border = '1px dotted red';
+    div.addEventListener('mouseover', _utils_utils__WEBPACK_IMPORTED_MODULE_1__["Utils"].onHover);
+    div.addEventListener('mouseleave', _utils_utils__WEBPACK_IMPORTED_MODULE_1__["Utils"].offHover);
     div.id = node._id;
     return div;
   }
@@ -827,7 +829,11 @@ __webpack_require__.r(__webpack_exports__);
 class Utils {
   static onHover(data) {
     console.log('Hover');
-    console.log(data);
+    data.target.style.outline = 'cyan solid 1px';
+  }
+
+  static offHover(data) {
+    data.target.style.outline = '';
   }
 }
 

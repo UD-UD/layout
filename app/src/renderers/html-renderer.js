@@ -21,7 +21,9 @@ export class HTMLRenderer {
     div.style.top = node.top + 'px'
     div.style.height = node.height + 'px'
     div.style.width = node.width + 'px'
-    div.addEventListener('hover', Utils.onHover)
+    div.style.border = '1px dotted red'
+    div.addEventListener('mouseover', Utils.onHover)
+    div.addEventListener('mouseleave', Utils.offHover)
     div.id = node._id
     return div
   }

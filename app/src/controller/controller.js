@@ -23,6 +23,6 @@ export class Controller {
 
   renderHTML () {
     let renderer = new HTMLRenderer(this.data)
-    renderer.createhtml(this.rendererId)
+    renderer.createhtml(this.renderer_id)
   }
 }
