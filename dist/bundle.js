@@ -565,6 +565,7 @@ function determineBoundBox(bb, i, arr, instance) {
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Controller", function() { return Controller; });
 /* harmony import */ var _renderers_html_renderer__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../renderers/html-renderer */ "./renderers/html-renderer.js");
+/* harmony import */ var _renderers_svg_renderer__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../renderers/svg-renderer */ "./renderers/svg-renderer.js");
 
 
 class Controller {
@@ -590,6 +591,11 @@ class Controller {
 
   renderHTML() {
     let renderer = new _renderers_html_renderer__WEBPACK_IMPORTED_MODULE_0__["HTMLRenderer"](this.data);
+    renderer.createhtml(this.renderer_id);
+  }
+
+  renderSVG() {
+    let renderer = new _renderers_svg_renderer__WEBPACK_IMPORTED_MODULE_1__["SVGRenderer"](this.data);
     renderer.createhtml(this.renderer_id);
   }
 }
@@ -622,7 +628,7 @@ class DataParser {
   }
 
   getnodePoints(node, nodepoints) {
-    let datapoint = new _models_data_point__WEBPACK_IMPORTED_MODULE_0__["DataPoint"](node.boundBox, node._id);
+    let datapoint = new _models_data_point__WEBPACK_IMPORTED_MODULE_0__["DataPoint"](node);
     nodepoints.push(datapoint);
     node.children.forEach(child => {
       this.getnodePoints(child, nodepoints);
@@ -647,6 +653,32 @@ __webpack_require__.r(__webpack_exports__);
 
 
 class HTMLDataAdapter extends _data_parser__WEBPACK_IMPORTED_MODULE_0__["DataParser"] {
+  constructor(data) {
+    super(data);
+  }
+
+  getCoordinates() {
+    return super.defaultDataPointLogic();
+  }
+}
+
+/***/ }),
+
+/***/ "./data-adapters/svg-data.js":
+/*!***********************************!*\
+  !*** ./data-adapters/svg-data.js ***!
+  \***********************************/
+/*! exports provided: SVGDataAdapter */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SVGDataAdapter", function() { return SVGDataAdapter; });
+/* harmony import */ var _data_parser__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./data-parser */ "./data-adapters/data-parser.js");
+/* eslint no-useless-constructor: "off" */
+
+
+class SVGDataAdapter extends _data_parser__WEBPACK_IMPORTED_MODULE_0__["DataParser"] {
   constructor(data) {
     super(data);
   }
@@ -741,7 +773,7 @@ let layout = new _layout_src_layout_layout__WEBPACK_IMPORTED_MODULE_0__["default
   width, height
 }, config);
 
-let root = layout.negotiate().tree();
+var root = layout.negotiate().tree();
 
 let con = new _controller_controller__WEBPACK_IMPORTED_MODULE_1__["Controller"](root, 'html', 'board');
 con.render();
@@ -760,12 +792,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "DataPoint", function() { return DataPoint; });
 
 class DataPoint {
-  constructor(boundBox, _id) {
-    this.top = boundBox.top;
-    this.left = boundBox.left;
-    this.width = boundBox.width;
-    this.height = boundBox.height;
-    this._id = _id;
+  constructor(node) {
+    this.top = node.boundBox.top;
+    this.left = node.boundBox.left;
+    this.width = node.boundBox.width;
+    this.height = node.boundBox.height;
+    this._id = node._id;
+    this.parent = node.parent;
   }
 }
 
@@ -816,6 +849,80 @@ class HTMLRenderer {
 
 /***/ }),
 
+/***/ "./renderers/svg-renderer.js":
+/*!***********************************!*\
+  !*** ./renderers/svg-renderer.js ***!
+  \***********************************/
+/*! exports provided: SVGRenderer */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SVGRenderer", function() { return SVGRenderer; });
+/* harmony import */ var _data_adapters_svg_data__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../data-adapters/svg-data */ "./data-adapters/svg-data.js");
+/* harmony import */ var _utils_utils__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../utils/utils */ "./utils/utils.js");
+
+
+
+class SVGRenderer {
+  constructor(data) {
+    this.data = data;
+    this.coordinates = new _data_adapters_svg_data__WEBPACK_IMPORTED_MODULE_0__["SVGDataAdapter"](this.data).getCoordinates();
+  }
+
+  createhtml(id) {
+    let mainDiv = document.getElementById(id);
+    let svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+    let container = this.findContainer();
+    this.setSVGNodeAttributes(svg, {
+      'x': container.left,
+      'y': container.top,
+      'height': container.height,
+      'width': container.width,
+      'id': container._id
+    });
+    svg.style.fill = '#e3e3e3';
+    svg.style.border = '1px dotted red';
+    this.coordinates.forEach(node => {
+      if (node.parent !== null) {
+        svg.appendChild(this.createAndPositionSVG(node));
+      }
+    });
+    mainDiv.appendChild(svg);
+  }
+
+  createAndPositionSVG(node) {
+    let rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+    this.setSVGNodeAttributes(rect, {
+      'x': node.left,
+      'y': node.top,
+      'height': node.height,
+      'width': node.width,
+      'id': node._id
+    });
+    rect.style.border = '1px dotted red';
+    rect.addEventListener('mouseover', _utils_utils__WEBPACK_IMPORTED_MODULE_1__["Utils"].onSVGHover);
+    rect.addEventListener('mouseleave', _utils_utils__WEBPACK_IMPORTED_MODULE_1__["Utils"].offSVGHover);
+    return rect;
+  }
+
+  findContainer() {
+    return this.coordinates.filter(coordinate => {
+      return coordinate.parent == null;
+    })[0];
+  }
+
+  setSVGNodeAttributes(ele, node) {
+    ele.setAttributeNS(null, 'id', node.id);
+    ele.setAttributeNS(null, 'x', node.x);
+    ele.setAttributeNS(null, 'y', node.y);
+    ele.setAttributeNS(null, 'height', node.height);
+    ele.setAttributeNS(null, 'width', node.width);
+  }
+}
+
+/***/ }),
+
 /***/ "./utils/utils.js":
 /*!************************!*\
   !*** ./utils/utils.js ***!
@@ -834,6 +941,17 @@ class Utils {
 
   static offHover(data) {
     data.target.style.outline = '';
+  }
+
+  static onSVGHover(data) {
+    console.log('Hover');
+    data.target.style.stroke = 'cyan';
+    data.target.style.strokeWidth = '2px';
+  }
+
+  static offSVGHover(data) {
+    data.target.style.stroke = '';
+    data.target.style.strokeWidth = '';
   }
 }
 

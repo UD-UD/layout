@@ -77,7 +77,7 @@ let layout = new Layout({
   width, height
 }, config)
 
-let root = layout.negotiate().tree()
+var root = layout.negotiate().tree()
 
 let con = new Controller(root, 'html', 'board')
 con.render()

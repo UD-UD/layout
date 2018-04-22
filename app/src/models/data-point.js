@@ -1,10 +1,11 @@
 
 export class DataPoint {
-  constructor (boundBox, _id) {
-    this.top = boundBox.top
-    this.left = boundBox.left
-    this.width = boundBox.width
-    this.height = boundBox.height
-    this._id = _id
+  constructor (node) {
+    this.top = node.boundBox.top
+    this.left = node.boundBox.left
+    this.width = node.boundBox.width
+    this.height = node.boundBox.height
+    this._id = node._id
+    this.parent = node.parent
   }
 }

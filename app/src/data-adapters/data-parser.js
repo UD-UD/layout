@@ -13,7 +13,7 @@ export class DataParser {
   }
 
   getnodePoints (node, nodepoints) {
-    let datapoint = new DataPoint(node.boundBox, node._id)
+    let datapoint = new DataPoint(node)
     nodepoints.push(datapoint)
     node.children.forEach(child => {
       this.getnodePoints(child, nodepoints)
