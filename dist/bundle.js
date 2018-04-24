@@ -71,6 +71,37 @@
 /************************************************************************/
 /******/ ({
 
+/***/ "../../node_modules/webpack/buildin/global.js":
+/*!***********************************!*\
+  !*** (webpack)/buildin/global.js ***!
+  \***********************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+var g;
+
+// This works in non-strict mode
+g = (function() {
+	return this;
+})();
+
+try {
+	// This works if eval is allowed (see CSP)
+	g = g || Function("return this")() || (1, eval)("this");
+} catch (e) {
+	// This works if the window reference is available
+	if (typeof window === "object") g = window;
+}
+
+// g can still be undefined, but nothing to do about it...
+// We return undefined, instead of nothing here, so it's
+// easier to handle this case. if(!global) { ...}
+
+module.exports = g;
+
+
+/***/ }),
+
 /***/ "../layout/src/layout/layout.js":
 /*!**************************************!*\
   !*** ../layout/src/layout/layout.js ***!
@@ -554,6 +585,22 @@ function determineBoundBox(bb, i, arr, instance) {
 
 /***/ }),
 
+/***/ "./constants/defaults.js":
+/*!*******************************!*\
+  !*** ./constants/defaults.js ***!
+  \*******************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+const DEFAULT_BORDER_COLOR = 'cyan';
+const DEFAULT_BORDER_WIDTH = '2px';
+
+/* harmony default export */ __webpack_exports__["default"] = ({ DEFAULT_BORDER_COLOR, DEFAULT_BORDER_WIDTH });
+
+/***/ }),
+
 /***/ "./controller/controller.js":
 /*!**********************************!*\
   !*** ./controller/controller.js ***!
@@ -563,16 +610,20 @@ function determineBoundBox(bb, i, arr, instance) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Controller", function() { return Controller; });
+/* WEBPACK VAR INJECTION */(function(global) {/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Controller", function() { return Controller; });
 /* harmony import */ var _renderers_html_renderer__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../renderers/html-renderer */ "./renderers/html-renderer.js");
 /* harmony import */ var _renderers_svg_renderer__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../renderers/svg-renderer */ "./renderers/svg-renderer.js");
+/* harmony import */ var _utils_utils__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../utils/utils */ "./utils/utils.js");
+
+
 
 
 class Controller {
-  constructor(data, renderer, rendererId) {
+  constructor(data, renderer, container) {
     this.data = data;
     this.renderer = renderer;
-    this.renderer_id = rendererId;
+    global.__renderer = renderer; // TODO change global into diff place
+    this.renderer_id = !_utils_utils__WEBPACK_IMPORTED_MODULE_2__["Utils"].isDOMElement(container) ? container : _utils_utils__WEBPACK_IMPORTED_MODULE_2__["Utils"].getID(container);
   }
 
   render() {
@@ -598,7 +649,20 @@ class Controller {
     let renderer = new _renderers_svg_renderer__WEBPACK_IMPORTED_MODULE_1__["SVGRenderer"](this.data);
     renderer.createhtml(this.renderer_id);
   }
+
+  customiseNode(node, borderColor, borderWidth) {
+    if (_utils_utils__WEBPACK_IMPORTED_MODULE_2__["Utils"].isDOMElement(node)) {
+      _utils_utils__WEBPACK_IMPORTED_MODULE_2__["Utils"].highLightNode(node, borderColor, borderWidth);
+    } else {
+      _utils_utils__WEBPACK_IMPORTED_MODULE_2__["Utils"].highLightNode(document.getElementById(node), borderColor, borderWidth);
+    }
+  }
+
+  resetNode(container) {
+    _utils_utils__WEBPACK_IMPORTED_MODULE_2__["Utils"].unHighLightNode(_utils_utils__WEBPACK_IMPORTED_MODULE_2__["Utils"].isDOMElement(container) ? container : document.getElementById(container));
+  }
 }
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./../../../node_modules/webpack/buildin/global.js */ "../../node_modules/webpack/buildin/global.js")))
 
 /***/ }),
 
@@ -699,9 +763,10 @@ class SVGDataAdapter extends _data_parser__WEBPACK_IMPORTED_MODULE_0__["DataPars
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _layout_src_layout_layout__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../layout/src/layout/layout */ "../layout/src/layout/layout.js");
+/* WEBPACK VAR INJECTION */(function(global) {/* harmony import */ var _layout_src_layout_layout__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../layout/src/layout/layout */ "../layout/src/layout/layout.js");
 /* harmony import */ var _controller_controller__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./controller/controller */ "./controller/controller.js");
 /* harmony import */ var _layout_src_utils_DummyComponent__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../layout/src/utils/DummyComponent */ "../layout/src/utils/DummyComponent/index.js");
+/* eslint no-undef: "off" */
 
 
 
@@ -778,6 +843,9 @@ var root = layout.negotiate().tree();
 let con = new _controller_controller__WEBPACK_IMPORTED_MODULE_1__["Controller"](root, 'html', 'board');
 con.render();
 
+global.FusionBoardController = con;
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./../../node_modules/webpack/buildin/global.js */ "../../node_modules/webpack/buildin/global.js")))
+
 /***/ }),
 
 /***/ "./models/data-point.js":
@@ -840,8 +908,7 @@ class HTMLRenderer {
     div.style.height = node.height + 'px';
     div.style.width = node.width + 'px';
     div.style.border = '1px dotted red';
-    div.addEventListener('mouseover', _utils_utils__WEBPACK_IMPORTED_MODULE_1__["Utils"].onHover);
-    div.addEventListener('mouseleave', _utils_utils__WEBPACK_IMPORTED_MODULE_1__["Utils"].offHover);
+    _utils_utils__WEBPACK_IMPORTED_MODULE_1__["Utils"].hoverHandler(div);
     div.id = node._id;
     return div;
   }
@@ -901,8 +968,7 @@ class SVGRenderer {
       'id': node._id
     });
     rect.style.border = '1px dotted red';
-    rect.addEventListener('mouseover', _utils_utils__WEBPACK_IMPORTED_MODULE_1__["Utils"].onSVGHover);
-    rect.addEventListener('mouseleave', _utils_utils__WEBPACK_IMPORTED_MODULE_1__["Utils"].offSVGHover);
+    _utils_utils__WEBPACK_IMPORTED_MODULE_1__["Utils"].hoverHandler(rect);
     return rect;
   }
 
@@ -932,28 +998,83 @@ class SVGRenderer {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Utils", function() { return Utils; });
+/* WEBPACK VAR INJECTION */(function(global) {/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Utils", function() { return Utils; });
+/* harmony import */ var _constants_defaults__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../constants/defaults */ "./constants/defaults.js");
+/* eslint no-undef: "off" */
+
+
 class Utils {
-  static onHover(data) {
+  static onHover(event) {
+    console.log('Hover', JSON.stringify(_constants_defaults__WEBPACK_IMPORTED_MODULE_0__["default"]));
+    this.highLightNode(event.target, _constants_defaults__WEBPACK_IMPORTED_MODULE_0__["default"].DEFAULT_BORDER_COLOR, _constants_defaults__WEBPACK_IMPORTED_MODULE_0__["default"].DEFAULT_BORDER_WIDTH);
+  }
+
+  static offHover(event) {
+    this.unHighLightNode(event.target);
+  }
+
+  static htmlHover(node, color, width) {
+    color = color !== undefined ? color : _constants_defaults__WEBPACK_IMPORTED_MODULE_0__["default"].DEFAULT_BORDER_COLOR;
+    width = width !== undefined ? width : _constants_defaults__WEBPACK_IMPORTED_MODULE_0__["default"].DEFAULT_BORDER_WIDTH;
+    node.style.outline = `${color} solid ${width}`;
+  }
+
+  static htmlUnHover(node) {
+    node.style.outline = '';
+  }
+
+  static SVGHover(node, color, width) {
     console.log('Hover');
-    data.target.style.outline = 'cyan solid 1px';
+    color = color !== undefined ? color : _constants_defaults__WEBPACK_IMPORTED_MODULE_0__["default"].DEFAULT_BORDER_COLOR;
+    width = width !== undefined ? width : _constants_defaults__WEBPACK_IMPORTED_MODULE_0__["default"].DEFAULT_BORDER_WIDTH;
+    node.style.stroke = `${color}`;
+    node.style.strokeWidth = `${width}`;
   }
 
-  static offHover(data) {
-    data.target.style.outline = '';
+  static SVGUnhover(node) {
+    node.style.stroke = '';
+    node.style.strokeWidth = '';
   }
 
-  static onSVGHover(data) {
-    console.log('Hover');
-    data.target.style.stroke = 'cyan';
-    data.target.style.strokeWidth = '2px';
+  static highLightNode(node, color, width) {
+    let renderer = global.__renderer;
+
+    switch (renderer) {
+      case 'html':
+        this.htmlHover(node, color, width);
+        break;
+      case 'svg':
+        this.SVGHover(node, color, width);
+        break;
+    }
   }
 
-  static offSVGHover(data) {
-    data.target.style.stroke = '';
-    data.target.style.strokeWidth = '';
+  static unHighLightNode(node) {
+    let renderer = global.__renderer;
+    switch (renderer) {
+      case 'html':
+        this.htmlUnHover(node);
+        break;
+      case 'svg':
+        this.SVGUnhover(node);
+        break;
+    }
+  }
+
+  static hoverHandler(container) {
+    container.addEventListener('mouseover', this.onHover.bind(this));
+    container.addEventListener('mouseleave', this.offHover.bind(this));
+  }
+
+  static isDOMElement(element) {
+    return element instanceof Element;
+  }
+
+  static getID(element) {
+    return element.id;
   }
 }
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./../../../node_modules/webpack/buildin/global.js */ "../../node_modules/webpack/buildin/global.js")))
 
 /***/ }),
 

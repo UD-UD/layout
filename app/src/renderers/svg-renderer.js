@@ -40,8 +40,7 @@ export class SVGRenderer {
         'id': node._id
       })
     rect.style.border = '1px dotted red'
-    rect.addEventListener('mouseover', Utils.onSVGHover)
-    rect.addEventListener('mouseleave', Utils.offSVGHover)
+    Utils.hoverHandler(rect)
     return rect
   }
 

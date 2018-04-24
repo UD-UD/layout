@@ -1,10 +1,13 @@
+
 import { HTMLRenderer } from '../renderers/html-renderer'
 import { SVGRenderer } from '../renderers/svg-renderer'
+import { Utils } from '../utils/utils'
 export class Controller {
-  constructor (data, renderer, rendererId) {
+  constructor (data, renderer, container) {
     this.data = data
     this.renderer = renderer
-    this.renderer_id = rendererId
+    global.__renderer = renderer // TODO change global into diff place
+    this.renderer_id = !Utils.isDOMElement(container) ? container : Utils.getID(container)
   }
 
   render () {
@@ -29,5 +32,18 @@ export class Controller {
   renderSVG () {
     let renderer = new SVGRenderer(this.data)
     renderer.createhtml(this.renderer_id)
+  }
+
+  customiseNode (node, borderColor, borderWidth) {
+    if (Utils.isDOMElement(node)) {
+      Utils.highLightNode(node, borderColor, borderWidth)
+    } else {
+      Utils.highLightNode(document.getElementById(node), borderColor, borderWidth)
+    }
+  }
+
+  resetNode (container) {
+    Utils.unHighLightNode(Utils.isDOMElement(container) ? container
+      : document.getElementById(container))
   }
 }

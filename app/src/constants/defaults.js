@@ -1,0 +1,4 @@
+const DEFAULT_BORDER_COLOR = 'cyan'
+const DEFAULT_BORDER_WIDTH = '2px'
+
+export default { DEFAULT_BORDER_COLOR, DEFAULT_BORDER_WIDTH }

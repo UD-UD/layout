@@ -1,3 +1,4 @@
+/* eslint no-undef: "off" */
 import Layout from '../layout/src/layout/layout'
 import { Controller } from './controller/controller'
 import Component from '../layout/src/utils/DummyComponent'
@@ -81,3 +82,5 @@ var root = layout.negotiate().tree()
 
 let con = new Controller(root, 'html', 'board')
 con.render()
+
+global.FusionBoardController = con
