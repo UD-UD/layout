@@ -3,7 +3,7 @@ const path = require('path')
 
 module.exports = {
   mode: 'development',
-  context: path.join(__dirname, '/app/src'),
+  context: path.join(__dirname, '/src'),
   entry: ['./main'],
   devtool: 'cheap-source-map',
   output: {

@@ -7,7 +7,7 @@ config.target = 'node'
 config.externals = [nodeExternals()]
 config.module.rules.unshift(isCoverage ? {
   test: /\.(js|ts)/,
-  include: path.resolve('app/src'),
+  include: path.resolve('src'),
   loader: 'istanbul-instrumenter-loader',
   query: {
     esModules: true

@@ -1,27 +1,26 @@
 /* eslint no-undef: "off" */
-import Layout from '../layout/src/layout/layout'
+import { Layout, DummyComponent } from 'layout-model'
 import { Controller } from './controller/controller'
-import Component from '../layout/src/utils/DummyComponent'
 
 const width = 600
 
 const height = 600
-const component1 = new Component(10, {
+const component1 = new DummyComponent(10, {
   width: width / 2,
   height: width / 2
 })
 
-const component2 = new Component(10, {
+const component2 = new DummyComponent(10, {
   width: width / 2,
   height: width / 2
 })
 
-const component3 = new Component(10, {
+const component3 = new DummyComponent(10, {
   width: width / 2,
   height: width / 2
 })
 
-const component4 = new Component(10, {
+const component4 = new DummyComponent(10, {
   width: width / 2,
   height: width / 2
 })
@@ -83,4 +82,4 @@ var root = layout.negotiate().tree()
 let con = new Controller(root, 'html', 'board')
 con.render()
 
-global.FusionBoardController = con
+global.con = con

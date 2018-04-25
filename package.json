@@ -2,9 +2,9 @@
   "name": "ui-layout",
   "version": "1.0.0",
   "description": "Renders layout using the config given",
-  "main": "app/src/main.js",
+  "main": "src/main.js",
   "scripts": {
-    "build": "webpack && cp app/src/index.html dist/",
+    "build": "webpack && cp src/index.html dist/",
     "test": "mocha-webpack --webpack-config webpack.config.test.js \"spec/**/*.spec.js\"",
     "test-ci": "mocha-webpack",
     "cover": "cross-env NODE_ENV=coverage nyc --reporter=lcov --reporter=text npm run test"
@@ -40,6 +40,8 @@
     "webpack-node-externals": "^1.7.2"
   },
   "dependencies": {
-    "cross-env": "^5.1.4"
+    "cross-env": "^5.1.4",
+    "layout": "git+ssh://git@github.com/sandeep1995/layout-model.git",
+    "layout-model": "git+ssh://git@github.com/sandeep1995/layout-model.git"
   }
 }
