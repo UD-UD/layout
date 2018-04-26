@@ -1,8 +1,8 @@
 {
-  "name": "ui-layout",
+  "name": "layout",
   "version": "1.0.0",
   "description": "Renders layout using the config given",
-  "main": "src/main.js",
+  "main": "src/index.js",
   "scripts": {
     "build": "webpack && cp src/index.html dist/",
     "test": "mocha-webpack --webpack-config webpack.config.test.js \"spec/**/*.spec.js\"",
@@ -11,7 +11,7 @@
   },
   "nyc": {
     "include": [
-      "app/src/**/*.js"
+      "src/**/*.js"
     ],
     "instrument": false,
     "sourceMap": false
@@ -41,7 +41,6 @@
   },
   "dependencies": {
     "cross-env": "^5.1.4",
-    "layout": "git+ssh://git@github.com/sandeep1995/layout-model.git",
     "layout-model": "git+ssh://git@github.com/sandeep1995/layout-model.git"
   }
 }

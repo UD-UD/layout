@@ -1,9 +1,8 @@
 /* eslint no-undef: "off" */
-import { Layout, DummyComponent } from 'layout-model'
+import { LayoutModel, DummyComponent } from 'layout-model'
 import { Controller } from './controller/controller'
 
 const width = 600
-
 const height = 600
 const component1 = new DummyComponent(10, {
   width: width / 2,
@@ -73,7 +72,7 @@ const config = {
   ]
 }
 
-let layout = new Layout({
+let layout = new LayoutModel({
   width, height
 }, config)
 
