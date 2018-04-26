@@ -1,13 +1,18 @@
 
 const path = require('path')
+const libraryName = 'layout'
+const OUT_FILE = `${libraryName}.js`
 
 module.exports = {
   mode: 'development',
-  context: path.join(__dirname, './src'),
+  context: path.join(__dirname, '/src'),
   entry: ['./index'],
   devtool: 'cheap-source-map',
   output: {
-    filename: 'bundle.js',
+    filename: OUT_FILE,
+    library: libraryName,
+    libraryTarget: 'umd',
+    umdNamedDefine: true,
     devtoolModuleFilenameTemplate: '[absolute-resource-path]'
   },
   module: {
@@ -21,7 +26,7 @@ module.exports = {
       },
       {
         test: /\.js$/,
-        include: path.join(__dirname, './src'),
+        exclude: /node_modules/,
         use: ['babel-loader', 'eslint-loader']
       }
     ]

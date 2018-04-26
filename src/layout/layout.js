@@ -22,6 +22,18 @@ class Layout {
     this.layoutDefinition
     )
   }
+
+  compute () {
+    this._layout.negotiate()
+  }
 }
 
 export default Layout
+
+/**
+ * compute -- broadcast
+ * tree()
+ * highlight
+ * unhightligh
+ *
+ */

@@ -1,3 +1,4 @@
+import { DummyComponent } from 'layout-model'
 import Layout from './layout/layout'
 
-export default Layout
+export { Layout, DummyComponent }
