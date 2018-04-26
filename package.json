@@ -40,7 +40,6 @@
     "webpack-node-externals": "^1.7.2"
   },
   "dependencies": {
-    "cross-env": "^5.1.4",
-    "layout-model": "git+ssh://git@github.com/sandeep1995/layout-model.git"
+    "cross-env": "^5.1.4"
   }
 }
