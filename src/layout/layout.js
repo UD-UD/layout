@@ -7,6 +7,9 @@ import {
   DEFAULT_HEIGHT
 } from '../constants/defaults'
 
+import { Controller } from '../controller/controller'
+import { Utils } from '../utils/utils'
+
 class Layout {
   constructor (conf) {
     this.renderAt = conf.renderAt
@@ -21,10 +24,30 @@ class Layout {
     },
     this.layoutDefinition
     )
+    if (Utils.isDOMElement(this.renderAt)) {
+      this.renderAt.__layout = this
+    } else {
+      document.getElementById(this.renderAt).__layout = this
+    }
   }
 
   compute () {
-    this._layout.negotiate()
+    let tree = this._layout.negotiate().tree()
+    this._layout.broadcast()
+    this.con = new Controller(tree, this.skeletonType, this.renderAt)
+    this.con.render()
+  }
+
+  highLightNode (node, color, width) {
+    if (this.con) {
+      this.con.customiseNode(node, color, width)
+    }
+  }
+
+  resetNode (node) {
+    if (this.con) {
+      this.con.resetNode(node)
+    }
   }
 }
 
