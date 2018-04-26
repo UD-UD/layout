@@ -3,8 +3,8 @@ const path = require('path')
 
 module.exports = {
   mode: 'development',
-  context: path.join(__dirname, '/src'),
-  entry: ['./main'],
+  context: path.join(__dirname, './src'),
+  entry: ['./index'],
   devtool: 'cheap-source-map',
   output: {
     filename: 'bundle.js',
@@ -21,7 +21,7 @@ module.exports = {
       },
       {
         test: /\.js$/,
-        exclude: /node_modules/,
+        include: path.join(__dirname, './src'),
         use: ['babel-loader', 'eslint-loader']
       }
     ]
