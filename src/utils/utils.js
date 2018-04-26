@@ -1,10 +1,10 @@
 /* eslint no-undef: "off" */
-import def from '../constants/defaults'
+import { DEFAULT_BORDER_COLOR, DEFAULT_BORDER_WIDTH } from '../constants/defaults'
 
 export class Utils {
   static onHover (event) {
     console.log('Hover', JSON.stringify(def))
-    this.highLightNode(event.target, def.DEFAULT_BORDER_COLOR, def.DEFAULT_BORDER_WIDTH)
+    this.highLightNode(event.target, DEFAULT_BORDER_COLOR, DEFAULT_BORDER_WIDTH)
   }
 
   static offHover (event) {
@@ -12,8 +12,8 @@ export class Utils {
   }
 
   static htmlHover (node, color, width) {
-    color = color !== undefined ? color : def.DEFAULT_BORDER_COLOR
-    width = width !== undefined ? width : def.DEFAULT_BORDER_WIDTH
+    color = color !== undefined ? color : DEFAULT_BORDER_COLOR
+    width = width !== undefined ? width : DEFAULT_BORDER_WIDTH
     node.style.outline = `${color} solid ${width}`
   }
 
@@ -23,8 +23,8 @@ export class Utils {
 
   static SVGHover (node, color, width) {
     console.log('Hover')
-    color = color !== undefined ? color : def.DEFAULT_BORDER_COLOR
-    width = width !== undefined ? width : def.DEFAULT_BORDER_WIDTH
+    color = color !== undefined ? color : DEFAULT_BORDER_COLOR
+    width = width !== undefined ? width : DEFAULT_BORDER_WIDTH
     node.style.stroke = `${color}`
     node.style.strokeWidth = `${width}`
   }
