@@ -643,8 +643,8 @@ return /******/ (function(modules) { // webpackBootstrap
                     key: 'getLogicalSpace',
                     value: function getLogicalSpace() {
                         return {
-                            width: this.dimensions.width - 1 * this.seed,
-                            height: this.dimensions.height - 1 * this.seed
+                            width: this.dimensions.width - 2 * this.seed,
+                            height: this.dimensions.height - 2 * this.seed
                         };
                     }
                 }, {
@@ -660,6 +660,8 @@ return /******/ (function(modules) { // webpackBootstrap
                         var doc = document.getElementById(this.renderAt),
                             div = document.createElement('div');
                         div.style.backgroundColor = '#36C3FF';
+                        div.style.width = this.dimensions.width - this.seed * 2 + 'px';
+                        div.style.height = this.dimensions.height - this.seed * 2 + 'px';
                         doc.appendChild(div);
                     }
                 }]);
@@ -1102,6 +1104,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var layout_model__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(layout_model__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _constants_defaults__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../constants/defaults */ "./constants/defaults.js");
 /* harmony import */ var _controller_controller__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../controller/controller */ "./controller/controller.js");
+/* harmony import */ var _utils_utils__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../utils/utils */ "./utils/utils.js");
+
 
 
 
@@ -1120,6 +1124,11 @@ class Layout {
       width: this.width,
       height: this.height
     }, this.layoutDefinition);
+    if (_utils_utils__WEBPACK_IMPORTED_MODULE_3__["Utils"].isDOMElement(this.renderAt)) {
+      this.renderAt.__layout = this;
+    } else {
+      document.getElementById(this.renderAt).__layout = this;
+    }
   }
 
   compute() {
