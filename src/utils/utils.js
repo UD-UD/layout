@@ -71,4 +71,8 @@ export class Utils {
   static getID (element) {
     return element.id
   }
+
+  static findContainer (data) {
+    return data.filter(coordinate => { return coordinate.parent == null })[0]
+  }
 }

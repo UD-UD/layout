@@ -1,6 +1,7 @@
 import { HTMLDataAdapter } from '../data-adapters/html-data'
-// import { Utils } from '../utils/utils'
+import { Utils } from '../utils/utils'
 import { Renderer } from './renderer'
+import { LAYOUT_NAME } from '../constants/defaults'
 export class HTMLRenderer extends Renderer {
   constructor (data) {
     super()
@@ -11,9 +12,11 @@ export class HTMLRenderer extends Renderer {
   createhtml (id) {
     let mainDiv = document.getElementById(id)
     super.initRenderer(mainDiv, this.data) // Initialise node with layout id
+    let parentDiv = this.createAndCustomiseParent()
     this.coordinates.forEach(node => {
-      mainDiv.appendChild(this.createAndPositionDiv(node))
+      parentDiv.appendChild(this.createAndPositionDiv(node))
     })
+    mainDiv.appendChild(parentDiv)
   }
 
   createAndPositionDiv (node) {
@@ -27,5 +30,13 @@ export class HTMLRenderer extends Renderer {
     // Utils.hoverHandler(div)
     div.id = node._id
     return div
+  }
+
+  createAndCustomiseParent () {
+    let container = Utils.findContainer(this.coordinates)
+    let parentDiv = this.createAndPositionDiv(container)
+    parentDiv.id = LAYOUT_NAME
+    parentDiv.style.position = 'relative'
+    return parentDiv
   }
 }

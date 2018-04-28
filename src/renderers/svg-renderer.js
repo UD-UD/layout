@@ -1,8 +1,10 @@
 import { SVGDataAdapter } from '../data-adapters/svg-data'
-// import { Utils } from '../utils/utils'
+import { Utils } from '../utils/utils'
+import { Renderer } from './renderer'
 
-export class SVGRenderer {
+export class SVGRenderer extends Renderer {
   constructor (data) {
+    super()
     this.data = data
     this.coordinates = new SVGDataAdapter(this.data).getCoordinates()
   }
@@ -11,7 +13,7 @@ export class SVGRenderer {
     let mainDiv = document.getElementById(id)
     super.initRenderer(mainDiv, this.data) // Initialise node with layout id
     let svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg')
-    let container = this.findContainer()
+    let container = Utils.findContainer(this.coordinates)
     this.setSVGNodeAttributes(
       svg,
       {
@@ -43,10 +45,6 @@ export class SVGRenderer {
     // rect.style.border = '1px dotted red'
     // Utils.hoverHandler(rect)
     return rect
-  }
-
-  findContainer () {
-    return this.coordinates.filter(coordinate => { return coordinate.parent == null })[0]
   }
 
   setSVGNodeAttributes (ele, node) {

@@ -895,7 +895,7 @@ module.exports = function(module) {
 /*!*******************************!*\
   !*** ./constants/defaults.js ***!
   \*******************************/
-/*! exports provided: DEFAULT_BORDER_COLOR, DEFAULT_BORDER_WIDTH, DEFAULT_WIDTH, DEFAULT_HEIGHT, LAYOUT_ID */
+/*! exports provided: DEFAULT_BORDER_COLOR, DEFAULT_BORDER_WIDTH, DEFAULT_WIDTH, DEFAULT_HEIGHT, LAYOUT_ID, LAYOUT_NAME */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -905,11 +905,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "DEFAULT_WIDTH", function() { return DEFAULT_WIDTH; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "DEFAULT_HEIGHT", function() { return DEFAULT_HEIGHT; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "LAYOUT_ID", function() { return LAYOUT_ID; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "LAYOUT_NAME", function() { return LAYOUT_NAME; });
 const DEFAULT_BORDER_COLOR = 'cyan';
 const DEFAULT_BORDER_WIDTH = '2px';
 const DEFAULT_WIDTH = 600;
 const DEFAULT_HEIGHT = 400;
 const LAYOUT_ID = 'd2ad88af-7050-4c1c-b407-42745cfe3bd7';
+const LAYOUT_NAME = 'fusionBoardLayout';
 
 
 
@@ -1198,11 +1200,14 @@ class DataPoint {
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "HTMLRenderer", function() { return HTMLRenderer; });
 /* harmony import */ var _data_adapters_html_data__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../data-adapters/html-data */ "./data-adapters/html-data.js");
-/* harmony import */ var _renderer__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./renderer */ "./renderers/renderer.js");
+/* harmony import */ var _utils_utils__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../utils/utils */ "./utils/utils.js");
+/* harmony import */ var _renderer__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./renderer */ "./renderers/renderer.js");
+/* harmony import */ var _constants_defaults__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../constants/defaults */ "./constants/defaults.js");
 
-// import { Utils } from '../utils/utils'
 
-class HTMLRenderer extends _renderer__WEBPACK_IMPORTED_MODULE_1__["Renderer"] {
+
+
+class HTMLRenderer extends _renderer__WEBPACK_IMPORTED_MODULE_2__["Renderer"] {
   constructor(data) {
     super();
     this.data = data;
@@ -1212,9 +1217,11 @@ class HTMLRenderer extends _renderer__WEBPACK_IMPORTED_MODULE_1__["Renderer"] {
   createhtml(id) {
     let mainDiv = document.getElementById(id);
     super.initRenderer(mainDiv, this.data); // Initialise node with layout id
+    let parentDiv = this.createAndCustomiseParent();
     this.coordinates.forEach(node => {
-      mainDiv.appendChild(this.createAndPositionDiv(node));
+      parentDiv.appendChild(this.createAndPositionDiv(node));
     });
+    mainDiv.appendChild(parentDiv);
   }
 
   createAndPositionDiv(node) {
@@ -1228,6 +1235,14 @@ class HTMLRenderer extends _renderer__WEBPACK_IMPORTED_MODULE_1__["Renderer"] {
     // Utils.hoverHandler(div)
     div.id = node._id;
     return div;
+  }
+
+  createAndCustomiseParent() {
+    let container = _utils_utils__WEBPACK_IMPORTED_MODULE_1__["Utils"].findContainer(this.coordinates);
+    let parentDiv = this.createAndPositionDiv(container);
+    parentDiv.id = _constants_defaults__WEBPACK_IMPORTED_MODULE_3__["LAYOUT_NAME"];
+    parentDiv.style.position = 'relative';
+    return parentDiv;
   }
 }
 
@@ -1269,11 +1284,15 @@ class Renderer {
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SVGRenderer", function() { return SVGRenderer; });
 /* harmony import */ var _data_adapters_svg_data__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../data-adapters/svg-data */ "./data-adapters/svg-data.js");
+/* harmony import */ var _utils_utils__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../utils/utils */ "./utils/utils.js");
+/* harmony import */ var _renderer__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./renderer */ "./renderers/renderer.js");
 
-// import { Utils } from '../utils/utils'
 
-class SVGRenderer {
+
+
+class SVGRenderer extends _renderer__WEBPACK_IMPORTED_MODULE_2__["Renderer"] {
   constructor(data) {
+    super();
     this.data = data;
     this.coordinates = new _data_adapters_svg_data__WEBPACK_IMPORTED_MODULE_0__["SVGDataAdapter"](this.data).getCoordinates();
   }
@@ -1282,7 +1301,7 @@ class SVGRenderer {
     let mainDiv = document.getElementById(id);
     super.initRenderer(mainDiv, this.data); // Initialise node with layout id
     let svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-    let container = this.findContainer();
+    let container = _utils_utils__WEBPACK_IMPORTED_MODULE_1__["Utils"].findContainer(this.coordinates);
     this.setSVGNodeAttributes(svg, {
       'x': container.left,
       'y': container.top,
@@ -1312,12 +1331,6 @@ class SVGRenderer {
     // rect.style.border = '1px dotted red'
     // Utils.hoverHandler(rect)
     return rect;
-  }
-
-  findContainer() {
-    return this.coordinates.filter(coordinate => {
-      return coordinate.parent == null;
-    })[0];
   }
 
   setSVGNodeAttributes(ele, node) {
@@ -1414,6 +1427,12 @@ class Utils {
 
   static getID(element) {
     return element.id;
+  }
+
+  static findContainer(data) {
+    return data.filter(coordinate => {
+      return coordinate.parent == null;
+    })[0];
   }
 }
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./../../node_modules/webpack/buildin/global.js */ "../node_modules/webpack/buildin/global.js")))
