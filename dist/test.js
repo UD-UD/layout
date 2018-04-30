@@ -2,7 +2,8 @@ const { Layout, DummyComponent } = layout
 
 const width = 600
 const height = 600
-const skeletonType = 'svg'
+const skeletonType = 'html'
+
 const component1 = new DummyComponent(10, {
   width: width / 2,
   height: width / 2
