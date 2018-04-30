@@ -1128,8 +1128,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var layout_model__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! layout-model */ "../../layout-model/dist/layout.js");
 /* harmony import */ var layout_model__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(layout_model__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _constants_defaults__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../constants/defaults */ "./constants/defaults.js");
-/* harmony import */ var _controller_controller__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../controller/controller */ "./controller/controller.js");
-/* harmony import */ var _utils_utils__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../utils/utils */ "./utils/utils.js");
+/* harmony import */ var _overlay___WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../overlay/ */ "./overlay/index.js");
+/* harmony import */ var _controller_controller__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../controller/controller */ "./controller/controller.js");
+/* harmony import */ var _utils_utils__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../utils/utils */ "./utils/utils.js");
+
 
 
 
@@ -1149,7 +1151,7 @@ class Layout {
       width: this.width,
       height: this.height
     }, this.layoutDefinition);
-    if (_utils_utils__WEBPACK_IMPORTED_MODULE_3__["Utils"].isDOMElement(this.renderAt)) {
+    if (_utils_utils__WEBPACK_IMPORTED_MODULE_4__["Utils"].isDOMElement(this.renderAt)) {
       this.renderAt.__layout = this;
     } else {
       document.getElementById(this.renderAt).__layout = this;
@@ -1159,7 +1161,7 @@ class Layout {
   compute() {
     let tree = this._layout.negotiate().tree();
     this._layout.broadcast();
-    this.con = new _controller_controller__WEBPACK_IMPORTED_MODULE_2__["Controller"](tree, this.skeletonType, this.renderAt);
+    this.con = new _controller_controller__WEBPACK_IMPORTED_MODULE_3__["Controller"](tree, this.skeletonType, this.renderAt);
     this.con.render();
   }
 
@@ -1167,6 +1169,15 @@ class Layout {
     if (this.con) {
       this.con.customiseNode(node, color, width);
     }
+  }
+
+  highlight(nodeId) {
+    let instance = document.getElementById(nodeId);
+    Object(_overlay___WEBPACK_IMPORTED_MODULE_2__["_highlight"])(instance, nodeId);
+  }
+
+  unHighlight() {
+    Object(_overlay___WEBPACK_IMPORTED_MODULE_2__["_unHighlight"])();
   }
 
   resetNode(node) {
@@ -1209,6 +1220,98 @@ class DataPoint {
     this.parent = node.parent;
   }
 }
+
+/***/ }),
+
+/***/ "./overlay/index.js":
+/*!**************************!*\
+  !*** ./overlay/index.js ***!
+  \**************************/
+/*! exports provided: showOverlay, _unHighlight, _highlight */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _overlay__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./overlay */ "./overlay/overlay.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "showOverlay", function() { return _overlay__WEBPACK_IMPORTED_MODULE_0__["showOverlay"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "_unHighlight", function() { return _overlay__WEBPACK_IMPORTED_MODULE_0__["_unHighlight"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "_highlight", function() { return _overlay__WEBPACK_IMPORTED_MODULE_0__["_highlight"]; });
+
+
+
+
+
+/***/ }),
+
+/***/ "./overlay/overlay.js":
+/*!****************************!*\
+  !*** ./overlay/overlay.js ***!
+  \****************************/
+/*! exports provided: showOverlay, _unHighlight, _highlight */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "showOverlay", function() { return showOverlay; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "_unHighlight", function() { return _unHighlight; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "_highlight", function() { return _highlight; });
+const overlay = document.createElement('div');
+
+overlay.style.backgroundColor = 'rgba(104, 182, 255, 0.35)';
+overlay.style.position = 'fixed';
+overlay.style.zIndex = '99999999999999';
+overlay.style.pointerEvents = 'none';
+overlay.style.display = 'flex';
+overlay.style.alignItems = 'center';
+overlay.style.justifyContent = 'center';
+overlay.style.borderRadius = '3px';
+
+const overlayContent = document.createElement('div');
+
+overlayContent.style.backgroundColor = 'rgba(104, 182, 255, 0.9)';
+overlayContent.style.fontFamily = 'monospace';
+overlayContent.style.fontSize = '11px';
+overlayContent.style.padding = '2px 3px';
+overlayContent.style.borderRadius = '3px';
+overlayContent.style.color = 'white';
+
+overlay.appendChild(overlayContent);
+
+function showOverlay({
+  width = 0,
+  height = 0,
+  top = 0,
+  left = 0
+}, content = '') {
+  overlay.style.width = ~~width + 'px';
+  overlay.style.height = ~~height + 'px';
+  overlay.style.top = ~~top + 'px';
+  overlay.style.left = ~~left + 'px';
+  if (content) {
+    overlayContent.innerHTML = content;
+  }
+
+  document.body.appendChild(overlay);
+}
+
+function _unHighlight() {
+  if (overlay.parentNode) {
+    document.body.removeChild(overlay);
+  }
+}
+
+function _highlight(instance, highlightText) {
+  let content;
+  let rect = instance.getBoundingClientRect();
+  if (highlightText) {
+    content = `<span style="opacity: .6;">&lt;</span>${highlightText}<span style="opacity: .6;">&gt;</span>`;
+  }
+  showOverlay(rect, content);
+}
+
+
 
 /***/ }),
 

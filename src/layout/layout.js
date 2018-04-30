@@ -7,6 +7,7 @@ import {
   DEFAULT_HEIGHT
 } from '../constants/defaults'
 
+import { _unHighlight, _highlight } from '../overlay/'
 import { Controller } from '../controller/controller'
 import { Utils } from '../utils/utils'
 
@@ -42,6 +43,15 @@ class Layout {
     if (this.con) {
       this.con.customiseNode(node, color, width)
     }
+  }
+
+  highlight (nodeId) {
+    let instance = document.getElementById(nodeId)
+    _highlight(instance, nodeId)
+  }
+
+  unHighlight () {
+    _unHighlight()
   }
 
   resetNode (node) {
