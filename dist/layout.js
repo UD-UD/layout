@@ -1165,12 +1165,6 @@ class Layout {
     this.con.render();
   }
 
-  // highLightNode (node, color, width) {
-  //   if (this.con) {
-  //     this.con.customiseNode(node, color, width)
-  //   }
-  // }
-
   highlight(nodeId, highlightText) {
     let instance = document.getElementById(nodeId);
     if (instance) {
@@ -1308,7 +1302,7 @@ function _highlight(instance, highlightText) {
   let content;
   let rect = instance.getBoundingClientRect();
   if (highlightText) {
-    content = `<span style="opacity: .6;">&lt;</span>${highlightText}<span style="opacity: .6;">&gt;</span>`;
+    content = `<span style="opacity: .6;">[</span>${highlightText}<span style="opacity: .6;">]</span>`;
   }
   showOverlay(rect, content);
 }
