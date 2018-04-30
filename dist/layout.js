@@ -671,7 +671,7 @@ return /******/ (function(modules) { // webpackBootstrap
                             width = Math.max(this.dimensions.width, this.newDimensions.width),
                             height = Math.max(this.dimensions.height, this.newDimensions.height);
 
-                        div.style.backgroundColor = (0, _.getColor)();
+                        div.style.backgroundColor = '#fab1a0'; // getColor();
 
                         div.style.width = width - this.seed * 2 + 'px';
                         div.style.height = height - this.seed * 2 + 'px';
@@ -1165,15 +1165,17 @@ class Layout {
     this.con.render();
   }
 
-  highLightNode(node, color, width) {
-    if (this.con) {
-      this.con.customiseNode(node, color, width);
-    }
-  }
+  // highLightNode (node, color, width) {
+  //   if (this.con) {
+  //     this.con.customiseNode(node, color, width)
+  //   }
+  // }
 
-  highlight(nodeId) {
+  highlight(nodeId, highlightText) {
     let instance = document.getElementById(nodeId);
-    Object(_overlay___WEBPACK_IMPORTED_MODULE_2__["_highlight"])(instance, nodeId);
+    if (instance) {
+      Object(_overlay___WEBPACK_IMPORTED_MODULE_2__["_highlight"])(instance, highlightText);
+    }
   }
 
   unHighlight() {

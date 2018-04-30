@@ -39,15 +39,11 @@ class Layout {
     this.con.render()
   }
 
-  highLightNode (node, color, width) {
-    if (this.con) {
-      this.con.customiseNode(node, color, width)
-    }
-  }
-
-  highlight (nodeId) {
+  highlight (nodeId, highlightText) {
     let instance = document.getElementById(nodeId)
-    _highlight(instance, nodeId)
+    if (instance) {
+      _highlight(instance, highlightText)
+    }
   }
 
   unHighlight () {
