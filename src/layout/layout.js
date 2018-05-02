@@ -7,7 +7,7 @@ import {
   DEFAULT_HEIGHT
 } from '../constants/defaults'
 
-import { _unHighlight, _highlight } from '../overlay/'
+import Highlighter from '../highlighter/highlighter'
 import { Controller } from '../controller/controller'
 import { Utils } from '../utils/utils'
 
@@ -30,6 +30,8 @@ class Layout {
     } else {
       document.getElementById(this.renderAt).__layout = this
     }
+
+    this.highlighter = new Highlighter()
   }
 
   compute () {
@@ -42,12 +44,12 @@ class Layout {
   highlight (nodeId, highlightText) {
     let instance = document.getElementById(nodeId)
     if (instance) {
-      _highlight(instance, highlightText)
+      this.highlighter.highlight(instance, highlightText)
     }
   }
 
   unHighlight () {
-    _unHighlight()
+    this.highlighter.unHighlight()
   }
 
   resetNode (node) {
