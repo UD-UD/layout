@@ -1,18 +1,6 @@
-# JavaScript Library Seed
+# Layout
 
-A seed project for any JavaScript Library.
-
-## Getting Started
-
-This seed will provide almost all the necessary libraries giving you a starting point for you JS developemt.
-
-This seed includes :
-
-* Webpack 4 as bundler
-* Bable as transpiler
-* Mocha / Chai for testing
-* EsLint (Standard)
-* Istanbul for Code Coverage
+Creates a html layout from a given configuration
 
 ### Prerequisites
 
@@ -46,3 +34,101 @@ npm run test
 npm run cover
 ```
 
+## Usage
+```
+const {
+  Layout,
+  DummyComponent
+} = layout
+
+const width = 600
+const height = 600
+const skeletonType = 'html'
+
+const component1 = new DummyComponent(10, {
+  width: width / 2,
+  height: width / 2
+})
+
+const component2 = new DummyComponent(10, {
+  width: width / 2,
+  height: width / 2
+})
+
+const component3 = new DummyComponent(10, {
+  width: width / 2,
+  height: width / 2
+})
+
+const component4 = new DummyComponent(10, {
+  width: width / 2,
+  height: width / 2
+})
+
+const layoutDefinition = {
+  host: null,
+  cut: 'v',
+  ratioWeight: 1,
+  lanes: [{
+    host: null,
+    cut: 'h',
+    ratioWeight: 1,
+    preferred: true,
+    lanes: [
+      {
+        host: component1,
+        cut: null,
+        ratioWeight: 1,
+        preferred: true,
+        lanes: []
+      },
+      {
+        host: component2,
+        cut: null,
+        ratioWeight: 1,
+        lanes: []
+      }
+    ]
+  },
+  {
+    host: null,
+    cut: 'h',
+    ratioWeight: 1,
+    lanes: [
+      {
+        host: component3,
+        cut: null,
+        ratioWeight: 1,
+        lanes: []
+      },
+      {
+        host: component4,
+        cut: null,
+        ratioWeight: 1,
+        preferred: true,
+        lanes: []
+      }
+    ]
+  }
+  ]
+}
+
+const renderAt = 'board'
+
+const fancyGridLayout = new Layout({
+  renderAt,
+  layoutDefinition,
+  width,
+  height,
+  skeletonType
+})
+
+fancyGridLayout.compute()
+
+// draw all components
+component1.draw()
+component2.draw()
+component3.draw()
+component4.draw()
+
+```
