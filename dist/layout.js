@@ -928,9 +928,7 @@ const LAYOUT_NAME = 'fusionBoardLayout';
 __webpack_require__.r(__webpack_exports__);
 /* WEBPACK VAR INJECTION */(function(global) {/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Controller", function() { return Controller; });
 /* harmony import */ var _renderers_html_renderer__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../renderers/html-renderer */ "./renderers/html-renderer.js");
-/* harmony import */ var _renderers_svg_renderer__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../renderers/svg-renderer */ "./renderers/svg-renderer.js");
-/* harmony import */ var _utils_utils__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../utils/utils */ "./utils/utils.js");
-
+/* harmony import */ var _utils_utils__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../utils/utils */ "./utils/utils.js");
 
 
 
@@ -939,7 +937,7 @@ class Controller {
     this.data = data;
     this.renderer = renderer;
     global.__renderer = renderer; // TODO change global into diff place
-    this.renderer_id = !_utils_utils__WEBPACK_IMPORTED_MODULE_2__["Utils"].isDOMElement(container) ? container : _utils_utils__WEBPACK_IMPORTED_MODULE_2__["Utils"].getID(container);
+    this.renderer_id = !_utils_utils__WEBPACK_IMPORTED_MODULE_1__["Utils"].isDOMElement(container) ? container : _utils_utils__WEBPACK_IMPORTED_MODULE_1__["Utils"].getID(container);
   }
 
   render() {
@@ -961,21 +959,16 @@ class Controller {
     renderer.createhtml(this.renderer_id);
   }
 
-  renderSVG() {
-    let renderer = new _renderers_svg_renderer__WEBPACK_IMPORTED_MODULE_1__["SVGRenderer"](this.data);
-    renderer.createhtml(this.renderer_id);
-  }
-
   customiseNode(node, borderColor, borderWidth) {
-    if (_utils_utils__WEBPACK_IMPORTED_MODULE_2__["Utils"].isDOMElement(node)) {
-      _utils_utils__WEBPACK_IMPORTED_MODULE_2__["Utils"].highLightNode(node, borderColor, borderWidth);
+    if (_utils_utils__WEBPACK_IMPORTED_MODULE_1__["Utils"].isDOMElement(node)) {
+      _utils_utils__WEBPACK_IMPORTED_MODULE_1__["Utils"].highLightNode(node, borderColor, borderWidth);
     } else {
-      _utils_utils__WEBPACK_IMPORTED_MODULE_2__["Utils"].highLightNode(document.getElementById(node), borderColor, borderWidth);
+      _utils_utils__WEBPACK_IMPORTED_MODULE_1__["Utils"].highLightNode(document.getElementById(node), borderColor, borderWidth);
     }
   }
 
   resetNode(container) {
-    _utils_utils__WEBPACK_IMPORTED_MODULE_2__["Utils"].unHighLightNode(_utils_utils__WEBPACK_IMPORTED_MODULE_2__["Utils"].isDOMElement(container) ? container : document.getElementById(container));
+    _utils_utils__WEBPACK_IMPORTED_MODULE_1__["Utils"].unHighLightNode(_utils_utils__WEBPACK_IMPORTED_MODULE_1__["Utils"].isDOMElement(container) ? container : document.getElementById(container));
   }
 }
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./../../node_modules/webpack/buildin/global.js */ "../node_modules/webpack/buildin/global.js")))
@@ -1044,32 +1037,6 @@ class HTMLDataAdapter extends _data_parser__WEBPACK_IMPORTED_MODULE_0__["DataPar
 
 /***/ }),
 
-/***/ "./data-adapters/svg-data.js":
-/*!***********************************!*\
-  !*** ./data-adapters/svg-data.js ***!
-  \***********************************/
-/*! exports provided: SVGDataAdapter */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SVGDataAdapter", function() { return SVGDataAdapter; });
-/* harmony import */ var _data_parser__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./data-parser */ "./data-adapters/data-parser.js");
-/* eslint no-useless-constructor: "off" */
-
-
-class SVGDataAdapter extends _data_parser__WEBPACK_IMPORTED_MODULE_0__["DataParser"] {
-  constructor(data) {
-    super(data);
-  }
-
-  getCoordinates() {
-    return super.defaultDataPointLogic();
-  }
-}
-
-/***/ }),
-
 /***/ "./highlighter/highlighter.js":
 /*!************************************!*\
   !*** ./highlighter/highlighter.js ***!
@@ -1124,7 +1091,6 @@ class Highligher {
     if (content) {
       this.overlayContent.innerHTML = content;
     }
-
     document.body.appendChild(this.overlay);
   }
 
@@ -1207,18 +1173,18 @@ class Layout {
       height: this.height
     }, this.layoutDefinition);
     if (_utils_utils__WEBPACK_IMPORTED_MODULE_4__["Utils"].isDOMElement(this.renderAt)) {
-      this.renderAt.__layout = this;
+      this.renderAt._layout = this;
     } else {
-      document.getElementById(this.renderAt).__layout = this;
+      document.getElementById(this.renderAt)._layout = this;
     }
 
     this.highlighter = new _highlighter_highlighter__WEBPACK_IMPORTED_MODULE_2__["default"]();
   }
 
   compute() {
-    let tree = this._layout.negotiate().tree();
+    this.tree = this._layout.negotiate().tree();
     this._layout.broadcast();
-    this.con = new _controller_controller__WEBPACK_IMPORTED_MODULE_3__["Controller"](tree, this.skeletonType, this.renderAt);
+    this.con = new _controller_controller__WEBPACK_IMPORTED_MODULE_3__["Controller"](this.tree, this.skeletonType, this.renderAt);
     this.con.render();
   }
 
@@ -1347,77 +1313,6 @@ class Renderer {
   initRenderer(node, tree) {
     node.className = _constants_defaults__WEBPACK_IMPORTED_MODULE_0__["LAYOUT_ID"];
     node.__logicalTree = tree;
-  }
-}
-
-/***/ }),
-
-/***/ "./renderers/svg-renderer.js":
-/*!***********************************!*\
-  !*** ./renderers/svg-renderer.js ***!
-  \***********************************/
-/*! exports provided: SVGRenderer */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SVGRenderer", function() { return SVGRenderer; });
-/* harmony import */ var _data_adapters_svg_data__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../data-adapters/svg-data */ "./data-adapters/svg-data.js");
-/* harmony import */ var _utils_utils__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../utils/utils */ "./utils/utils.js");
-/* harmony import */ var _renderer__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./renderer */ "./renderers/renderer.js");
-
-
-
-
-class SVGRenderer extends _renderer__WEBPACK_IMPORTED_MODULE_2__["Renderer"] {
-  constructor(data) {
-    super();
-    this.data = data;
-    this.coordinates = new _data_adapters_svg_data__WEBPACK_IMPORTED_MODULE_0__["SVGDataAdapter"](this.data).getCoordinates();
-  }
-
-  createhtml(id) {
-    let mainDiv = document.getElementById(id);
-    super.initRenderer(mainDiv, this.data); // Initialise node with layout id
-    let svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-    let container = _utils_utils__WEBPACK_IMPORTED_MODULE_1__["Utils"].findContainer(this.coordinates);
-    this.setSVGNodeAttributes(svg, {
-      'x': container.left,
-      'y': container.top,
-      'height': container.height,
-      'width': container.width,
-      'id': container._id
-    });
-    // svg.style.fill = '#e3e3e3'
-    // svg.style.border = '1px dotted red'
-    this.coordinates.forEach(node => {
-      if (node.parent !== null) {
-        svg.appendChild(this.createAndPositionSVG(node));
-      }
-    });
-    mainDiv.appendChild(svg);
-  }
-
-  createAndPositionSVG(node) {
-    let rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
-    this.setSVGNodeAttributes(rect, {
-      'x': node.left,
-      'y': node.top,
-      'height': node.height,
-      'width': node.width,
-      'id': node._id
-    });
-    // rect.style.border = '1px dotted red'
-    // Utils.hoverHandler(rect)
-    return rect;
-  }
-
-  setSVGNodeAttributes(ele, node) {
-    ele.setAttributeNS(null, 'id', node.id);
-    ele.setAttributeNS(null, 'x', node.x);
-    ele.setAttributeNS(null, 'y', node.y);
-    ele.setAttributeNS(null, 'height', node.height);
-    ele.setAttributeNS(null, 'width', node.width);
   }
 }
 

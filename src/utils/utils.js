@@ -3,7 +3,6 @@ import { DEFAULT_BORDER_COLOR, DEFAULT_BORDER_WIDTH } from '../constants/default
 
 export class Utils {
   static onHover (event) {
-    console.log('Hover', JSON.stringify(def))
     this.highLightNode(event.target, DEFAULT_BORDER_COLOR, DEFAULT_BORDER_WIDTH)
   }
 
@@ -21,28 +20,12 @@ export class Utils {
     node.style.outline = ''
   }
 
-  static SVGHover (node, color, width) {
-    console.log('Hover')
-    color = color !== undefined ? color : DEFAULT_BORDER_COLOR
-    width = width !== undefined ? width : DEFAULT_BORDER_WIDTH
-    node.style.stroke = `${color}`
-    node.style.strokeWidth = `${width}`
-  }
-
-  static SVGUnhover (node) {
-    node.style.stroke = ''
-    node.style.strokeWidth = ''
-  }
-
   static highLightNode (node, color, width) {
     let renderer = global.__renderer
 
     switch (renderer) {
       case 'html' :
         this.htmlHover(node, color, width)
-        break
-      case 'svg' :
-        this.SVGHover(node, color, width)
         break
     }
   }
@@ -52,9 +35,6 @@ export class Utils {
     switch (renderer) {
       case 'html' :
         this.htmlUnHover(node)
-        break
-      case 'svg' :
-        this.SVGUnhover(node)
         break
     }
   }

@@ -1,6 +1,5 @@
 
 import { HTMLRenderer } from '../renderers/html-renderer'
-import { SVGRenderer } from '../renderers/svg-renderer'
 import { Utils } from '../utils/utils'
 export class Controller {
   constructor (data, renderer, container) {
@@ -26,11 +25,6 @@ export class Controller {
 
   renderHTML () {
     let renderer = new HTMLRenderer(this.data)
-    renderer.createhtml(this.renderer_id)
-  }
-
-  renderSVG () {
-    let renderer = new SVGRenderer(this.data)
     renderer.createhtml(this.renderer_id)
   }
 

@@ -1,5 +1,6 @@
 /* eslint no-undef: "off" */
 import Layout from '../src/layout/layout'
+import { Utils } from '../src/utils/utils'
 import {
   renderAt,
   layoutDefinition,
@@ -9,7 +10,7 @@ import {
 } from './test-conf'
 import { expect } from 'chai'
 
-describe('Testing Layout', () => {
+describe('***************** Testing Layout Module *****************', () => {
   let layout
 
   beforeEach(function () {
@@ -56,6 +57,20 @@ describe('Testing Layout', () => {
       layout.unHighlight()
       expect(
         document.querySelectorAll('span').length === 0).to.equals(true)
+    })
+  })
+  context('Utility Methods', () => {
+    it('check hover listeners', () => {
+      let node = document.getElementById(renderAt)
+      console.log(node.innerHTML)
+      expect(
+        Utils.highLightNode(node, 'blue', '1 px'))
+    })
+    it('check un-hover listeners', () => {
+      let node = document.getElementById(renderAt)
+      console.log(node.innerHTML)
+      expect(
+        Utils.unHighLightNode(node))
     })
   })
 })
