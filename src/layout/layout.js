@@ -58,11 +58,3 @@ class Layout {
 }
 
 export default Layout
-
-/**
- * compute -- broadcast
- * tree()
- * highlight
- * unhightligh
- *
- */

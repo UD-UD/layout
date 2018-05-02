@@ -1,6 +1,6 @@
 /* eslint no-undef: "off" */
 
-import sum from '../app/src/sum'
+import sum from '../src/utils/utils'
 import { expect } from 'chai'
 
 console.log('Starting Test')
