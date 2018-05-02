@@ -43,7 +43,6 @@ class Highligher {
     if (content) {
       this.overlayContent.innerHTML = content
     }
-
     document.body.appendChild(this.overlay)
   }
 

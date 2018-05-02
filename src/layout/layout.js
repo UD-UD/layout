@@ -26,18 +26,18 @@ class Layout {
     this.layoutDefinition
     )
     if (Utils.isDOMElement(this.renderAt)) {
-      this.renderAt.__layout = this
+      this.renderAt._layout = this
     } else {
-      document.getElementById(this.renderAt).__layout = this
+      document.getElementById(this.renderAt)._layout = this
     }
 
     this.highlighter = new Highlighter()
   }
 
   compute () {
-    let tree = this._layout.negotiate().tree()
+    this.tree = this._layout.negotiate().tree()
     this._layout.broadcast()
-    this.con = new Controller(tree, this.skeletonType, this.renderAt)
+    this.con = new Controller(this.tree, this.skeletonType, this.renderAt)
     this.con.render()
   }
 
