@@ -47,7 +47,7 @@ class Highligher {
   }
 
   highlight (instance, highlightText) {
-    let content
+    let content = ''
     let rect = instance.getBoundingClientRect()
     if (highlightText) {
       content = `<span style="opacity: .6;">[</span>${highlightText}<span style="opacity: .6;">]</span>`

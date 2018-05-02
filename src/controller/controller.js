@@ -14,12 +14,6 @@ export class Controller {
       case 'html' :
         this.renderHTML()
         break
-      case 'svg' :
-        this.renderSVG()
-        break
-      case 'canvas' :
-        this.renderCANVAS()
-        break
     }
   }
 

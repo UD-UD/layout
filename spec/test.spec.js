@@ -62,15 +62,25 @@ describe('***************** Testing Layout Module *****************', () => {
   context('Utility Methods', () => {
     it('check hover listeners', () => {
       let node = document.getElementById(renderAt)
-      console.log(node.innerHTML)
       expect(
         Utils.highLightNode(node, 'blue', '1 px'))
     })
     it('check un-hover listeners', () => {
       let node = document.getElementById(renderAt)
-      console.log(node.innerHTML)
       expect(
         Utils.unHighLightNode(node))
+    })
+  })
+  context('Controller Methods', () => {
+    it('Highlight Node', () => {
+      let node = document.getElementById(renderAt)
+      expect(
+        layout.con.customiseNode(node, 'blue', '1 px'))
+    })
+    it('check reset node', () => {
+      let node = document.getElementById(renderAt)
+      expect(
+        layout.con.resetNode(node))
     })
   })
 })
