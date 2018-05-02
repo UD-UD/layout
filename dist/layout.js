@@ -1093,6 +1093,84 @@ class SVGDataAdapter extends _data_parser__WEBPACK_IMPORTED_MODULE_0__["DataPars
 
 /***/ }),
 
+/***/ "./highlighter/highlighter.js":
+/*!************************************!*\
+  !*** ./highlighter/highlighter.js ***!
+  \************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+class Highligher {
+  constructor() {
+    this.overlay = document.createElement('div');
+    this.addStyleToOverlay();
+    this.overlayContent = document.createElement('div');
+    this.addStyleToOverlayContent();
+    this.overlay.appendChild(this.overlayContent);
+  }
+
+  addStyleToOverlay() {
+    let overlayStyle = this.overlay.style;
+    overlayStyle.backgroundColor = 'rgba(104, 182, 255, 0.35)';
+    overlayStyle.position = 'fixed';
+    overlayStyle.zIndex = '99999999999999';
+    overlayStyle.pointerEvents = 'none';
+    overlayStyle.display = 'flex';
+    overlayStyle.alignItems = 'center';
+    overlayStyle.justifyContent = 'center';
+    overlayStyle.borderRadius = '3px';
+  }
+
+  addStyleToOverlayContent() {
+    let overlayContentStyle = this.overlayContent.style;
+    overlayContentStyle.backgroundColor = 'rgba(104, 182, 255, 0.9)';
+    overlayContentStyle.fontFamily = 'monospace';
+    overlayContentStyle.fontSize = '11px';
+    overlayContentStyle.padding = '2px 3px';
+    overlayContentStyle.borderRadius = '3px';
+    overlayContentStyle.color = 'white';
+  }
+
+  showOverlay({
+    width = 0,
+    height = 0,
+    top = 0,
+    left = 0
+  }, content = '') {
+    let overlayStyle = this.overlay.style;
+    overlayStyle.width = ~~width + 'px';
+    overlayStyle.height = ~~height + 'px';
+    overlayStyle.top = ~~top + 'px';
+    overlayStyle.left = ~~left + 'px';
+    if (content) {
+      this.overlayContent.innerHTML = content;
+    }
+
+    document.body.appendChild(this.overlay);
+  }
+
+  highlight(instance, highlightText) {
+    let content;
+    let rect = instance.getBoundingClientRect();
+    if (highlightText) {
+      content = `<span style="opacity: .6;">[</span>${highlightText}<span style="opacity: .6;">]</span>`;
+    }
+    this.showOverlay(rect, content);
+  }
+
+  unHighlight() {
+    if (this.overlay.parentNode) {
+      document.body.removeChild(this.overlay);
+    }
+  }
+}
+
+/* harmony default export */ __webpack_exports__["default"] = (Highligher);
+
+/***/ }),
+
 /***/ "./index.js":
 /*!******************!*\
   !*** ./index.js ***!
@@ -1128,7 +1206,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var layout_model__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! layout-model */ "../../layout-model/dist/layout.js");
 /* harmony import */ var layout_model__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(layout_model__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _constants_defaults__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../constants/defaults */ "./constants/defaults.js");
-/* harmony import */ var _overlay___WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../overlay/ */ "./overlay/index.js");
+/* harmony import */ var _highlighter_highlighter__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../highlighter/highlighter */ "./highlighter/highlighter.js");
 /* harmony import */ var _controller_controller__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../controller/controller */ "./controller/controller.js");
 /* harmony import */ var _utils_utils__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../utils/utils */ "./utils/utils.js");
 
@@ -1156,6 +1234,8 @@ class Layout {
     } else {
       document.getElementById(this.renderAt).__layout = this;
     }
+
+    this.highlighter = new _highlighter_highlighter__WEBPACK_IMPORTED_MODULE_2__["default"]();
   }
 
   compute() {
@@ -1168,12 +1248,12 @@ class Layout {
   highlight(nodeId, highlightText) {
     let instance = document.getElementById(nodeId);
     if (instance) {
-      Object(_overlay___WEBPACK_IMPORTED_MODULE_2__["_highlight"])(instance, highlightText);
+      this.highlighter.highlight(instance, highlightText);
     }
   }
 
   unHighlight() {
-    Object(_overlay___WEBPACK_IMPORTED_MODULE_2__["_unHighlight"])();
+    this.highlighter.unHighlight();
   }
 
   resetNode(node) {
@@ -1184,14 +1264,6 @@ class Layout {
 }
 
 /* harmony default export */ __webpack_exports__["default"] = (Layout);
-
-/**
- * compute -- broadcast
- * tree()
- * highlight
- * unhightligh
- *
- */
 
 /***/ }),
 
@@ -1216,98 +1288,6 @@ class DataPoint {
     this.parent = node.parent;
   }
 }
-
-/***/ }),
-
-/***/ "./overlay/index.js":
-/*!**************************!*\
-  !*** ./overlay/index.js ***!
-  \**************************/
-/*! exports provided: showOverlay, _unHighlight, _highlight */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _overlay__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./overlay */ "./overlay/overlay.js");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "showOverlay", function() { return _overlay__WEBPACK_IMPORTED_MODULE_0__["showOverlay"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "_unHighlight", function() { return _overlay__WEBPACK_IMPORTED_MODULE_0__["_unHighlight"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "_highlight", function() { return _overlay__WEBPACK_IMPORTED_MODULE_0__["_highlight"]; });
-
-
-
-
-
-/***/ }),
-
-/***/ "./overlay/overlay.js":
-/*!****************************!*\
-  !*** ./overlay/overlay.js ***!
-  \****************************/
-/*! exports provided: showOverlay, _unHighlight, _highlight */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "showOverlay", function() { return showOverlay; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "_unHighlight", function() { return _unHighlight; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "_highlight", function() { return _highlight; });
-const overlay = document.createElement('div');
-
-overlay.style.backgroundColor = 'rgba(104, 182, 255, 0.35)';
-overlay.style.position = 'fixed';
-overlay.style.zIndex = '99999999999999';
-overlay.style.pointerEvents = 'none';
-overlay.style.display = 'flex';
-overlay.style.alignItems = 'center';
-overlay.style.justifyContent = 'center';
-overlay.style.borderRadius = '3px';
-
-const overlayContent = document.createElement('div');
-
-overlayContent.style.backgroundColor = 'rgba(104, 182, 255, 0.9)';
-overlayContent.style.fontFamily = 'monospace';
-overlayContent.style.fontSize = '11px';
-overlayContent.style.padding = '2px 3px';
-overlayContent.style.borderRadius = '3px';
-overlayContent.style.color = 'white';
-
-overlay.appendChild(overlayContent);
-
-function showOverlay({
-  width = 0,
-  height = 0,
-  top = 0,
-  left = 0
-}, content = '') {
-  overlay.style.width = ~~width + 'px';
-  overlay.style.height = ~~height + 'px';
-  overlay.style.top = ~~top + 'px';
-  overlay.style.left = ~~left + 'px';
-  if (content) {
-    overlayContent.innerHTML = content;
-  }
-
-  document.body.appendChild(overlay);
-}
-
-function _unHighlight() {
-  if (overlay.parentNode) {
-    document.body.removeChild(overlay);
-  }
-}
-
-function _highlight(instance, highlightText) {
-  let content;
-  let rect = instance.getBoundingClientRect();
-  if (highlightText) {
-    content = `<span style="opacity: .6;">[</span>${highlightText}<span style="opacity: .6;">]</span>`;
-  }
-  showOverlay(rect, content);
-}
-
-
 
 /***/ }),
 

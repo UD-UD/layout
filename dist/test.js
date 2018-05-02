@@ -1,4 +1,7 @@
-const { Layout, DummyComponent } = layout
+const {
+  Layout,
+  DummyComponent
+} = layout
 
 const width = 600
 const height = 600
@@ -85,7 +88,6 @@ const fancyGridLayout = new Layout({
 fancyGridLayout.compute()
 
 // draw all components
-
 component1.draw()
 component2.draw()
 component3.draw()
