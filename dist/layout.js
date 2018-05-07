@@ -187,7 +187,7 @@ return /******/ (function(modules) { // webpackBootstrap
             Object.defineProperty(exports, "__esModule", {
                 value: true
             });
-            exports.determineBoundBox = exports.xExtraSpace = exports.yExtraSpace = exports.getNodeId = exports.isEqual = exports.DummyComponent = undefined;
+            exports.getColor = exports.determineBoundBox = exports.xExtraSpace = exports.yExtraSpace = exports.getNodeId = exports.isEqual = exports.DummyComponent = undefined;
 
             var _dummyComponent = __webpack_require__(7);
 
@@ -205,6 +205,7 @@ return /******/ (function(modules) { // webpackBootstrap
             exports.yExtraSpace = _utils.yExtraSpace;
             exports.xExtraSpace = _utils.xExtraSpace;
             exports.determineBoundBox = _utils.determineBoundBox;
+            exports.getColor = _utils.getColor;
 
             /***/
         },
@@ -628,7 +629,9 @@ return /******/ (function(modules) { // webpackBootstrap
             }
 
             /* eslint-disable require-jsdoc */
+
             /* eslint no-undef: "off" */
+
             var DummyComponent = function () {
                 function DummyComponent(seed, dimensions) {
                     _classCallCheck(this, DummyComponent);
@@ -650,18 +653,32 @@ return /******/ (function(modules) { // webpackBootstrap
                 }, {
                     key: 'setSpatialConfig',
                     value: function setSpatialConfig(conf) {
-                        this.position = { top: conf.y, left: conf.x };
-                        this.dimensions = { width: conf.width, height: conf.height };
+                        this.position = {
+                            top: conf.y,
+                            left: conf.x
+                        };
+                        this.newDimensions = {
+                            width: conf.width,
+                            height: conf.height
+                        };
                         this.renderAt = conf.renderAt;
                     }
+
+                    /* istanbul ignore next */
+
                 }, {
                     key: 'draw',
                     value: function draw() {
                         var doc = document.getElementById(this.renderAt),
-                            div = document.createElement('div');
-                        div.style.backgroundColor = '#36C3FF';
-                        div.style.width = this.dimensions.width - this.seed * 2 + 'px';
-                        div.style.height = this.dimensions.height - this.seed * 2 + 'px';
+                            div = document.createElement('div'),
+                            width = Math.max(this.dimensions.width, this.newDimensions.width),
+                            height = Math.max(this.dimensions.height, this.newDimensions.height);
+
+                        div.style.backgroundColor = '#fab1a0'; // getColor();
+
+                        div.style.width = width - this.seed * 2 + 'px';
+                        div.style.height = height - this.seed * 2 + 'px';
+
                         doc.appendChild(div);
                     }
                 }]);
@@ -811,6 +828,15 @@ return /******/ (function(modules) { // webpackBootstrap
                 };
             }
 
+            function getColor() {
+                var colors = ['#b71540', '#0c2461', '#079992', '#e55039', '#1abc9c', '#2ecc71', '#3498db', '#9b59b6', '#34495e', '#16a085', '#27ae60', '#2980b9', '#8e44ad', '#2c3e50', '#f1c40f', '#e67e22', '#e74c3c', '#ecf0f1', '#95a5a6', '#f39c12', '#d35400', '#c0392b', '#bdc3c7', '#7f8c8d'];
+                var min = 0,
+                    max = colors.length - 1,
+                    index = Math.floor(min + Math.random() * (max + 1 - min));
+                return colors[index];
+            }
+
+            exports.getColor = getColor;
             exports.isEqual = isEqual;
             exports.getNodeId = getNodeId;
             exports.yExtraSpace = yExtraSpace;
@@ -944,12 +970,6 @@ class Controller {
     switch (this.renderer) {
       case 'html':
         this.renderHTML();
-        break;
-      case 'svg':
-        this.renderSVG();
-        break;
-      case 'canvas':
-        this.renderCANVAS();
         break;
     }
   }
@@ -1095,7 +1115,7 @@ class Highligher {
   }
 
   highlight(instance, highlightText) {
-    let content;
+    let content = '';
     let rect = instance.getBoundingClientRect();
     if (highlightText) {
       content = `<span style="opacity: .6;">[</span>${highlightText}<span style="opacity: .6;">]</span>`;
@@ -1137,6 +1157,53 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./layout/layout-def.js":
+/*!******************************!*\
+  !*** ./layout/layout-def.js ***!
+  \******************************/
+/*! exports provided: LayoutDef */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "LayoutDef", function() { return LayoutDef; });
+class LayoutDef {
+  constructor(layoutDefinition) {
+    this.componentMap = new Map();
+    this.layoutDefinition = layoutDefinition;
+  }
+
+  addComponent(componentId, component) {
+    this.componentMap.set(componentId, component);
+  }
+
+  addMultipleComponent(componentArray) {
+    componentArray.forEach(comp => {
+      this.addComponent(comp.id, comp.component);
+    });
+  }
+
+  getSanitizedDefinition() {
+    this.sanitizeConfig(this.layoutDefinition);
+    return this.layoutDefinition;
+  }
+
+  sanitizeConfig(hostObj) {
+    if (hostObj.lanes && hostObj.lanes.length) {
+      hostObj.lanes.forEach(childHost => this.sanitizeConfig(childHost));
+    }
+    if (hostObj.host != null) {
+      hostObj.host = this.componentMap.get(hostObj.host);
+    }
+  }
+
+  getComponentMap() {
+    return this.componentMap;
+  }
+}
+
+/***/ }),
+
 /***/ "./layout/layout.js":
 /*!**************************!*\
   !*** ./layout/layout.js ***!
@@ -1152,6 +1219,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _highlighter_highlighter__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../highlighter/highlighter */ "./highlighter/highlighter.js");
 /* harmony import */ var _controller_controller__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../controller/controller */ "./controller/controller.js");
 /* harmony import */ var _utils_utils__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../utils/utils */ "./utils/utils.js");
+/* harmony import */ var _layout_def__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./layout-def */ "./layout/layout-def.js");
+
 
 
 
@@ -1163,15 +1232,11 @@ __webpack_require__.r(__webpack_exports__);
 class Layout {
   constructor(conf) {
     this.renderAt = conf.renderAt;
-    this.layoutDefinition = conf.layoutDefinition;
     this.width = conf.width || _constants_defaults__WEBPACK_IMPORTED_MODULE_1__["DEFAULT_WIDTH"];
     this.height = conf.height || _constants_defaults__WEBPACK_IMPORTED_MODULE_1__["DEFAULT_HEIGHT"];
     this.skeletonType = conf.skeletonType || 'html';
-
-    this._layout = new layout_model__WEBPACK_IMPORTED_MODULE_0__["LayoutModel"]({
-      width: this.width,
-      height: this.height
-    }, this.layoutDefinition);
+    this.layoutDefinition = conf.layoutDefinition;
+    this.layoutDef = new _layout_def__WEBPACK_IMPORTED_MODULE_5__["LayoutDef"](conf.layoutDefinition);
     if (_utils_utils__WEBPACK_IMPORTED_MODULE_4__["Utils"].isDOMElement(this.renderAt)) {
       this.renderAt._layout = this;
     } else {
@@ -1182,6 +1247,11 @@ class Layout {
   }
 
   compute() {
+    this.layoutDefinition = this.layoutDef.getSanitizedDefinition();
+    this._layout = new layout_model__WEBPACK_IMPORTED_MODULE_0__["LayoutModel"]({
+      width: this.width,
+      height: this.height
+    }, this.layoutDefinition);
     this.tree = this._layout.negotiate().tree();
     this._layout.broadcast();
     this.con = new _controller_controller__WEBPACK_IMPORTED_MODULE_3__["Controller"](this.tree, this.skeletonType, this.renderAt);
@@ -1197,6 +1267,14 @@ class Layout {
 
   unHighlight() {
     this.highlighter.unHighlight();
+  }
+
+  addComponent(componentId, component) {
+    this.layoutDef.addComponent(componentId, component);
+  }
+
+  addMultipleComponent(componentArray) {
+    this.layoutDef.addMultipleComponent(componentArray);
   }
 
   resetNode(node) {
@@ -1334,7 +1412,6 @@ __webpack_require__.r(__webpack_exports__);
 
 class Utils {
   static onHover(event) {
-    console.log('Hover', JSON.stringify(def));
     this.highLightNode(event.target, _constants_defaults__WEBPACK_IMPORTED_MODULE_0__["DEFAULT_BORDER_COLOR"], _constants_defaults__WEBPACK_IMPORTED_MODULE_0__["DEFAULT_BORDER_WIDTH"]);
   }
 
@@ -1352,28 +1429,12 @@ class Utils {
     node.style.outline = '';
   }
 
-  static SVGHover(node, color, width) {
-    console.log('Hover');
-    color = color !== undefined ? color : _constants_defaults__WEBPACK_IMPORTED_MODULE_0__["DEFAULT_BORDER_COLOR"];
-    width = width !== undefined ? width : _constants_defaults__WEBPACK_IMPORTED_MODULE_0__["DEFAULT_BORDER_WIDTH"];
-    node.style.stroke = `${color}`;
-    node.style.strokeWidth = `${width}`;
-  }
-
-  static SVGUnhover(node) {
-    node.style.stroke = '';
-    node.style.strokeWidth = '';
-  }
-
   static highLightNode(node, color, width) {
     let renderer = global.__renderer;
 
     switch (renderer) {
       case 'html':
         this.htmlHover(node, color, width);
-        break;
-      case 'svg':
-        this.SVGHover(node, color, width);
         break;
     }
   }
@@ -1383,9 +1444,6 @@ class Utils {
     switch (renderer) {
       case 'html':
         this.htmlUnHover(node);
-        break;
-      case 'svg':
-        this.SVGUnhover(node);
         break;
     }
   }

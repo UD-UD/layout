@@ -10,21 +10,16 @@ import {
 import Highlighter from '../highlighter/highlighter'
 import { Controller } from '../controller/controller'
 import { Utils } from '../utils/utils'
+import { LayoutDef } from './layout-def'
 
 class Layout {
   constructor (conf) {
     this.renderAt = conf.renderAt
-    this.layoutDefinition = conf.layoutDefinition
     this.width = conf.width || DEFAULT_WIDTH
     this.height = conf.height || DEFAULT_HEIGHT
     this.skeletonType = conf.skeletonType || 'html'
-
-    this._layout = new LayoutModel({
-      width: this.width,
-      height: this.height
-    },
-    this.layoutDefinition
-    )
+    this.layoutDefinition = conf.layoutDefinition
+    this.layoutDef = new LayoutDef(conf.layoutDefinition)
     if (Utils.isDOMElement(this.renderAt)) {
       this.renderAt._layout = this
     } else {
@@ -35,6 +30,13 @@ class Layout {
   }
 
   compute () {
+    this.layoutDefinition = this.layoutDef.getSanitizedDefinition()
+    this._layout = new LayoutModel({
+      width: this.width,
+      height: this.height
+    },
+    this.layoutDefinition
+    )
     this.tree = this._layout.negotiate().tree()
     this._layout.broadcast()
     this.con = new Controller(this.tree, this.skeletonType, this.renderAt)
@@ -50,6 +52,14 @@ class Layout {
 
   unHighlight () {
     this.highlighter.unHighlight()
+  }
+
+  addComponent (componentId, component) {
+    this.layoutDef.addComponent(componentId, component)
+  }
+
+  addMultipleComponent (componentArray) {
+    this.layoutDef.addMultipleComponent(componentArray)
   }
 
   resetNode (node) {
