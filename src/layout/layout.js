@@ -67,6 +67,17 @@ class Layout {
       this.con.resetNode(node)
     }
   }
+
+  /**
+   * function to update the node and rerender the layout.
+   * @param  {} config - node configuration to change.
+   */
+  updateLayout (config) {
+    Utils.removeDiv('fusionBoardLayout')
+    this.tree.updateNode(config)
+    this.layoutDefinition = this.tree.model
+    this.compute()
+  }
 }
 
 export default Layout
