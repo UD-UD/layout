@@ -55,4 +55,11 @@ export class Utils {
   static findContainer (data) {
     return data.filter(coordinate => { return coordinate.parent == null })[0]
   }
+  /**
+   * static method to remove the div
+   * @param  {} divId - div ID to be removed.
+   */
+  static removeDiv (divId) {
+    document.getElementById(divId).remove()
+  }
 }
