@@ -594,6 +594,44 @@ return /******/ (function(modules) { // webpackBootstrap
                     value: function isPreferred() {
                         return !!this.model.preferred;
                     }
+
+                    // method to update the Node Information
+
+                }, {
+                    key: 'updateNode',
+                    value: function updateNode(nodeconfig) {
+                        var _this2 = this;
+
+                        console.log('This and nodeConfig: ', this, nodeconfig);
+                        if (this._id === nodeconfig._id) {
+                            this.model.cut = nodeconfig.cut;
+                            this.model.ratioWeight = nodeconfig.ratioWeight;
+                        } else {
+                            this.children.forEach(function (node) {
+                                console.log('Node of Each Children: ', node, nodeconfig);
+                                if (node._id === nodeconfig._id) {
+                                    node.model.cut = nodeconfig.cut;
+                                    node.model.ratioWeight = nodeconfig.ratioWeight;
+                                    return;
+                                }
+                                _this2.searchNode(node, nodeconfig);
+                            });
+                        }
+                    }
+                }, {
+                    key: 'searchNode',
+                    value: function searchNode(node, nodeconfig) {
+                        var _this3 = this;
+
+                        node.children.forEach(function (node1) {
+                            if (node1._id === nodeconfig._id) {
+                                node1.model.cut = nodeconfig.cut;
+                                node1.model.ratioWeight = nodeconfig.ratioWeight;
+                            } else {
+                                _this3.searchNode(node1, nodeconfig);
+                            }
+                        });
+                    }
                 }]);
 
                 return Node;
@@ -1192,7 +1230,7 @@ class LayoutDef {
     if (hostObj.lanes && hostObj.lanes.length) {
       hostObj.lanes.forEach(childHost => this.sanitizeConfig(childHost));
     }
-    if (hostObj.host != null) {
+    if (hostObj.host != null && typeof hostObj.host === 'string') {
       hostObj.host = this.componentMap.get(hostObj.host);
     }
   }
@@ -1281,6 +1319,17 @@ class Layout {
     if (this.con) {
       this.con.resetNode(node);
     }
+  }
+
+  /**
+   * function to update the node and rerender the layout.
+   * @param  {} config - node configuration to change.
+   */
+  updateLayout(config) {
+    _utils_utils__WEBPACK_IMPORTED_MODULE_4__["Utils"].removeDiv('fusionBoardLayout');
+    this.tree.updateNode(config);
+    this.layoutDefinition = this.tree.model;
+    this.compute();
   }
 }
 
@@ -1465,6 +1514,13 @@ class Utils {
     return data.filter(coordinate => {
       return coordinate.parent == null;
     })[0];
+  }
+  /**
+   * static method to remove the div
+   * @param  {} divId - div ID to be removed.
+   */
+  static removeDiv(divId) {
+    document.getElementById(divId).remove();
   }
 }
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./../../node_modules/webpack/buildin/global.js */ "../node_modules/webpack/buildin/global.js")))
