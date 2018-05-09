@@ -78,6 +78,17 @@ class Layout {
     this.layoutDefinition = this.tree.model
     this.compute()
   }
+
+  /**
+   * function to delete a node from the layout and rerender the layout
+   * @param  {} nodeId - node id to delete
+   */
+  deleteNode (nodeID) {
+    Utils.removeDiv('fusionBoardLayout')
+    this.tree.delete(nodeID)
+    this.layoutDefinition = this.tree.model
+    this.compute()
+  }
 }
 
 export default Layout
