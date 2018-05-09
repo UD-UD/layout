@@ -60,6 +60,6 @@ export class Utils {
    * @param  {} divId - div ID to be removed.
    */
   static removeDiv (divId) {
-    document.getElementById(divId).remove()
+    if (document.getElementById(divId) !== null) { document.getElementById(divId).remove() }
   }
 }

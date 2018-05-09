@@ -24,7 +24,7 @@ export class LayoutDef {
       hostObj.lanes.forEach(childHost => this.sanitizeConfig(childHost))
     }
     if (hostObj.host != null && typeof (hostObj.host) === 'string') {
-      hostObj.host = this.componentMap.get(hostObj.host)
+      if (this.componentMap.get(hostObj.host) !== undefined) { hostObj.host = this.componentMap.get(hostObj.host) }
     }
   }
 

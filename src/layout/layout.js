@@ -4,7 +4,8 @@ import {
 
 import {
   DEFAULT_WIDTH,
-  DEFAULT_HEIGHT
+  DEFAULT_HEIGHT,
+  LAYOUT_NAME
 } from '../constants/defaults'
 
 import Highlighter from '../highlighter/highlighter'
@@ -30,6 +31,7 @@ class Layout {
   }
 
   compute () {
+    Utils.removeDiv(LAYOUT_NAME)
     this.layoutDefinition = this.layoutDef.getSanitizedDefinition()
     this._layout = new LayoutModel({
       width: this.width,
@@ -72,8 +74,7 @@ class Layout {
    * function to update the node and rerender the layout.
    * @param  {} config - node configuration to change.
    */
-  updateLayout (config) {
-    Utils.removeDiv('fusionBoardLayout')
+  updateNode (config) {
     this.tree.updateNode(config)
     this.layoutDefinition = this.tree.model
     this.compute()

@@ -599,7 +599,11 @@ return /******/ (function(modules) { // webpackBootstrap
                         }
                     }
 
+<<<<<<< HEAD
                     // Recursive function to search a node
+=======
+                    // function to search a node
+>>>>>>> 06eb94276d74908e3f5729de0aa207daecc4219f
 
                 }, {
                     key: 'searchNode',
@@ -1265,7 +1269,9 @@ class LayoutDef {
       hostObj.lanes.forEach(childHost => this.sanitizeConfig(childHost));
     }
     if (hostObj.host != null && typeof hostObj.host === 'string') {
-      hostObj.host = this.componentMap.get(hostObj.host);
+      if (this.componentMap.get(hostObj.host) !== undefined) {
+        hostObj.host = this.componentMap.get(hostObj.host);
+      }
     }
   }
 
@@ -1319,6 +1325,7 @@ class Layout {
   }
 
   compute() {
+    _utils_utils__WEBPACK_IMPORTED_MODULE_4__["Utils"].removeDiv(_constants_defaults__WEBPACK_IMPORTED_MODULE_1__["LAYOUT_NAME"]);
     this.layoutDefinition = this.layoutDef.getSanitizedDefinition();
     this._layout = new layout_model__WEBPACK_IMPORTED_MODULE_0__["LayoutModel"]({
       width: this.width,
@@ -1359,8 +1366,7 @@ class Layout {
    * function to update the node and rerender the layout.
    * @param  {} config - node configuration to change.
    */
-  updateLayout(config) {
-    _utils_utils__WEBPACK_IMPORTED_MODULE_4__["Utils"].removeDiv('fusionBoardLayout');
+  updateNode(config) {
     this.tree.updateNode(config);
     this.layoutDefinition = this.tree.model;
     this.compute();
@@ -1565,7 +1571,9 @@ class Utils {
    * @param  {} divId - div ID to be removed.
    */
   static removeDiv(divId) {
-    document.getElementById(divId).remove();
+    if (document.getElementById(divId) !== null) {
+      document.getElementById(divId).remove();
+    }
   }
 }
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./../../node_modules/webpack/buildin/global.js */ "../node_modules/webpack/buildin/global.js")))
