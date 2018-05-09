@@ -274,7 +274,7 @@ return /******/ (function(modules) { // webpackBootstrap
                 };
             }();
 
-            var _tree = __webpack_require__(4);
+            var _tree = __webpack_require__(5);
 
             var _tree2 = _interopRequireDefault(_tree);
 
@@ -406,7 +406,7 @@ return /******/ (function(modules) { // webpackBootstrap
                                 // push extra space in sink. Execute it when all non preferred space are computed.
                                 preferred = child;
 
-                                continue;
+                                continue; // eslint-disable-line no-continue
                             }
                             // reduce own height and save it in a var
                             cumultiveExtraSpaceAmt += extraSpaceAmt = fn(child);
@@ -496,27 +496,6 @@ return /******/ (function(modules) { // webpackBootstrap
                 value: true
             });
 
-            var _node = __webpack_require__(5);
-
-            var _node2 = _interopRequireDefault(_node);
-
-            function _interopRequireDefault(obj) {
-                return obj && obj.__esModule ? obj : { default: obj };
-            }
-
-            exports.default = _node2.default;
-
-            /***/
-        },
-        /* 5 */
-        /***/function (module, exports, __webpack_require__) {
-
-            "use strict";
-
-            Object.defineProperty(exports, "__esModule", {
-                value: true
-            });
-
             var _createClass = function () {
                 function defineProperties(target, props) {
                     for (var i = 0; i < props.length; i++) {
@@ -595,20 +574,21 @@ return /******/ (function(modules) { // webpackBootstrap
                         return !!this.model.preferred;
                     }
 
-                    // method to update the Node Information
+                    /**
+                     * function to search a node and update it with the config provided.
+                     * @param  {Object} nodeconfig
+                     */
 
                 }, {
                     key: 'updateNode',
                     value: function updateNode(nodeconfig) {
                         var _this2 = this;
 
-                        console.log('This and nodeConfig: ', this, nodeconfig);
                         if (this._id === nodeconfig._id) {
                             this.model.cut = nodeconfig.cut;
                             this.model.ratioWeight = nodeconfig.ratioWeight;
                         } else {
                             this.children.forEach(function (node) {
-                                console.log('Node of Each Children: ', node, nodeconfig);
                                 if (node._id === nodeconfig._id) {
                                     node.model.cut = nodeconfig.cut;
                                     node.model.ratioWeight = nodeconfig.ratioWeight;
@@ -618,6 +598,9 @@ return /******/ (function(modules) { // webpackBootstrap
                             });
                         }
                     }
+
+                    // Recursive function to search a node
+
                 }, {
                     key: 'searchNode',
                     value: function searchNode(node, nodeconfig) {
@@ -632,12 +615,69 @@ return /******/ (function(modules) { // webpackBootstrap
                             }
                         });
                     }
+
+                    /**
+                     * function to delete a node from tree Structure.
+                     * @param  {String} nodeId - node Id of the Node
+                     */
+
+                }, {
+                    key: 'delete',
+                    value: function _delete(nodeId) {
+                        var _this4 = this;
+
+                        this.children.forEach(function (node) {
+                            if (node._id === nodeId) {
+                                var index = _this4.children.indexOf(node);
+                                _this4.model.lanes.splice(index, 1);
+                            }
+                            _this4.deleteSearchNode(node, nodeId);
+                        });
+                    }
+
+                    // Recursive function to search a node
+
+                }, {
+                    key: 'deleteSearchNode',
+                    value: function deleteSearchNode(node, nodeId) {
+                        var _this5 = this;
+
+                        node.children.forEach(function (node1) {
+                            if (node1._id === nodeId) {
+                                var index = node.children.indexOf(node1);
+                                node.model.lanes.splice(index, 1);
+                            } else {
+                                _this5.deleteSearchNode(node1, nodeId);
+                            }
+                        });
+                    }
                 }]);
 
                 return Node;
             }();
 
             exports.default = Node;
+
+            /***/
+        },
+        /* 5 */
+        /***/function (module, exports, __webpack_require__) {
+
+            "use strict";
+
+            Object.defineProperty(exports, "__esModule", {
+                value: true
+            });
+
+            var _Node = __webpack_require__(4);
+
+            var _Node2 = _interopRequireDefault(_Node);
+
+            function _interopRequireDefault(obj) {
+                return obj && obj.__esModule ? obj : { default: obj };
+            }
+
+            exports.default = _Node2.default;
 
             /***/
         },
@@ -757,6 +797,7 @@ return /******/ (function(modules) { // webpackBootstrap
             Object.defineProperty(exports, "__esModule", {
                 value: true
             });
+
             /**
              * Compares two strings in lowercase
              *
@@ -782,7 +823,7 @@ return /******/ (function(modules) { // webpackBootstrap
             function yExtraSpace(node) {
                 var smallestHeight = 0;
                 if (node.getCutType() === 'v') {
-                    smallestHeight = smallestExtraHeightHorizontally(node);
+                    smallestHeight = smallestExtraHeightHorizontally(node); // eslint-disable-line no-use-before-define
                 } else if (node.getCutType() === 'h') {
                     node.children.forEach(function (child) {
                         smallestHeight += yExtraSpace(child);
@@ -815,7 +856,7 @@ return /******/ (function(modules) { // webpackBootstrap
             function xExtraSpace(node) {
                 var smallestWidth = 0;
                 if (node.getCutType() === 'h') {
-                    smallestWidth = smallestExtraWidthVertically(node);
+                    smallestWidth = smallestExtraWidthVertically(node); // eslint-disable-line no-use-before-define
                 } else if (node.getCutType() === 'v') {
                     node.children.forEach(function (child) {
                         smallestWidth += xExtraSpace(child);
@@ -866,20 +907,13 @@ return /******/ (function(modules) { // webpackBootstrap
                 };
             }
 
-            function getColor() {
-                var colors = ['#b71540', '#0c2461', '#079992', '#e55039', '#1abc9c', '#2ecc71', '#3498db', '#9b59b6', '#34495e', '#16a085', '#27ae60', '#2980b9', '#8e44ad', '#2c3e50', '#f1c40f', '#e67e22', '#e74c3c', '#ecf0f1', '#95a5a6', '#f39c12', '#d35400', '#c0392b', '#bdc3c7', '#7f8c8d'];
-                var min = 0,
-                    max = colors.length - 1,
-                    index = Math.floor(min + Math.random() * (max + 1 - min));
-                return colors[index];
-            }
-
-            exports.getColor = getColor;
             exports.isEqual = isEqual;
             exports.getNodeId = getNodeId;
             exports.yExtraSpace = yExtraSpace;
             exports.xExtraSpace = xExtraSpace;
             exports.determineBoundBox = determineBoundBox;
+            exports.smallestExtraWidthVertically = smallestExtraWidthVertically;
+            exports.smallestExtraHeightHorizontally = smallestExtraHeightHorizontally;
 
             /***/
         }]
@@ -1328,6 +1362,17 @@ class Layout {
   updateLayout(config) {
     _utils_utils__WEBPACK_IMPORTED_MODULE_4__["Utils"].removeDiv('fusionBoardLayout');
     this.tree.updateNode(config);
+    this.layoutDefinition = this.tree.model;
+    this.compute();
+  }
+
+  /**
+   * function to delete a node from the layout and rerender the layout
+   * @param  {} nodeId - node id to delete
+   */
+  deleteNode(nodeID) {
+    _utils_utils__WEBPACK_IMPORTED_MODULE_4__["Utils"].removeDiv('fusionBoardLayout');
+    this.tree.delete(nodeID);
     this.layoutDefinition = this.tree.model;
     this.compute();
   }
