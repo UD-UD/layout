@@ -26,7 +26,7 @@ export class HTMLRenderer extends Renderer {
     div.style.top = node.top + 'px'
     div.style.height = node.height + 'px'
     div.style.width = node.width + 'px'
-    // div.style.border = '1px dotted red'
+    div.style.border = '1px solid #747474'
     // Utils.hoverHandler(div)
     div.id = node._id
     return div

@@ -3,29 +3,39 @@ const {
   DummyComponent
 } = layout
 
-const width = 600
-const height = 600
+const width = 750
+const height = 700
 const skeletonType = 'html'
 
-const component1 = new DummyComponent(10, {
-  width: width / 2,
-  height: width / 2
-})
+// const component1 = new DummyComponent(10, {
+//   width: width / 2,
+//   height: width / 2
+// })
 
-const component2 = new DummyComponent(10, {
-  width: width / 2,
-  height: width / 2
-})
+// const component2 = new DummyComponent(10, {
+//   width: width / 2,
+//   height: width / 2
+// })
 
-const component3 = new DummyComponent(10, {
-  width: width / 2,
-  height: width / 2
-})
+// const component3 = new DummyComponent(10, {
+//   width: width / 2,
+//   height: width / 2
+// })
 
-const component4 = new DummyComponent(10, {
-  width: width / 2,
-  height: width / 2
-})
+// const component4 = new DummyComponent(10, {
+//   width: width / 2,
+//   height: width / 2
+// })
+
+// const component5 = new DummyComponent(10, {
+//   width: width / 2,
+//   height: width / 2
+// })
+
+// const component6 = new DummyComponent(10, {
+//   width: width / 2,
+//   height: width / 2
+// })
 
 const layoutDefinition = {
   host: null,
@@ -41,13 +51,14 @@ const layoutDefinition = {
         host: 'component1',
         cut: null,
         ratioWeight: 1,
-        preferred: true,
+        // preferred: true,
         lanes: []
       },
       {
         host: 'component2',
         cut: null,
         ratioWeight: 1,
+        preferred: true,
         lanes: []
       }
     ]
@@ -61,13 +72,14 @@ const layoutDefinition = {
         host: 'component3',
         cut: null,
         ratioWeight: 1,
+        preferred: true,
         lanes: []
       },
       {
         host: 'component4',
         cut: null,
         ratioWeight: 1,
-        preferred: true,
+        // preferred: true,
         lanes: []
       }
     ]
@@ -85,17 +97,19 @@ const fancyGridLayout = new Layout({
   skeletonType
 })
 
-fancyGridLayout.addMultipleComponent([
-  { id: 'component1', component: component1 },
-  { id: 'component2', component: component2 },
-  { id: 'component3', component: component3 },
-  { id: 'component4', component: component4 }
-])
+// fancyGridLayout.addMultipleComponent([
+//   { id: 'component1', component: component1 },
+//   { id: 'component2', component: component2 },
+//   { id: 'component3', component: component3 },
+//   { id: 'component4', component: component4 },
+//   { id: 'component5', component: component5 },
+//   { id: 'component6', component: component6 }
+// ])
 
 fancyGridLayout.compute()
 
-// draw all components
-component1.draw()
-component2.draw()
-component3.draw()
-component4.draw()
+// // draw all components
+// component1.draw()
+// component2.draw()
+// component3.draw()
+// component4.draw()

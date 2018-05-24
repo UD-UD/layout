@@ -540,6 +540,8 @@ return /******/ (function(modules) { // webpackBootstrap
                     };
 
                     this._id = (0, _utils.getNodeId)();
+
+                    this.model._id = this._id;
                 }
 
                 _createClass(Node, [{
@@ -576,7 +578,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
                     /**
                      * function to search a node and update it with the config provided.
-                     * @param  {Object} nodeconfig
+                     * @param  {Object} nodeconfig - configurations of the node to be updated.
                      */
 
                 }, {
@@ -588,32 +590,27 @@ return /******/ (function(modules) { // webpackBootstrap
                             this.model.cut = nodeconfig.cut;
                             this.model.ratioWeight = nodeconfig.ratioWeight;
                         } else {
-                            this.children.forEach(function (node) {
+                            this.model.lanes.forEach(function (node) {
                                 if (node._id === nodeconfig._id) {
-                                    node.model.cut = nodeconfig.cut;
-                                    node.model.ratioWeight = nodeconfig.ratioWeight;
-                                    return;
+                                    node.cut = nodeconfig.cut;
+                                    node.ratioWeight = nodeconfig.ratioWeight;
                                 }
                                 _this2.searchNode(node, nodeconfig);
                             });
                         }
                     }
 
-<<<<<<< HEAD
-                    // Recursive function to search a node
-=======
-                    // function to search a node
->>>>>>> 06eb94276d74908e3f5729de0aa207daecc4219f
+                    // Recursive function to search a node for updating a node.
 
                 }, {
                     key: 'searchNode',
                     value: function searchNode(node, nodeconfig) {
                         var _this3 = this;
 
-                        node.children.forEach(function (node1) {
+                        node.lanes.forEach(function (node1) {
                             if (node1._id === nodeconfig._id) {
-                                node1.model.cut = nodeconfig.cut;
-                                node1.model.ratioWeight = nodeconfig.ratioWeight;
+                                node1.cut = nodeconfig.cut;
+                                node1.ratioWeight = nodeconfig.ratioWeight;
                             } else {
                                 _this3.searchNode(node1, nodeconfig);
                             }
@@ -630,28 +627,121 @@ return /******/ (function(modules) { // webpackBootstrap
                     value: function _delete(nodeId) {
                         var _this4 = this;
 
-                        this.children.forEach(function (node) {
+                        this.model.lanes.forEach(function (node) {
                             if (node._id === nodeId) {
-                                var index = _this4.children.indexOf(node);
+                                // let index = this.children.indexOf(node);
+                                var index = _this4.model.lanes.indexOf(node);
                                 _this4.model.lanes.splice(index, 1);
                             }
                             _this4.deleteSearchNode(node, nodeId);
                         });
                     }
 
-                    // Recursive function to search a node
+                    // Recursive function to search a node for deleting a node
 
                 }, {
                     key: 'deleteSearchNode',
                     value: function deleteSearchNode(node, nodeId) {
                         var _this5 = this;
 
-                        node.children.forEach(function (node1) {
+                        node.lanes.forEach(function (node1) {
                             if (node1._id === nodeId) {
-                                var index = node.children.indexOf(node1);
-                                node.model.lanes.splice(index, 1);
+                                // let index = node.children.indexOf(node1);
+                                var index = node.lanes.indexOf(node1);
+                                node.lanes.splice(index, 1);
                             } else {
                                 _this5.deleteSearchNode(node1, nodeId);
+                            }
+                        });
+                    }
+
+                    /**
+                     * function to add nodes to the tree.
+                     * @param  {} nodeId - Node ID where to add the node.
+                     * @param  {} nodeArray - New Node Configuration array.
+                     */
+
+                }, {
+                    key: 'addNode',
+                    value: function addNode(nodeId, nodeArray) {
+                        var _this6 = this;
+
+                        if (this._id === nodeId) {
+                            this.host = null;
+                            nodeArray.forEach(function (tempNode) {
+                                _this6.model.lanes.push(tempNode);
+                            });
+                            // this.model.lanes.push(nodeObj);
+                        } else {
+                            this.model.lanes.forEach(function (node) {
+                                if (node._id === nodeId) {
+                                    node.host = null;
+                                    nodeArray.forEach(function (tempNode) {
+                                        node.lanes.push(tempNode);
+                                    });
+                                    // node.lanes.push(nodeObj);
+                                }
+                                _this6.addSearchNode(node, nodeId, nodeArray);
+                            });
+                        }
+                    }
+
+                    // Recursive function to search a node for adding a new Node
+
+                }, {
+                    key: 'addSearchNode',
+                    value: function addSearchNode(node, nodeId, nodeArray) {
+                        var _this7 = this;
+
+                        node.lanes.forEach(function (node1) {
+                            if (node1._id === nodeId) {
+                                node1.host = null;
+                                nodeArray.forEach(function (tempNode) {
+                                    node1.lanes.push(tempNode);
+                                });
+                                // node1.lanes.push(nodeObj);
+                            } else {
+                                _this7.addSearchNode(node1, nodeId, nodeArray);
+                            }
+                        });
+                    }
+
+                    /**
+                     * function to get the Node Information
+                     * @param  {} nodeId - ID of the Node.
+                     */
+
+                }, {
+                    key: 'getNode',
+                    value: function getNode(nodeId) {
+                        var _this8 = this;
+
+                        this.nodeInfo = null;
+                        if (this._id === nodeId) {
+                            this.nodeInfo = this.model;
+                        } else {
+                            this.model.lanes.forEach(function (node) {
+                                if (node._id === nodeId) {
+                                    _this8.nodeInfo = node;
+                                }
+                                _this8.getSearchNode(node, nodeId);
+                            });
+                        }
+                        return this.nodeInfo;
+                    }
+
+                    // Recursive function to search a node for adding a new Node
+
+                }, {
+                    key: 'getSearchNode',
+                    value: function getSearchNode(node, nodeId) {
+                        var _this9 = this;
+
+                        node.lanes.forEach(function (node1) {
+                            if (node1._id === nodeId) {
+                                _this9.nodeInfo = node1;
+                            } else {
+                                _this9.getSearchNode(node1, nodeId);
                             }
                         });
                     }
@@ -722,6 +812,7 @@ return /******/ (function(modules) { // webpackBootstrap
                     this.dimensions = dimensions;
                     this.position = null;
                     this.renderAt = null;
+                    this.type = 'placeHolder';
                 }
 
                 _createClass(DummyComponent, [{
@@ -751,10 +842,17 @@ return /******/ (function(modules) { // webpackBootstrap
                 }, {
                     key: 'draw',
                     value: function draw() {
+                        if (document.getElementById('placeholder' + this.renderAt) !== null) {
+                            document.getElementById('placeholder' + this.renderAt).remove();
+                        }
+                        if (document.getElementById('component' + this.renderAt) !== null) {
+                            document.getElementById('component' + this.renderAt).remove();
+                        }
                         var doc = document.getElementById(this.renderAt),
                             div = document.createElement('div'),
                             width = Math.max(this.dimensions.width, this.newDimensions.width),
                             height = Math.max(this.dimensions.height, this.newDimensions.height);
+                        div.setAttribute('id', 'component' + this.renderAt);
 
                         div.style.backgroundColor = '#fab1a0'; // getColor();
 
@@ -1008,8 +1106,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "DEFAULT_HEIGHT", function() { return DEFAULT_HEIGHT; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "LAYOUT_ID", function() { return LAYOUT_ID; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "LAYOUT_NAME", function() { return LAYOUT_NAME; });
-const DEFAULT_BORDER_COLOR = 'cyan';
-const DEFAULT_BORDER_WIDTH = '2px';
+const DEFAULT_BORDER_COLOR = '#747474';
+const DEFAULT_BORDER_WIDTH = '1px';
 const DEFAULT_WIDTH = 600;
 const DEFAULT_HEIGHT = 400;
 const LAYOUT_ID = 'd2ad88af-7050-4c1c-b407-42745cfe3bd7';
@@ -1275,8 +1373,38 @@ class LayoutDef {
     }
   }
 
+  rawConfig(hostObj) {
+    let compMap = this.getComponentMap();
+    let compKeys = compMap.keys();
+    let compVal = compMap.values();
+    if (hostObj.lanes && hostObj.lanes.length) {
+      delete hostObj._id;
+      hostObj.lanes.forEach(childHost => this.rawConfig(childHost));
+    }
+    if (hostObj.host != null && typeof hostObj.host !== 'string') {
+      let flag = true;
+      while (flag) {
+        let val = compVal.next().value;
+        let key = compKeys.next().value;
+        if (val.renderAt === hostObj.host.renderAt) {
+          hostObj.host = key;
+          delete hostObj._id;
+          flag = false;
+        }
+      }
+    }
+    return hostObj;
+  }
+
   getComponentMap() {
     return this.componentMap;
+  }
+  /**
+   * function to delete component from Map
+   * @param  {} componentId - Id of the component.
+   */
+  deleteComponent(componentId) {
+    this.componentMap.delete(componentId);
   }
 }
 
@@ -1322,10 +1450,13 @@ class Layout {
     }
 
     this.highlighter = new _highlighter_highlighter__WEBPACK_IMPORTED_MODULE_2__["default"]();
+
+    this.mapComponents = this.layoutDefinition;
   }
 
   compute() {
     _utils_utils__WEBPACK_IMPORTED_MODULE_4__["Utils"].removeDiv(_constants_defaults__WEBPACK_IMPORTED_MODULE_1__["LAYOUT_NAME"]);
+    _utils_utils__WEBPACK_IMPORTED_MODULE_4__["Utils"].checkComponent(this.mapComponents, this.layoutDef);
     this.layoutDefinition = this.layoutDef.getSanitizedDefinition();
     this._layout = new layout_model__WEBPACK_IMPORTED_MODULE_0__["LayoutModel"]({
       width: this.width,
@@ -1335,6 +1466,7 @@ class Layout {
     this._layout.broadcast();
     this.con = new _controller_controller__WEBPACK_IMPORTED_MODULE_3__["Controller"](this.tree, this.skeletonType, this.renderAt);
     this.con.render();
+    // Utils.drawComponents(this.layoutDef)
   }
 
   highlight(nodeId, highlightText) {
@@ -1364,7 +1496,7 @@ class Layout {
 
   /**
    * function to update the node and rerender the layout.
-   * @param  {} config - node configuration to change.
+   * @param  {Object} config - node configuration to change.
    */
   updateNode(config) {
     this.tree.updateNode(config);
@@ -1374,14 +1506,163 @@ class Layout {
 
   /**
    * function to delete a node from the layout and rerender the layout
-   * @param  {} nodeId - node id to delete
+   * @param  {String} nodeId - node id to delete
    */
   deleteNode(nodeID) {
     _utils_utils__WEBPACK_IMPORTED_MODULE_4__["Utils"].removeDiv('fusionBoardLayout');
     this.tree.delete(nodeID);
+    this.exportLayoutDefinition(nodeID);
+    let component = this.nodeLayoutConfig;
+    component = JSON.parse(component);
+    console.log('component ID: ', component);
+    if (component.host === null) {
+      component.lanes.forEach(comp => {
+        if (comp.host === null) {
+          this.searchComponent(comp);
+        } else {
+          this.layoutDef.deleteComponent(comp.host);
+        }
+      });
+    } else {
+      this.layoutDef.deleteComponent(component.host);
+    }
+    this.nodeLayoutConfig = null;
+    // this.layoutDefinition = this.tree.model
+    this.layoutDefinition = this.layoutDef.rawConfig(this.tree.model);
+    this.compute();
+  }
+
+  // Recursive function to iterate dummy componrnt to delete them
+  searchComponent(component) {
+    component.lanes.forEach(comp => {
+      if (comp.host === null) {
+        this.searchComponent(comp);
+      } else {
+        this.layoutDef.deleteComponent(comp.host);
+      }
+    });
+  }
+
+  /**
+   * function to delete a node from the layout and rerender the layout
+   * @param  {Object} nodeId - node id to delete
+   * @param  {Object} nodeArray - Node Array to be Added
+   */
+  addNode(nodeId, nodeArray) {
+    _utils_utils__WEBPACK_IMPORTED_MODULE_4__["Utils"].removeDiv('fusionBoardLayout');
+    // Utils.checkComponent(nodeArray, this.layoutDef)
+    this.mapComponents = nodeArray;
+    this.tree.addNode(nodeId, nodeArray);
     this.layoutDefinition = this.tree.model;
     this.compute();
   }
+
+  /**
+   * function to add the layout definition of the tree.
+   * @param  {String} nodeID - node Id of the selected node.
+   */
+  exportLayoutDefinition(nodeID) {
+    this.nodeLayoutConfig = null;
+    if (this.tree._id === nodeID) {
+      let treeModel = JSON.parse(JSON.stringify(this.tree.model));
+      // let treeModel = Utils.deepCopyObject(this.tree.model)
+      this.nodeLayoutConfig = JSON.stringify(this.layoutDef.rawConfig(treeModel));
+    } else {
+      this.tree.children.forEach(node => {
+        if (node._id === nodeID) {
+          let treeModel = JSON.parse(JSON.stringify(node.model));
+          // let treeModel = Utils.deepCopyObject(node.model)
+          this.nodeLayoutConfig = JSON.stringify(this.layoutDef.rawConfig(treeModel));
+        } else {
+          this.searchNode(node, nodeID);
+        }
+      });
+    }
+    return this.nodeLayoutConfig;
+  }
+
+  // Recursive function to search a node to export Layout Definition.
+  searchNode(node, nodeID) {
+    node.children.forEach(node1 => {
+      if (node1._id === nodeID) {
+        let treeModel = JSON.parse(JSON.stringify(node1.model));
+        // let treeModel = Utils.deepCopyObject(node1.model)
+        this.nodeLayoutConfig = JSON.stringify(this.layoutDef.rawConfig(treeModel));
+      } else {
+        this.searchNode(node1, nodeID);
+      }
+    });
+  }
+
+  /**
+   * function to get the node info.
+   * @param  {String} nodeID - node ID.
+   */
+  getNode(nodeID) {
+    let nodeInfo = this.tree.getNode(nodeID);
+    return nodeInfo;
+  }
+
+  /**
+   * Function to add placeHolder to the layout
+   */
+  // addPlaceHolder () {
+  //   if (this.tree.children.length === 0 && this.tree.model.host !== null) {
+  //     if (document.getElementById(`placeholder${this.tree._id}`) !== null) { document.getElementById(`placeholder${this.tree._id}`).remove() }
+  //     let dummyElem = this.tree.model.host
+  //     let doc = document.getElementById(this.tree._id)
+  //     let div = document.createElement('div')
+  //     div.setAttribute('id', `placeholder${this.tree._id}`)
+  //     let width = dummyElem.newDimensions.width
+  //     let height = dummyElem.newDimensions.height
+  //     div.style.backgroundImage = "url('http://www.pixedelic.com/themes/geode/demo/wp-content/uploads/sites/4/2014/04/placeholder.png')"
+  //     div.style.width = `${width}px`
+  //     div.style.height = `${height}px`
+  //     div.style.backgroundSize = `${width}px ${height}px`
+  //     doc.appendChild(div)
+  //   } else {
+  //     this.tree.children.forEach((node) => {
+  //       if (node.children.length === 0 && node.model.host !== null) {
+  //         if (document.getElementById(`placeholder${node._id}`) !== null) { document.getElementById(`placeholder${node._id}`).remove() }
+  //         let dummyElem = node.model.host
+  //         let doc = document.getElementById(node._id)
+  //         let div = document.createElement('div')
+  //         div.setAttribute('id', `placeholder${node._id}`)
+  //         let width = dummyElem.newDimensions.width
+  //         let height = dummyElem.newDimensions.height
+  //         div.style.backgroundImage = "url('http://www.pixedelic.com/themes/geode/demo/wp-content/uploads/sites/4/2014/04/placeholder.png')"
+  //         div.style.width = `${width}px`
+  //         div.style.height = `${height}px`
+  //         div.style.backgroundSize = `${width}px ${height}px`
+  //         doc.appendChild(div)
+  //       } else {
+  //         this.searchPlaceholderNode(node)
+  //       }
+  //     })
+  //   }
+  // }
+
+  // // Recursive function to search a node to add placeholder
+  // searchPlaceholderNode (node) {
+  //   node.children.forEach((node1) => {
+  //     if (node1.children.length === 0 && node1.model.host !== null) {
+  //       if (document.getElementById(`placeholder${node1._id}`) !== null) { document.getElementById(`placeholder${node1._id}`).remove() }
+  //       let dummyElem = node1.model.host
+  //       let doc = document.getElementById(node1._id)
+  //       let div = document.createElement('div')
+  //       div.setAttribute('id', `placeholder${node1._id}`)
+  //       let width = dummyElem.newDimensions.width
+  //       let height = dummyElem.newDimensions.height
+  //       div.style.backgroundImage = "url('http://www.pixedelic.com/themes/geode/demo/wp-content/uploads/sites/4/2014/04/placeholder.png')"
+  //       div.style.width = `${width}px`
+  //       div.style.height = `${height}px`
+  //       div.style.backgroundSize = `${width}px ${height}px`
+  //       doc.appendChild(div)
+  //     } else {
+  //       this.searchPlaceholderNode(node1)
+  //     }
+  //   })
+  // }
 }
 
 /* harmony default export */ __webpack_exports__["default"] = (Layout);
@@ -1454,7 +1735,7 @@ class HTMLRenderer extends _renderer__WEBPACK_IMPORTED_MODULE_2__["Renderer"] {
     div.style.top = node.top + 'px';
     div.style.height = node.height + 'px';
     div.style.width = node.width + 'px';
-    // div.style.border = '1px dotted red'
+    div.style.border = '1px solid #747474';
     // Utils.hoverHandler(div)
     div.id = node._id;
     return div;
@@ -1509,6 +1790,65 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _constants_defaults__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../constants/defaults */ "./constants/defaults.js");
 /* eslint no-undef: "off" */
 
+
+class PlaceholderComponent {
+  constructor(seed, dimensions) {
+    this.seed = seed;
+    this.dimensions = dimensions;
+    this.position = null;
+    this.renderAt = null;
+    this.type = 'placeholder';
+  }
+
+  getLogicalSpace() {
+    return {
+      width: this.dimensions.width - 2 * this.seed,
+      height: this.dimensions.height - 2 * this.seed
+    };
+  }
+
+  setSpatialConfig(conf) {
+    this.position = {
+      top: conf.y,
+      left: conf.x
+    };
+    this.newDimensions = {
+      width: conf.width,
+      height: conf.height
+    };
+    this.renderAt = conf.renderAt;
+  }
+
+  /* istanbul ignore next */
+
+  draw() {
+    // if (document.getElementById(`placeholder${this.renderAt}`) !== null) { document.getElementById(`placeholder${this.renderAt}`).remove() }
+    // if (document.getElementById(`component${this.renderAt}`) !== null) { document.getElementById(`component${this.renderAt}`).remove() }
+    // let doc = document.getElementById(this.renderAt)
+    // let div = document.createElement('div')
+    // let width = Math.max(this.dimensions.width, this.newDimensions.width)
+    // let height = Math.max(this.dimensions.height, this.newDimensions.height)
+    // div.setAttribute('id', `component${this.renderAt}`)
+    // div.style.backgroundColor = '#fab1a0' // getColor();
+    // div.style.width = `${width - (this.seed * 2)}px`
+    // div.style.height = `${height - (this.seed * 2)}px`
+    // doc.appendChild(div)
+
+    if (document.getElementById(`placeholder${this.renderAt}`) !== null) {
+      document.getElementById(`placeholder${this.renderAt}`).remove();
+    }
+    let doc = document.getElementById(this.renderAt);
+    let div = document.createElement('div');
+    div.setAttribute('id', `placeholder${this.renderAt}`);
+    let width = this.newDimensions.width;
+    let height = this.newDimensions.height;
+    div.style.backgroundImage = "url('http://www.pixedelic.com/themes/geode/demo/wp-content/uploads/sites/4/2014/04/placeholder.png')";
+    div.style.width = `${width}px`;
+    div.style.height = `${height}px`;
+    div.style.backgroundSize = `${width}px ${height}px`;
+    doc.appendChild(div);
+  }
+}
 
 class Utils {
   static onHover(event) {
@@ -1566,6 +1906,7 @@ class Utils {
       return coordinate.parent == null;
     })[0];
   }
+
   /**
    * static method to remove the div
    * @param  {} divId - div ID to be removed.
@@ -1573,6 +1914,107 @@ class Utils {
   static removeDiv(divId) {
     if (document.getElementById(divId) !== null) {
       document.getElementById(divId).remove();
+    }
+  }
+
+  /**
+   * static method to check if dummy component present or not.
+   * @param  {} NodeArray - NodeArray to add new Lanes.
+   */
+  static checkComponent(nodeComponents, layoutDef) {
+    let compMap = layoutDef.getComponentMap();
+    let compKeys = compMap.keys();
+    if (nodeComponents.constructor === Array) {
+      nodeComponents.forEach(element => {
+        let flag = true;
+        while (flag) {
+          let key = compKeys.next().value;
+          if (key === element.host) {
+            flag = false;
+          }
+          if (key === undefined) {
+            flag = false;
+            const dummyComponent = new PlaceholderComponent(10, {
+              width: _constants_defaults__WEBPACK_IMPORTED_MODULE_0__["DEFAULT_WIDTH"] / 2,
+              height: _constants_defaults__WEBPACK_IMPORTED_MODULE_0__["DEFAULT_HEIGHT"] / 2
+            });
+            layoutDef.addComponent(element.host, dummyComponent);
+          }
+        }
+      });
+    } else {
+      if (nodeComponents.host === null) {
+        nodeComponents.lanes.forEach(tempNode => {
+          if (tempNode.host === null) {
+            Utils.SearchNode(tempNode.lanes, layoutDef);
+          }
+        });
+      }
+    }
+  }
+
+  // Recursive function to search a node for adding a new Node
+  static SearchNode(nodeComp, layoutDef) {
+    nodeComp.forEach(tempNode => {
+      if (tempNode.host === null) {
+        Utils.SearchNode(tempNode.lanes);
+      } else {
+        const dummyComponent = new PlaceholderComponent(10, {
+          width: _constants_defaults__WEBPACK_IMPORTED_MODULE_0__["DEFAULT_WIDTH"] / 2,
+          height: _constants_defaults__WEBPACK_IMPORTED_MODULE_0__["DEFAULT_HEIGHT"] / 2
+        });
+        layoutDef.addComponent(tempNode.host, dummyComponent);
+      }
+    });
+  }
+
+  /**
+   * static method to deep copy objects
+   * @param  {} param - object to be deeply copied
+   */
+  static deepCopyObject(param) {
+    let copiedObj, i;
+    if (typeof param !== 'object') {
+      return param;
+    }
+    if (!param) {
+      return param;
+    }
+    // copying the array inside an object
+    if (Object.prototype.toString.apply(param) === '[object Array]') {
+      copiedObj = [];
+      for (i = 0; i < param.length; i += 1) {
+        copiedObj[i] = Utils.deepCopyObject(param[i]);
+      }
+      return copiedObj;
+    }
+    copiedObj = {};
+    // rest all kind of keys
+    for (i in param) {
+      if (param.hasOwnProperty(i)) {
+        copiedObj[i] = Utils.deepCopyObject(param[i]);
+      }
+    }
+    return copiedObj;
+  }
+
+  /**
+   * static method to place the placeholders.
+   * @param  {} layoutDef - Layout definitions
+   */
+  static drawComponents(layoutDef) {
+    let compMap = layoutDef.getComponentMap();
+    let compKeys = compMap.keys();
+    let compVal = compMap.values();
+    let flag = true;
+    while (flag) {
+      let val = compVal.next().value;
+      let key = compKeys.next().value;
+      if (key !== undefined) {
+        val.draw();
+      } else {
+        flag = false;
+      }
     }
   }
 }
