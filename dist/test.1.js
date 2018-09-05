@@ -8,23 +8,23 @@ const height = 600
 const skeletonType = 'html'
 
 const component1 = new DummyComponent(10, {
-  width: width / 2,
-  height: width / 2
+  width: 150,
+  height: 150
 })
 
 const component2 = new DummyComponent(10, {
-  width: width / 2,
-  height: width / 2
+  width: 150,
+  height: 150
 })
 
 const component3 = new DummyComponent(10, {
-  width: width / 2,
-  height: width / 2
+  width: 150,
+  height: 150
 })
 
 const component4 = new DummyComponent(10, {
-  width: width / 2,
-  height: width / 2
+  width: 150,
+  height: 150
 })
 
 const layoutDefinition = {
@@ -55,7 +55,7 @@ const layoutDefinition = {
   {
     host: null,
     cut: 'h',
-    ratioWeight: 1,
+    ratioWeight: 2,
     lanes: [
       {
         host: 'component3',
@@ -94,8 +94,8 @@ fancyGridLayout.addMultipleComponent([
 
 fancyGridLayout.compute()
 
-// draw all components
-component1.draw()
-component2.draw()
-component3.draw()
-component4.draw()
+// // draw all components
+// component1.draw()
+// component2.draw()
+// component3.draw()
+// component4.draw()

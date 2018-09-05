@@ -81,817 +81,6 @@ return /******/ (function(modules) { // webpackBootstrap
 /************************************************************************/
 /******/ ({
 
-/***/ "../../layout-model/dist/layout.js":
-/*!*******************************!*\
-  !*** ..-model/dist/layout.js ***!
-  \*******************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-/* WEBPACK VAR INJECTION */(function(module) {var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
-
-(function webpackUniversalModuleDefinition(root, factory) {
-    if (( false ? undefined : _typeof(exports)) === 'object' && ( false ? undefined : _typeof(module)) === 'object') module.exports = factory();else if (true) !(__WEBPACK_AMD_DEFINE_ARRAY__ = [], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
-				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
-				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
-				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));else {}
-})(this, function () {
-    return (/******/function (modules) {
-            // webpackBootstrap
-            /******/ // The module cache
-            /******/var installedModules = {};
-            /******/
-            /******/ // The require function
-            /******/function __webpack_require__(moduleId) {
-                /******/
-                /******/ // Check if module is in cache
-                /******/if (installedModules[moduleId])
-                    /******/return installedModules[moduleId].exports;
-                /******/
-                /******/ // Create a new module (and put it into the cache)
-                /******/var module = installedModules[moduleId] = {
-                    /******/i: moduleId,
-                    /******/l: false,
-                    /******/exports: {}
-                    /******/ };
-                /******/
-                /******/ // Execute the module function
-                /******/modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
-                /******/
-                /******/ // Flag the module as loaded
-                /******/module.l = true;
-                /******/
-                /******/ // Return the exports of the module
-                /******/return module.exports;
-                /******/
-            }
-            /******/
-            /******/
-            /******/ // expose the modules object (__webpack_modules__)
-            /******/__webpack_require__.m = modules;
-            /******/
-            /******/ // expose the module cache
-            /******/__webpack_require__.c = installedModules;
-            /******/
-            /******/ // identity function for calling harmony imports with the correct context
-            /******/__webpack_require__.i = function (value) {
-                return value;
-            };
-            /******/
-            /******/ // define getter function for harmony exports
-            /******/__webpack_require__.d = function (exports, name, getter) {
-                /******/if (!__webpack_require__.o(exports, name)) {
-                    /******/Object.defineProperty(exports, name, {
-                        /******/configurable: false,
-                        /******/enumerable: true,
-                        /******/get: getter
-                        /******/ });
-                    /******/
-                }
-                /******/
-            };
-            /******/
-            /******/ // getDefaultExport function for compatibility with non-harmony modules
-            /******/__webpack_require__.n = function (module) {
-                /******/var getter = module && module.__esModule ?
-                /******/function getDefault() {
-                    return module['default'];
-                } :
-                /******/function getModuleExports() {
-                    return module;
-                };
-                /******/__webpack_require__.d(getter, 'a', getter);
-                /******/return getter;
-                /******/
-            };
-            /******/
-            /******/ // Object.prototype.hasOwnProperty.call
-            /******/__webpack_require__.o = function (object, property) {
-                return Object.prototype.hasOwnProperty.call(object, property);
-            };
-            /******/
-            /******/ // __webpack_public_path__
-            /******/__webpack_require__.p = "";
-            /******/
-            /******/ // Load entry module and return exports
-            /******/return __webpack_require__(__webpack_require__.s = 2);
-            /******/
-        }(
-        /************************************************************************/
-        /******/[
-        /* 0 */
-        /***/function (module, exports, __webpack_require__) {
-
-            "use strict";
-
-            Object.defineProperty(exports, "__esModule", {
-                value: true
-            });
-            exports.getColor = exports.determineBoundBox = exports.xExtraSpace = exports.yExtraSpace = exports.getNodeId = exports.isEqual = exports.DummyComponent = undefined;
-
-            var _dummyComponent = __webpack_require__(7);
-
-            var _dummyComponent2 = _interopRequireDefault(_dummyComponent);
-
-            var _utils = __webpack_require__(8);
-
-            function _interopRequireDefault(obj) {
-                return obj && obj.__esModule ? obj : { default: obj };
-            }
-
-            exports.DummyComponent = _dummyComponent2.default;
-            exports.isEqual = _utils.isEqual;
-            exports.getNodeId = _utils.getNodeId;
-            exports.yExtraSpace = _utils.yExtraSpace;
-            exports.xExtraSpace = _utils.xExtraSpace;
-            exports.determineBoundBox = _utils.determineBoundBox;
-            exports.getColor = _utils.getColor;
-
-            /***/
-        },
-        /* 1 */
-        /***/function (module, exports, __webpack_require__) {
-
-            "use strict";
-
-            Object.defineProperty(exports, "__esModule", {
-                value: true
-            });
-
-            var _layoutModel = __webpack_require__(3);
-
-            var _layoutModel2 = _interopRequireDefault(_layoutModel);
-
-            function _interopRequireDefault(obj) {
-                return obj && obj.__esModule ? obj : { default: obj };
-            }
-
-            exports.default = _layoutModel2.default;
-
-            /***/
-        },
-        /* 2 */
-        /***/function (module, exports, __webpack_require__) {
-
-            "use strict";
-
-            Object.defineProperty(exports, "__esModule", {
-                value: true
-            });
-            exports.DummyComponent = exports.LayoutModel = undefined;
-
-            var _layoutModel = __webpack_require__(1);
-
-            var _layoutModel2 = _interopRequireDefault(_layoutModel);
-
-            var _utils = __webpack_require__(0);
-
-            function _interopRequireDefault(obj) {
-                return obj && obj.__esModule ? obj : { default: obj };
-            }
-
-            exports.LayoutModel = _layoutModel2.default;
-            exports.DummyComponent = _utils.DummyComponent;
-
-            /***/
-        },
-        /* 3 */
-        /***/function (module, exports, __webpack_require__) {
-
-            "use strict";
-
-            Object.defineProperty(exports, "__esModule", {
-                value: true
-            });
-
-            var _createClass = function () {
-                function defineProperties(target, props) {
-                    for (var i = 0; i < props.length; i++) {
-                        var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ("value" in descriptor) descriptor.writable = true;Object.defineProperty(target, descriptor.key, descriptor);
-                    }
-                }return function (Constructor, protoProps, staticProps) {
-                    if (protoProps) defineProperties(Constructor.prototype, protoProps);if (staticProps) defineProperties(Constructor, staticProps);return Constructor;
-                };
-            }();
-
-            var _tree = __webpack_require__(4);
-
-            var _tree2 = _interopRequireDefault(_tree);
-
-            var _utils = __webpack_require__(0);
-
-            function _interopRequireDefault(obj) {
-                return obj && obj.__esModule ? obj : { default: obj };
-            }
-
-            function _classCallCheck(instance, Constructor) {
-                if (!(instance instanceof Constructor)) {
-                    throw new TypeError("Cannot call a class as a function");
-                }
-            }
-
-            var LayoutModel = function () {
-                function LayoutModel(measurements, config) {
-                    _classCallCheck(this, LayoutModel);
-
-                    this.measurements = measurements;
-                    this.config = config;
-                    this.root = this.createTree(this.config, null);
-                    this.setBoundBox();
-                }
-
-                _createClass(LayoutModel, [{
-                    key: 'createTree',
-                    value: function createTree(config, parent) {
-                        var node = new _tree2.default(config);
-                        if (parent) {
-                            node._parentCut = parent.getCutType();
-                            parent.addChildren([node]);
-                        } else {
-                            this.root = node;
-                        }
-                        var _iteratorNormalCompletion = true;
-                        var _didIteratorError = false;
-                        var _iteratorError = undefined;
-
-                        try {
-                            for (var _iterator = config.lanes[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-                                var lane = _step.value;
-
-                                this.createTree(lane, node);
-                            }
-                        } catch (err) {
-                            _didIteratorError = true;
-                            _iteratorError = err;
-                        } finally {
-                            try {
-                                if (!_iteratorNormalCompletion && _iterator.return) {
-                                    _iterator.return();
-                                }
-                            } finally {
-                                if (_didIteratorError) {
-                                    throw _iteratorError;
-                                }
-                            }
-                        }
-
-                        return this.root;
-                    }
-                }, {
-                    key: 'allocateBoundingBox',
-                    value: function allocateBoundingBox(node) {
-                        var _this = this;
-
-                        var totalWeight = node.children.map(function (child) {
-                            return child.model.ratioWeight;
-                        }).reduce(function (carry, val) {
-                            return carry + val;
-                        }, 0);
-
-                        node.children.forEach(function (child, i, children) {
-                            var lastSibling = children[i - 1],
-                                ratio = child.model.ratioWeight / totalWeight;
-
-                            if (child._parentCut === 'h') {
-                                child.boundBox.width = child.parent.boundBox.width;
-                                child.boundBox.height = child.parent.boundBox.height * ratio;
-                                child.boundBox.left = child.parent.boundBox.left;
-                                child.boundBox.top = i ? lastSibling.boundBox.top + lastSibling.boundBox.height : 0;
-                            } else {
-                                child.boundBox.width = child.parent.boundBox.width * ratio;
-                                child.boundBox.height = child.parent.boundBox.height;
-                                child.boundBox.top = child.parent.boundBox.top;
-                                child.boundBox.left = i ? lastSibling.boundBox.left + lastSibling.boundBox.width : 0;
-                            }
-                            _this.allocateBoundingBox(child);
-                        });
-                    }
-                }, {
-                    key: 'setBoundBox',
-                    value: function setBoundBox() {
-                        this.root.boundBox = {
-                            top: 0,
-                            left: 0,
-                            width: this.measurements.width,
-                            height: this.measurements.height
-                        };
-                        this.allocateBoundingBox(this.root);
-                    }
-                }, {
-                    key: 'negotiateDimension',
-                    value: function negotiateDimension(node) {
-                        var preferred = void 0,
-                            cumultiveExtraSpaceAmt = 0,
-                            alteredDim = void 0,
-                            nonAlteredDim = void 0,
-                            childrenLength = node.children.length;
-
-                        for (var index = 0; index < childrenLength; index++) {
-                            var fn = void 0,
-                                extraSpaceAmt = void 0,
-                                child = node.children[index];
-
-                            if (child._parentCut === 'h') {
-                                fn = _utils.yExtraSpace;
-                                alteredDim = 'height';
-                                nonAlteredDim = 'width';
-                            } else {
-                                fn = _utils.xExtraSpace;
-                                alteredDim = 'width';
-                                nonAlteredDim = 'height';
-                            }
-                            // if vertical then get extra height from other node and push it to the preferred node.
-                            // for horizontal cut the same thing is to be done with width
-                            if (child.isPreferred()) {
-                                // push extra space in sink. Execute it when all non preferred space are computed.
-                                preferred = child;
-
-                                continue;
-                            }
-                            // reduce own height and save it in a var
-                            cumultiveExtraSpaceAmt += extraSpaceAmt = fn(child);
-                            child.boundBox[alteredDim] -= extraSpaceAmt;
-                            // update nonaltered dim from parent for any change which happened during negotiation
-                            child.boundBox[nonAlteredDim] = child.parent.boundBox[nonAlteredDim];
-
-                            this.negotiateDimension(child);
-                        }
-
-                        if (preferred) {
-                            preferred.boundBox[alteredDim] += cumultiveExtraSpaceAmt;
-                            preferred.boundBox[nonAlteredDim] = preferred.parent.boundBox[nonAlteredDim];
-                            this.negotiateDimension(preferred);
-                        }
-                    }
-                }, {
-                    key: 'computePosition',
-                    value: function computePosition(node) {
-                        var _this2 = this;
-
-                        node.children.forEach(function (child, i, children) {
-                            var boundBox = (0, _utils.determineBoundBox)(child.boundBox, i, children, child);
-                            child.boundBox = boundBox;
-                            _this2.computePosition(child);
-                        });
-                    }
-                }, {
-                    key: 'setHostPosition',
-                    value: function setHostPosition(node) {
-                        var _this3 = this;
-
-                        node.children.forEach(function (child) {
-                            LayoutModel.setHostSpatialConfig(child);
-                            _this3.setHostPosition(child);
-                        });
-                    }
-                }, {
-                    key: 'negotiate',
-                    value: function negotiate() {
-                        this.negotiateDimension(this.root);
-                        this.computePosition(this.root);
-                        return this;
-                    }
-                }, {
-                    key: 'broadcast',
-                    value: function broadcast() {
-                        this.setHostPosition(this.root);
-                        return this;
-                    }
-                }, {
-                    key: 'tree',
-                    value: function tree() {
-                        return this.root;
-                    }
-                }], [{
-                    key: 'setHostSpatialConfig',
-                    value: function setHostSpatialConfig(node) {
-                        var bb = node.boundBox;
-                        if (node.model.host && node.model.host.setSpatialConfig) {
-                            var conf = {
-                                x: bb.left,
-                                y: bb.top,
-                                width: bb.width,
-                                height: bb.height,
-                                renderAt: node._id
-                            };
-
-                            node.model.host.setSpatialConfig(conf);
-                        }
-                    }
-                }]);
-
-                return LayoutModel;
-            }();
-
-            exports.default = LayoutModel;
-
-            /***/
-        },
-        /* 4 */
-        /***/function (module, exports, __webpack_require__) {
-
-            "use strict";
-
-            Object.defineProperty(exports, "__esModule", {
-                value: true
-            });
-
-            var _node = __webpack_require__(5);
-
-            var _node2 = _interopRequireDefault(_node);
-
-            function _interopRequireDefault(obj) {
-                return obj && obj.__esModule ? obj : { default: obj };
-            }
-
-            exports.default = _node2.default;
-
-            /***/
-        },
-        /* 5 */
-        /***/function (module, exports, __webpack_require__) {
-
-            "use strict";
-
-            Object.defineProperty(exports, "__esModule", {
-                value: true
-            });
-
-            var _createClass = function () {
-                function defineProperties(target, props) {
-                    for (var i = 0; i < props.length; i++) {
-                        var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ("value" in descriptor) descriptor.writable = true;Object.defineProperty(target, descriptor.key, descriptor);
-                    }
-                }return function (Constructor, protoProps, staticProps) {
-                    if (protoProps) defineProperties(Constructor.prototype, protoProps);if (staticProps) defineProperties(Constructor, staticProps);return Constructor;
-                };
-            }();
-
-            var _utils = __webpack_require__(0);
-
-            function _toConsumableArray(arr) {
-                if (Array.isArray(arr)) {
-                    for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) {
-                        arr2[i] = arr[i];
-                    }return arr2;
-                } else {
-                    return Array.from(arr);
-                }
-            }
-
-            function _classCallCheck(instance, Constructor) {
-                if (!(instance instanceof Constructor)) {
-                    throw new TypeError("Cannot call a class as a function");
-                }
-            }
-
-            var Node = function () {
-                function Node(data) {
-                    _classCallCheck(this, Node);
-
-                    this.model = data;
-                    this.parent = null;
-                    this.children = [];
-
-                    this.boundBox = {
-                        top: null,
-                        left: null,
-                        height: null,
-                        width: null
-                    };
-
-                    this._id = (0, _utils.getNodeId)();
-                }
-
-                _createClass(Node, [{
-                    key: 'addChildren',
-                    value: function addChildren(entries) {
-                        var _children,
-                            _this = this;
-
-                        (_children = this.children).push.apply(_children, _toConsumableArray(entries));
-                        entries.forEach(function (e) {
-                            e.parent = _this;
-                        });
-                    }
-                }, {
-                    key: 'isRoot',
-                    value: function isRoot() {
-                        return this.parent === null;
-                    }
-                }, {
-                    key: 'isLeaf',
-                    value: function isLeaf() {
-                        return !this.children.length;
-                    }
-                }, {
-                    key: 'getCutType',
-                    value: function getCutType() {
-                        return this.model.cut;
-                    }
-                }, {
-                    key: 'isPreferred',
-                    value: function isPreferred() {
-                        return !!this.model.preferred;
-                    }
-
-                    // method to update the Node Information
-
-                }, {
-                    key: 'updateNode',
-                    value: function updateNode(nodeconfig) {
-                        var _this2 = this;
-
-                        if (this._id === nodeconfig._id) {
-                            this.model.cut = nodeconfig.cut;
-                            this.model.ratioWeight = nodeconfig.ratioWeight;
-                        } else {
-                            this.children.forEach(function (node) {
-                                if (node._id === nodeconfig._id) {
-                                    node.model.cut = nodeconfig.cut;
-                                    node.model.ratioWeight = nodeconfig.ratioWeight;
-                                    return;
-                                }
-                                _this2.searchNode(node, nodeconfig);
-                            });
-                        }
-                    }
-
-                    // function to search a node
-
-                }, {
-                    key: 'searchNode',
-                    value: function searchNode(node, nodeconfig) {
-                        var _this3 = this;
-
-                        node.children.forEach(function (node1) {
-                            if (node1._id === nodeconfig._id) {
-                                node1.model.cut = nodeconfig.cut;
-                                node1.model.ratioWeight = nodeconfig.ratioWeight;
-                            } else {
-                                _this3.searchNode(node1, nodeconfig);
-                            }
-                        });
-                    }
-                }]);
-
-                return Node;
-            }();
-
-            exports.default = Node;
-
-            /***/
-        },
-        /* 6 */
-        /***/function (module, exports, __webpack_require__) {
-
-            "use strict";
-
-            Object.defineProperty(exports, "__esModule", {
-                value: true
-            });
-
-            var _createClass = function () {
-                function defineProperties(target, props) {
-                    for (var i = 0; i < props.length; i++) {
-                        var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ("value" in descriptor) descriptor.writable = true;Object.defineProperty(target, descriptor.key, descriptor);
-                    }
-                }return function (Constructor, protoProps, staticProps) {
-                    if (protoProps) defineProperties(Constructor.prototype, protoProps);if (staticProps) defineProperties(Constructor, staticProps);return Constructor;
-                };
-            }();
-
-            function _classCallCheck(instance, Constructor) {
-                if (!(instance instanceof Constructor)) {
-                    throw new TypeError("Cannot call a class as a function");
-                }
-            }
-
-            /* eslint-disable require-jsdoc */
-
-            /* eslint no-undef: "off" */
-
-            var DummyComponent = function () {
-                function DummyComponent(seed, dimensions) {
-                    _classCallCheck(this, DummyComponent);
-
-                    this.seed = seed;
-                    this.dimensions = dimensions;
-                    this.position = null;
-                    this.renderAt = null;
-                }
-
-                _createClass(DummyComponent, [{
-                    key: 'getLogicalSpace',
-                    value: function getLogicalSpace() {
-                        return {
-                            width: this.dimensions.width - 2 * this.seed,
-                            height: this.dimensions.height - 2 * this.seed
-                        };
-                    }
-                }, {
-                    key: 'setSpatialConfig',
-                    value: function setSpatialConfig(conf) {
-                        this.position = {
-                            top: conf.y,
-                            left: conf.x
-                        };
-                        this.newDimensions = {
-                            width: conf.width,
-                            height: conf.height
-                        };
-                        this.renderAt = conf.renderAt;
-                    }
-
-                    /* istanbul ignore next */
-
-                }, {
-                    key: 'draw',
-                    value: function draw() {
-                        var doc = document.getElementById(this.renderAt),
-                            div = document.createElement('div'),
-                            width = Math.max(this.dimensions.width, this.newDimensions.width),
-                            height = Math.max(this.dimensions.height, this.newDimensions.height);
-
-                        div.style.backgroundColor = '#fab1a0'; // getColor();
-
-                        div.style.width = width - this.seed * 2 + 'px';
-                        div.style.height = height - this.seed * 2 + 'px';
-
-                        doc.appendChild(div);
-                    }
-                }]);
-
-                return DummyComponent;
-            }();
-
-            exports.default = DummyComponent;
-
-            /***/
-        },
-        /* 7 */
-        /***/function (module, exports, __webpack_require__) {
-
-            "use strict";
-
-            Object.defineProperty(exports, "__esModule", {
-                value: true
-            });
-
-            var _dummyComponent = __webpack_require__(6);
-
-            var _dummyComponent2 = _interopRequireDefault(_dummyComponent);
-
-            function _interopRequireDefault(obj) {
-                return obj && obj.__esModule ? obj : { default: obj };
-            }
-
-            exports.default = _dummyComponent2.default;
-
-            /***/
-        },
-        /* 8 */
-        /***/function (module, exports, __webpack_require__) {
-
-            "use strict";
-
-            Object.defineProperty(exports, "__esModule", {
-                value: true
-            });
-            /**
-             * Compares two strings in lowercase
-             *
-             * @export
-             * @param {string} value the value to be compared
-             * @param {string} compareTo whom the value would be compared
-             * @return {boolean} true if values are equal
-             */
-            function isEqual(value, compareTo) {
-                if (typeof value !== 'string' || typeof compareTo !== 'string') {
-                    throw new TypeError('value and compareTo must be string');
-                }
-                return value.toLowerCase() === compareTo.toLowerCase();
-            }
-
-            var getNodeId = function () {
-                var _uid = 0;
-                return function () {
-                    return 'node-' + ++_uid;
-                };
-            }();
-
-            function yExtraSpace(node) {
-                var smallestHeight = 0;
-                if (node.getCutType() === 'v') {
-                    smallestHeight = smallestExtraHeightHorizontally(node);
-                } else if (node.getCutType() === 'h') {
-                    node.children.forEach(function (child) {
-                        smallestHeight += yExtraSpace(child);
-                    });
-                } else if (node.model.host && node.model.host.getLogicalSpace) {
-                    var containerHeight = node.boundBox.height,
-                        hostHeight = node.model.host.getLogicalSpace().height;
-
-                    smallestHeight = containerHeight - hostHeight;
-                    if (smallestHeight < 0) {
-                        smallestHeight = 0;
-                    }
-                } else {
-                    smallestHeight = 0;
-                }
-                return smallestHeight;
-            }
-
-            function smallestExtraHeightHorizontally(node) {
-                var smallestHeight = Number.MAX_SAFE_INTEGER;
-                node.children.forEach(function (child) {
-                    var h = yExtraSpace(child);
-                    if (h < smallestHeight) {
-                        smallestHeight = h;
-                    }
-                });
-                return smallestHeight;
-            }
-
-            function xExtraSpace(node) {
-                var smallestWidth = 0;
-                if (node.getCutType() === 'h') {
-                    smallestWidth = smallestExtraWidthVertically(node);
-                } else if (node.getCutType() === 'v') {
-                    node.children.forEach(function (child) {
-                        smallestWidth += xExtraSpace(child);
-                    });
-                } else if (node.model.host && node.model.host.getLogicalSpace) {
-                    var containerWidth = node.boundBox.width,
-                        hostWidth = node.model.host.getLogicalSpace().width;
-                    smallestWidth = containerWidth - hostWidth;
-                    if (smallestWidth < 0) {
-                        smallestWidth = 0;
-                    }
-                } else {
-                    smallestWidth = 0;
-                }
-                return smallestWidth;
-            }
-
-            function smallestExtraWidthVertically(node) {
-                var smallestWidth = Number.MAX_SAFE_INTEGER;
-                node.children.forEach(function (child) {
-                    var w = xExtraSpace(child);
-                    if (w < smallestWidth) {
-                        smallestWidth = w;
-                    }
-                });
-                return smallestWidth;
-            }
-
-            function determineBoundBox(bb, i, arr, instance) {
-                if (i) {
-                    // if not first sibling, take boundbox from previous sibling
-                    var lastSibling = arr[i - 1];
-                    return {
-                        width: bb.width,
-                        height: bb.height,
-
-                        top: instance._parentCut === 'h' ? lastSibling.boundBox.top + lastSibling.boundBox.height : lastSibling.boundBox.top,
-
-                        left: instance._parentCut === 'h' ? lastSibling.boundBox.left : lastSibling.boundBox.left + lastSibling.boundBox.width
-                    };
-                }
-                // if first sibling, take boundbox from parent
-                return {
-                    width: bb.width,
-                    height: bb.height,
-                    top: instance.parent.boundBox.top,
-                    left: instance.parent.boundBox.left
-                };
-            }
-
-            function getColor() {
-                var colors = ['#b71540', '#0c2461', '#079992', '#e55039', '#1abc9c', '#2ecc71', '#3498db', '#9b59b6', '#34495e', '#16a085', '#27ae60', '#2980b9', '#8e44ad', '#2c3e50', '#f1c40f', '#e67e22', '#e74c3c', '#ecf0f1', '#95a5a6', '#f39c12', '#d35400', '#c0392b', '#bdc3c7', '#7f8c8d'];
-                var min = 0,
-                    max = colors.length - 1,
-                    index = Math.floor(min + Math.random() * (max + 1 - min));
-                return colors[index];
-            }
-
-            exports.getColor = getColor;
-            exports.isEqual = isEqual;
-            exports.getNodeId = getNodeId;
-            exports.yExtraSpace = yExtraSpace;
-            exports.xExtraSpace = xExtraSpace;
-            exports.determineBoundBox = determineBoundBox;
-
-            /***/
-        }]
-        /******/)
-    );
-});
-//# sourceMappingURL=layout.js.map
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./../../layout/node_modules/webpack/buildin/module.js */ "../node_modules/webpack/buildin/module.js")(module)))
-
-/***/ }),
-
 /***/ "../node_modules/webpack/buildin/global.js":
 /*!*************************************************!*\
   !*** ../node_modules/webpack/buildin/global.js ***!
@@ -923,39 +112,6 @@ module.exports = g;
 
 /***/ }),
 
-/***/ "../node_modules/webpack/buildin/module.js":
-/*!*************************************************!*\
-  !*** ../node_modules/webpack/buildin/module.js ***!
-  \*************************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-module.exports = function(module) {
-	if (!module.webpackPolyfill) {
-		module.deprecate = function() {};
-		module.paths = [];
-		// module.parent = undefined by default
-		if (!module.children) module.children = [];
-		Object.defineProperty(module, "loaded", {
-			enumerable: true,
-			get: function() {
-				return module.l;
-			}
-		});
-		Object.defineProperty(module, "id", {
-			enumerable: true,
-			get: function() {
-				return module.i;
-			}
-		});
-		module.webpackPolyfill = 1;
-	}
-	return module;
-};
-
-
-/***/ }),
-
 /***/ "./constants/defaults.js":
 /*!*******************************!*\
   !*** ./constants/defaults.js ***!
@@ -979,6 +135,10 @@ const LAYOUT_ID = 'd2ad88af-7050-4c1c-b407-42745cfe3bd7';
 const LAYOUT_NAME = 'fusionBoardLayout';
 
 
+
+/**
+ * Hello
+ */
 
 /***/ }),
 
@@ -1182,15 +342,581 @@ class Highligher {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var layout_model__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! layout-model */ "../../layout-model/dist/layout.js");
-/* harmony import */ var layout_model__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(layout_model__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "DummyComponent", function() { return layout_model__WEBPACK_IMPORTED_MODULE_0__["DummyComponent"]; });
+/* harmony import */ var _layout_definition__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./layout-definition */ "./layout-definition/index.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "DummyComponent", function() { return _layout_definition__WEBPACK_IMPORTED_MODULE_0__["DummyComponent"]; });
 
 /* harmony import */ var _layout_layout__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./layout/layout */ "./layout/layout.js");
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Layout", function() { return _layout_layout__WEBPACK_IMPORTED_MODULE_1__["default"]; });
 
 
 
+
+
+
+/***/ }),
+
+/***/ "./layout-definition/index.js":
+/*!************************************!*\
+  !*** ./layout-definition/index.js ***!
+  \************************************/
+/*! exports provided: LayoutModel, DummyComponent */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _layout_model__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./layout-model */ "./layout-definition/layout-model/index.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "LayoutModel", function() { return _layout_model__WEBPACK_IMPORTED_MODULE_0__["default"]; });
+
+/* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./utils */ "./layout-definition/utils/index.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "DummyComponent", function() { return _utils__WEBPACK_IMPORTED_MODULE_1__["DummyComponent"]; });
+
+
+
+
+
+
+/***/ }),
+
+/***/ "./layout-definition/layout-model/index.js":
+/*!*************************************************!*\
+  !*** ./layout-definition/layout-model/index.js ***!
+  \*************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _layout_model__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./layout-model */ "./layout-definition/layout-model/layout-model.js");
+
+
+/* harmony default export */ __webpack_exports__["default"] = (_layout_model__WEBPACK_IMPORTED_MODULE_0__["default"]);
+
+/***/ }),
+
+/***/ "./layout-definition/layout-model/layout-model.js":
+/*!********************************************************!*\
+  !*** ./layout-definition/layout-model/layout-model.js ***!
+  \********************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _tree__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../tree */ "./layout-definition/tree/index.js");
+/* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../utils */ "./layout-definition/utils/index.js");
+
+
+
+class LayoutModel {
+  constructor(measurements, config) {
+    this.measurements = measurements;
+    this.config = config;
+    this.root = this.createTree(this.config, null);
+    this.setBoundBox();
+  }
+
+  createTree(config, parent) {
+    const node = new _tree__WEBPACK_IMPORTED_MODULE_0__["default"](config);
+    if (parent) {
+      node._parentCut = parent.getCutType();
+      parent.addChildren([node]);
+    } else {
+      this.root = node;
+    }
+    for (let lane of config.lanes) {
+      this.createTree(lane, node);
+    }
+
+    return this.root;
+  }
+
+  allocateBoundingBox(node) {
+    const totalWeight = node.children.map(child => child.model.ratioWeight).reduce((carry, val) => carry + val, 0);
+
+    node.children.forEach((child, i, children) => {
+      let lastSibling = children[i - 1];
+      let ratio = child.model.ratioWeight / totalWeight;
+
+      if (child._parentCut === 'h') {
+        child.boundBox.width = child.parent.boundBox.width;
+        child.boundBox.height = child.parent.boundBox.height * ratio;
+        child.boundBox.left = child.parent.boundBox.left;
+        child.boundBox.top = i ? lastSibling.boundBox.top + lastSibling.boundBox.height : 0;
+      } else {
+        child.boundBox.width = child.parent.boundBox.width * ratio;
+        child.boundBox.height = child.parent.boundBox.height;
+        child.boundBox.top = child.parent.boundBox.top;
+        child.boundBox.left = i ? lastSibling.boundBox.left + lastSibling.boundBox.width : 0;
+      }
+      this.allocateBoundingBox(child);
+    });
+  }
+
+  setBoundBox() {
+    this.root.boundBox = {
+      top: 0,
+      left: 0,
+      width: this.measurements.width,
+      height: this.measurements.height
+    };
+    this.allocateBoundingBox(this.root);
+  }
+
+  negotiateDimension(node) {
+    let preferred;
+    let cumultiveExtraSpaceAmt = 0;
+    let alteredDim;
+    let nonAlteredDim;
+    let childrenLength = node.children.length;
+
+    for (let index = 0; index < childrenLength; index++) {
+      let fn;
+      let extraSpaceAmt;
+      let child = node.children[index];
+
+      if (child._parentCut === 'h') {
+        fn = _utils__WEBPACK_IMPORTED_MODULE_1__["yExtraSpace"];
+        alteredDim = 'height';
+        nonAlteredDim = 'width';
+      } else {
+        fn = _utils__WEBPACK_IMPORTED_MODULE_1__["xExtraSpace"];
+        alteredDim = 'width';
+        nonAlteredDim = 'height';
+      }
+      // if vertical then get extra height from other node and push it to the preferred node.
+      // for horizontal cut the same thing is to be done with width
+      if (child.isPreferred()) {
+        // push extra space in sink. Execute it when all non preferred space are computed.
+        preferred = child;
+
+        continue; // eslint-disable-line no-continue
+      }
+      // reduce own height and save it in a var
+      cumultiveExtraSpaceAmt += extraSpaceAmt = fn(child);
+      child.boundBox[alteredDim] -= extraSpaceAmt;
+      // update nonaltered dim from parent for any change which happened during negotiation
+      child.boundBox[nonAlteredDim] = child.parent.boundBox[nonAlteredDim];
+
+      this.negotiateDimension(child);
+    }
+
+    if (preferred) {
+      preferred.boundBox[alteredDim] += cumultiveExtraSpaceAmt;
+      preferred.boundBox[nonAlteredDim] = preferred.parent.boundBox[nonAlteredDim];
+      this.negotiateDimension(preferred);
+    }
+  }
+
+  computePosition(node) {
+    node.children.forEach((child, i, children) => {
+      let boundBox = Object(_utils__WEBPACK_IMPORTED_MODULE_1__["determineBoundBox"])(child.boundBox, i, children, child);
+      child.boundBox = boundBox;
+      this.computePosition(child);
+    });
+  }
+
+  setHostPosition(node) {
+    node.children.forEach(child => {
+      LayoutModel.setHostSpatialConfig(child);
+      this.setHostPosition(child);
+    });
+  }
+
+  static setHostSpatialConfig(node) {
+    let bb = node.boundBox;
+    if (node.model.host && node.model.host.setSpatialConfig) {
+      let conf = {
+        x: bb.left,
+        y: bb.top,
+        width: bb.width,
+        height: bb.height,
+        renderAt: node._id
+      };
+
+      node.model.host.setSpatialConfig(conf);
+    }
+  }
+
+  negotiate() {
+    this.negotiateDimension(this.root);
+    this.computePosition(this.root);
+    return this;
+  }
+
+  broadcast() {
+    this.setHostPosition(this.root);
+    return this;
+  }
+
+  tree() {
+    return this.root;
+  }
+}
+
+/* harmony default export */ __webpack_exports__["default"] = (LayoutModel);
+
+/***/ }),
+
+/***/ "./layout-definition/tree/Node.js":
+/*!****************************************!*\
+  !*** ./layout-definition/tree/Node.js ***!
+  \****************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../utils */ "./layout-definition/utils/index.js");
+
+
+class Node {
+  constructor(data) {
+    this.model = data;
+    this.parent = null;
+    this.children = [];
+
+    this.boundBox = {
+      top: null,
+      left: null,
+      height: null,
+      width: null
+    };
+
+    this._id = Object(_utils__WEBPACK_IMPORTED_MODULE_0__["getNodeId"])();
+  }
+
+  addChildren(entries) {
+    this.children.push(...entries);
+    entries.forEach(e => {
+      e.parent = this;
+    });
+  }
+
+  isRoot() {
+    return this.parent === null;
+  }
+
+  isLeaf() {
+    return !this.children.length;
+  }
+
+  getCutType() {
+    return this.model.cut;
+  }
+
+  isPreferred() {
+    return !!this.model.preferred;
+  }
+
+  /**
+     * function to search a node and update it with the config provided.
+     * @param  {Object} nodeconfig
+     */
+  updateNode(nodeconfig) {
+    if (this._id === nodeconfig._id) {
+      this.model.cut = nodeconfig.cut;
+      this.model.ratioWeight = nodeconfig.ratioWeight;
+    } else {
+      this.children.forEach(node => {
+        if (node._id === nodeconfig._id) {
+          node.model.cut = nodeconfig.cut;
+          node.model.ratioWeight = nodeconfig.ratioWeight;
+          return;
+        }
+        this.searchNode(node, nodeconfig);
+      });
+    }
+  }
+
+  // Recursive function to search a node
+  searchNode(node, nodeconfig) {
+    node.children.forEach(node1 => {
+      if (node1._id === nodeconfig._id) {
+        node1.model.cut = nodeconfig.cut;
+        node1.model.ratioWeight = nodeconfig.ratioWeight;
+      } else {
+        this.searchNode(node1, nodeconfig);
+      }
+    });
+  }
+
+  /**
+     * function to delete a node from tree Structure.
+     * @param  {String} nodeId - node Id of the Node
+     */
+  delete(nodeId) {
+    this.children.forEach(node => {
+      if (node._id === nodeId) {
+        let index = this.children.indexOf(node);
+        this.model.lanes.splice(index, 1);
+      }
+      this.deleteSearchNode(node, nodeId);
+    });
+  }
+
+  // Recursive function to search a node
+  deleteSearchNode(node, nodeId) {
+    node.children.forEach(node1 => {
+      if (node1._id === nodeId) {
+        let index = node.children.indexOf(node1);
+        node.model.lanes.splice(index, 1);
+      } else {
+        this.deleteSearchNode(node1, nodeId);
+      }
+    });
+  }
+}
+
+/* harmony default export */ __webpack_exports__["default"] = (Node);
+
+/***/ }),
+
+/***/ "./layout-definition/tree/index.js":
+/*!*****************************************!*\
+  !*** ./layout-definition/tree/index.js ***!
+  \*****************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _Node__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Node */ "./layout-definition/tree/Node.js");
+
+
+/* harmony default export */ __webpack_exports__["default"] = (_Node__WEBPACK_IMPORTED_MODULE_0__["default"]);
+
+/***/ }),
+
+/***/ "./layout-definition/utils/dummy-component/dummy-component.js":
+/*!********************************************************************!*\
+  !*** ./layout-definition/utils/dummy-component/dummy-component.js ***!
+  \********************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* eslint-disable require-jsdoc */
+
+/* eslint no-undef: "off" */
+
+class DummyComponent {
+  constructor(seed, dimensions) {
+    this.seed = seed;
+    this.dimensions = dimensions;
+    this.position = null;
+    this.renderAt = null;
+  }
+
+  getLogicalSpace() {
+    return {
+      width: this.dimensions.width - 2 * this.seed,
+      height: this.dimensions.height - 2 * this.seed
+    };
+  }
+
+  setSpatialConfig(conf) {
+    this.position = {
+      top: conf.y,
+      left: conf.x
+    };
+    this.newDimensions = {
+      width: conf.width,
+      height: conf.height
+    };
+    this.renderAt = conf.renderAt;
+  }
+
+  draw() {
+    let doc = document.getElementById(this.renderAt);
+    let div = document.createElement('div');
+    let width = Math.max(this.dimensions.width, this.newDimensions.width);
+    let height = Math.max(this.dimensions.height, this.newDimensions.height);
+
+    div.style.backgroundColor = '#fab1a0'; // getColor();
+
+    div.style.width = `${width - this.seed * 2}px`;
+    div.style.height = `${height - this.seed * 2}px`;
+
+    doc.appendChild(div);
+  }
+}
+
+/* harmony default export */ __webpack_exports__["default"] = (DummyComponent);
+
+/***/ }),
+
+/***/ "./layout-definition/utils/dummy-component/index.js":
+/*!**********************************************************!*\
+  !*** ./layout-definition/utils/dummy-component/index.js ***!
+  \**********************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _dummy_component__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./dummy-component */ "./layout-definition/utils/dummy-component/dummy-component.js");
+
+
+/* harmony default export */ __webpack_exports__["default"] = (_dummy_component__WEBPACK_IMPORTED_MODULE_0__["default"]);
+
+/***/ }),
+
+/***/ "./layout-definition/utils/index.js":
+/*!******************************************!*\
+  !*** ./layout-definition/utils/index.js ***!
+  \******************************************/
+/*! exports provided: DummyComponent, isEqual, getNodeId, yExtraSpace, xExtraSpace, determineBoundBox, getColor */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _dummy_component__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./dummy-component */ "./layout-definition/utils/dummy-component/index.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "DummyComponent", function() { return _dummy_component__WEBPACK_IMPORTED_MODULE_0__["default"]; });
+
+/* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./utils */ "./layout-definition/utils/utils.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "isEqual", function() { return _utils__WEBPACK_IMPORTED_MODULE_1__["isEqual"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "getNodeId", function() { return _utils__WEBPACK_IMPORTED_MODULE_1__["getNodeId"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "yExtraSpace", function() { return _utils__WEBPACK_IMPORTED_MODULE_1__["yExtraSpace"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "xExtraSpace", function() { return _utils__WEBPACK_IMPORTED_MODULE_1__["xExtraSpace"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "determineBoundBox", function() { return _utils__WEBPACK_IMPORTED_MODULE_1__["determineBoundBox"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "getColor", function() { return _utils__WEBPACK_IMPORTED_MODULE_1__["getColor"]; });
+
+
+
+
+
+
+/***/ }),
+
+/***/ "./layout-definition/utils/utils.js":
+/*!******************************************!*\
+  !*** ./layout-definition/utils/utils.js ***!
+  \******************************************/
+/*! exports provided: isEqual, getNodeId, yExtraSpace, xExtraSpace, determineBoundBox, smallestExtraWidthVertically, smallestExtraHeightHorizontally */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "isEqual", function() { return isEqual; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getNodeId", function() { return getNodeId; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "yExtraSpace", function() { return yExtraSpace; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "xExtraSpace", function() { return xExtraSpace; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "determineBoundBox", function() { return determineBoundBox; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "smallestExtraWidthVertically", function() { return smallestExtraWidthVertically; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "smallestExtraHeightHorizontally", function() { return smallestExtraHeightHorizontally; });
+
+/**
+ * Compares two strings in lowercase
+ *
+ * @export
+ * @param {string} value the value to be compared
+ * @param {string} compareTo whom the value would be compared
+ * @return {boolean} true if values are equal
+ */
+function isEqual(value, compareTo) {
+  if (typeof value !== 'string' || typeof compareTo !== 'string') {
+    throw new TypeError('value and compareTo must be string');
+  }
+  return value.toLowerCase() === compareTo.toLowerCase();
+}
+
+const getNodeId = (() => {
+  let _uid = 0;
+  return () => `node-${++_uid}`;
+})();
+
+function yExtraSpace(node) {
+  let smallestHeight = 0;
+  if (node.getCutType() === 'v') {
+    smallestHeight = smallestExtraHeightHorizontally(node); // eslint-disable-line no-use-before-define
+  } else if (node.getCutType() === 'h') {
+    node.children.forEach(child => {
+      smallestHeight += yExtraSpace(child);
+    });
+  } else if (node.model.host && node.model.host.getLogicalSpace) {
+    let containerHeight = node.boundBox.height;
+    let hostHeight = node.model.host.getLogicalSpace().height;
+
+    smallestHeight = containerHeight - hostHeight;
+    if (smallestHeight < 0) {
+      smallestHeight = 0;
+    }
+  } else {
+    smallestHeight = 0;
+  }
+  return smallestHeight;
+}
+
+function smallestExtraHeightHorizontally(node) {
+  let smallestHeight = Number.MAX_SAFE_INTEGER;
+  node.children.forEach(child => {
+    let h = yExtraSpace(child);
+    if (h < smallestHeight) {
+      smallestHeight = h;
+    }
+  });
+  return smallestHeight;
+}
+
+function xExtraSpace(node) {
+  let smallestWidth = 0;
+  if (node.getCutType() === 'h') {
+    smallestWidth = smallestExtraWidthVertically(node); // eslint-disable-line no-use-before-define
+  } else if (node.getCutType() === 'v') {
+    node.children.forEach(child => {
+      smallestWidth += xExtraSpace(child);
+    });
+  } else if (node.model.host && node.model.host.getLogicalSpace) {
+    let containerWidth = node.boundBox.width;
+    let hostWidth = node.model.host.getLogicalSpace().width;
+    smallestWidth = containerWidth - hostWidth;
+    if (smallestWidth < 0) {
+      smallestWidth = 0;
+    }
+  } else {
+    smallestWidth = 0;
+  }
+  return smallestWidth;
+}
+
+function smallestExtraWidthVertically(node) {
+  let smallestWidth = Number.MAX_SAFE_INTEGER;
+  node.children.forEach(child => {
+    let w = xExtraSpace(child);
+    if (w < smallestWidth) {
+      smallestWidth = w;
+    }
+  });
+  return smallestWidth;
+}
+
+function determineBoundBox(bb, i, arr, instance) {
+  if (i) {
+    // if not first sibling, take boundbox from previous sibling
+    let lastSibling = arr[i - 1];
+    return {
+      width: bb.width,
+      height: bb.height,
+
+      top: instance._parentCut === 'h' ? lastSibling.boundBox.top + lastSibling.boundBox.height : lastSibling.boundBox.top,
+
+      left: instance._parentCut === 'h' ? lastSibling.boundBox.left : lastSibling.boundBox.left + lastSibling.boundBox.width
+    };
+  }
+  // if first sibling, take boundbox from parent
+  return {
+    width: bb.width,
+    height: bb.height,
+    top: instance.parent.boundBox.top,
+    left: instance.parent.boundBox.left
+  };
+}
 
 
 
@@ -1254,8 +980,7 @@ class LayoutDef {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var layout_model__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! layout-model */ "../../layout-model/dist/layout.js");
-/* harmony import */ var layout_model__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(layout_model__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _layout_definition__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../layout-definition */ "./layout-definition/index.js");
 /* harmony import */ var _constants_defaults__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../constants/defaults */ "./constants/defaults.js");
 /* harmony import */ var _highlighter_highlighter__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../highlighter/highlighter */ "./highlighter/highlighter.js");
 /* harmony import */ var _controller_controller__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../controller/controller */ "./controller/controller.js");
@@ -1290,7 +1015,7 @@ class Layout {
   compute() {
     _utils_utils__WEBPACK_IMPORTED_MODULE_4__["Utils"].removeDiv(_constants_defaults__WEBPACK_IMPORTED_MODULE_1__["LAYOUT_NAME"]);
     this.layoutDefinition = this.layoutDef.getSanitizedDefinition();
-    this._layout = new layout_model__WEBPACK_IMPORTED_MODULE_0__["LayoutModel"]({
+    this._layout = new _layout_definition__WEBPACK_IMPORTED_MODULE_0__["LayoutModel"]({
       width: this.width,
       height: this.height
     }, this.layoutDefinition);

@@ -88,7 +88,7 @@ const fancyGridLayout = new Layout({
 fancyGridLayout.compute()
 
 // draw all components
-component1.draw()
-component2.draw()
-component3.draw()
-component4.draw()
+// component1.draw()
+// component2.draw()
+// component3.draw()
+// component4.draw()

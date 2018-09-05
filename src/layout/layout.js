@@ -1,6 +1,6 @@
 import {
   LayoutModel
-} from 'layout-model'
+} from '../layout-definition'
 
 import {
   DEFAULT_WIDTH,
