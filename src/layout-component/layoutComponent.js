@@ -8,6 +8,7 @@ export default class LayoutComponent {
     this.boundBox.left = null
     this.chartComponent = null
     this.renderAt = null
+    this.componentName = null
   }
 
   getLogicalSpace () {

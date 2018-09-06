@@ -28,18 +28,27 @@ class DummyComponent extends LayoutComponent {
     this.renderAt = conf.renderAt
   }
 
+  set componentName (name) {
+    this._componentName = name
+  }
+
+  get componentName () {
+    return this._componentName
+  }
+
+  set chartComponent (componentObj) {
+    this._component = componentObj
+  }
+
+  get chartComponent () {
+    return this._chartComponent
+  }
+
   draw () {
-    let doc = document.getElementById(this.renderAt)
-    let div = document.createElement('div')
-    let width = Math.max(this.boundBox.width, this.boundBox.newDimensions.width)
-    let height = Math.max(this.boundBox.height, this.boundBox.newDimensions.height)
-
-    div.style.backgroundColor = '#fab1a0' // getColor();
-
-    div.style.width = `${width - (this.seed * 2)}px`
-    div.style.height = `${height - (this.seed * 2)}px`
-
-    doc.appendChild(div)
+    if (!this.component) {
+      throw new Error(`Component not set for ${this.componentName}`)
+    }
+    this.component.mount(document.getElementById(this.renderAt)) // Change the draw method to component draw
   }
 }
 

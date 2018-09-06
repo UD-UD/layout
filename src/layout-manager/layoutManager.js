@@ -11,6 +11,7 @@ import {
 import { DrawingManager } from '../drawing-manager/drawingManager'
 import { Utils } from '../utils/utils'
 import { LayoutDef } from './layout-def'
+import { DummyComponent } from '../layout-component'
 
 class LayoutManager {
   constructor (conf) {
@@ -39,11 +40,13 @@ class LayoutManager {
     this.tree = this._layout.negotiate().tree()
     this._layout.broadcast()
     this.manager = new DrawingManager(this.tree, this.skeletonType, this.renderAt)
+
+    // this will draw all the components by calling their draw method
     this.manager.draw()
   }
 
-  addComponent (componentId, component) {
-    this.layoutDef.addComponent(componentId, component)
+  addComponent (component) {
+    this.layoutDef.addComponent(component)
   }
 
   addMultipleComponent (componentArray) {
@@ -64,6 +67,31 @@ class LayoutManager {
     this.tree.updateNode(config)
     this.layoutDefinition = this.tree.model
     this.compute()
+  }
+
+  /**
+   * This method will be private and only be used to create
+   * layout components for default chart components such as title,legend etc
+   * @param {Array<{component,name}>} rawComponents : List of Component to be added
+   */
+  _createLayoutComponents (rawComponentsContainer) {
+    let layoutComponents = []
+    // create dummy components and add them
+    rawComponentsContainer.forEach(container => {
+      let dummy = new DummyComponent(0, container.component.getLogicalSpace())
+      dummy.component = container.component
+      dummy.componentName = container.name
+      layoutComponents.push(dummy)
+    })
+    this.registerComponents(layoutComponents)
+  }
+
+  /**
+  * This function takes the LayoutComponents and Register them in component store
+  * @param {Array<LayoutComponent>} layoutComponents
+  */
+  registerComponents (layoutComponents) {
+    this.addMultipleComponent(layoutComponents)
   }
 }
 

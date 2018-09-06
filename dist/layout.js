@@ -320,18 +320,27 @@ class DummyComponent extends _layoutComponent__WEBPACK_IMPORTED_MODULE_0__["defa
     this.renderAt = conf.renderAt;
   }
 
+  set componentName(name) {
+    this._componentName = name;
+  }
+
+  get componentName() {
+    return this._componentName;
+  }
+
+  set chartComponent(componentObj) {
+    this._component = componentObj;
+  }
+
+  get chartComponent() {
+    return this._chartComponent;
+  }
+
   draw() {
-    let doc = document.getElementById(this.renderAt);
-    let div = document.createElement('div');
-    let width = Math.max(this.boundBox.width, this.boundBox.newDimensions.width);
-    let height = Math.max(this.boundBox.height, this.boundBox.newDimensions.height);
-
-    div.style.backgroundColor = '#fab1a0'; // getColor();
-
-    div.style.width = `${width - this.seed * 2}px`;
-    div.style.height = `${height - this.seed * 2}px`;
-
-    doc.appendChild(div);
+    if (!this.component) {
+      throw new Error(`Component not set for ${this.componentName}`);
+    }
+    this.component.mount(document.getElementById(this.renderAt)); // Change the draw method to component draw
   }
 }
 
@@ -381,6 +390,7 @@ class LayoutComponent {
     this.boundBox.left = null;
     this.chartComponent = null;
     this.renderAt = null;
+    this.componentName = null;
   }
 
   getLogicalSpace() {
@@ -899,13 +909,13 @@ class LayoutDef {
     this.layoutDefinition = layoutDefinition;
   }
 
-  addComponent(componentId, component) {
-    this.componentMap.set(componentId, component);
+  addComponent(component) {
+    this.componentMap.set(component.name, component);
   }
 
   addMultipleComponent(componentArray) {
     componentArray.forEach(comp => {
-      this.addComponent(comp.id, comp.component);
+      this.addComponent(comp.name, comp);
     });
   }
 
@@ -946,6 +956,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _drawing_manager_drawingManager__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../drawing-manager/drawingManager */ "./drawing-manager/drawingManager.js");
 /* harmony import */ var _utils_utils__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../utils/utils */ "./utils/utils.js");
 /* harmony import */ var _layout_def__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./layout-def */ "./layout-manager/layout-def.js");
+/* harmony import */ var _layout_component__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../layout-component */ "./layout-component/index.js");
+
 
 
 
@@ -979,11 +991,13 @@ class LayoutManager {
     this.tree = this._layout.negotiate().tree();
     this._layout.broadcast();
     this.manager = new _drawing_manager_drawingManager__WEBPACK_IMPORTED_MODULE_2__["DrawingManager"](this.tree, this.skeletonType, this.renderAt);
+
+    // this will draw all the components by calling their draw method
     this.manager.draw();
   }
 
-  addComponent(componentId, component) {
-    this.layoutDef.addComponent(componentId, component);
+  addComponent(component) {
+    this.layoutDef.addComponent(component);
   }
 
   addMultipleComponent(componentArray) {
@@ -1005,6 +1019,29 @@ class LayoutManager {
     this.layoutDefinition = this.tree.model;
     this.compute();
   }
+
+  /**
+   * This method will be private and only be used to create
+   * layout components for default chart components such as title,legend etc
+   * @param {Array<{component,name}>} rawComponents : List of Component to be added
+   */
+  _createLayoutComponents(rawComponentsContainer) {
+    let layoutComponents = [];
+    // create dummy components and add them
+    rawComponentsContainer.forEach(container => {
+      let dummy = new _layout_component__WEBPACK_IMPORTED_MODULE_5__["DummyComponent"](0, container.component.getLogicalSpace());
+      dummy.component = container.component;
+      dummy.componentName = container.name;
+      layoutComponents.push(dummy);
+    });
+    this.registerComponents(layoutComponents);
+  }
+
+  /**
+  * This function takes the LayoutComponents and Register them in component store
+  * @param {Array<LayoutComponent>} layoutComponents
+  */
+  registerComponents(layoutComponents) {}
 }
 
 /* harmony default export */ __webpack_exports__["default"] = (LayoutManager);

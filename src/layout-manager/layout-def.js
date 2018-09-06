@@ -4,13 +4,13 @@ export class LayoutDef {
     this.layoutDefinition = layoutDefinition
   }
 
-  addComponent (componentId, component) {
-    this.componentMap.set(componentId, component)
+  addComponent (component) {
+    this.componentMap.set(component.name, component)
   }
 
   addMultipleComponent (componentArray) {
     componentArray.forEach(comp => {
-      this.addComponent(comp.id, comp.component)
+      this.addComponent(comp.name, comp)
     })
   }
 
