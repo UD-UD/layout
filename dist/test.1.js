@@ -7,22 +7,22 @@ const width = 600
 const height = 600
 const skeletonType = 'html'
 
-const component1 = new DummyComponent(10, {
+const component1 = new DummyComponent(0, {
   width: 150,
   height: 150
 })
 
-const component2 = new DummyComponent(10, {
+const component2 = new DummyComponent(0, {
   width: 150,
   height: 150
 })
 
-const component3 = new DummyComponent(10, {
+const component3 = new DummyComponent(0, {
   width: 150,
   height: 150
 })
 
-const component4 = new DummyComponent(10, {
+const component4 = new DummyComponent(0, {
   width: 150,
   height: 150
 })
@@ -94,8 +94,8 @@ fancyGridLayout.addMultipleComponent([
 
 fancyGridLayout.compute()
 
-// // draw all components
-// component1.draw()
-// component2.draw()
-// component3.draw()
-// component4.draw()
+// draw all components
+component1.draw()
+component2.draw()
+component3.draw()
+component4.draw()

@@ -260,13 +260,15 @@ class DrawingManager {
 /*!******************!*\
   !*** ./index.js ***!
   \******************/
-/*! exports provided: LayoutManager, DummyComponent */
+/*! exports provided: LayoutManager, DummyComponent, LayoutComponent */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _layout_definition__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./layout-definition */ "./layout-definition/index.js");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "DummyComponent", function() { return _layout_definition__WEBPACK_IMPORTED_MODULE_0__["DummyComponent"]; });
+/* harmony import */ var _layout_component__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./layout-component */ "./layout-component/index.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "DummyComponent", function() { return _layout_component__WEBPACK_IMPORTED_MODULE_0__["DummyComponent"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "LayoutComponent", function() { return _layout_component__WEBPACK_IMPORTED_MODULE_0__["LayoutComponent"]; });
 
 /* harmony import */ var _layout_manager_layoutManager__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./layout-manager/layoutManager */ "./layout-manager/layoutManager.js");
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "LayoutManager", function() { return _layout_manager_layoutManager__WEBPACK_IMPORTED_MODULE_1__["default"]; });
@@ -278,21 +280,135 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./layout-component/dummy-component.js":
+/*!*********************************************!*\
+  !*** ./layout-component/dummy-component.js ***!
+  \*********************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _layoutComponent__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./layoutComponent */ "./layout-component/layoutComponent.js");
+/* eslint-disable require-jsdoc */
+
+/* eslint no-undef: "off" */
+
+
+
+class DummyComponent extends _layoutComponent__WEBPACK_IMPORTED_MODULE_0__["default"] {
+  constructor(seed, dimensions) {
+    super(seed, dimensions);
+    this.seed = seed;
+  }
+
+  getLogicalSpace() {
+    return {
+      width: this.boundBox.width - 2 * this.seed,
+      height: this.boundBox.height - 2 * this.seed
+    };
+  }
+
+  setSpatialConfig(conf) {
+    this.boundBox.top = conf.y;
+    this.boundBox.left = conf.x;
+
+    this.boundBox.newDimensions = {
+      width: conf.width,
+      height: conf.height
+    };
+    this.renderAt = conf.renderAt;
+  }
+
+  draw() {
+    let doc = document.getElementById(this.renderAt);
+    let div = document.createElement('div');
+    let width = Math.max(this.boundBox.width, this.boundBox.newDimensions.width);
+    let height = Math.max(this.boundBox.height, this.boundBox.newDimensions.height);
+
+    div.style.backgroundColor = '#fab1a0'; // getColor();
+
+    div.style.width = `${width - this.seed * 2}px`;
+    div.style.height = `${height - this.seed * 2}px`;
+
+    doc.appendChild(div);
+  }
+}
+
+/* harmony default export */ __webpack_exports__["default"] = (DummyComponent);
+
+/***/ }),
+
+/***/ "./layout-component/index.js":
+/*!***********************************!*\
+  !*** ./layout-component/index.js ***!
+  \***********************************/
+/*! exports provided: DummyComponent, LayoutComponent */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _dummy_component__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./dummy-component */ "./layout-component/dummy-component.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "DummyComponent", function() { return _dummy_component__WEBPACK_IMPORTED_MODULE_0__["default"]; });
+
+/* harmony import */ var _layoutComponent__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./layoutComponent */ "./layout-component/layoutComponent.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "LayoutComponent", function() { return _layoutComponent__WEBPACK_IMPORTED_MODULE_1__["default"]; });
+
+
+
+
+
+
+/***/ }),
+
+/***/ "./layout-component/layoutComponent.js":
+/*!*********************************************!*\
+  !*** ./layout-component/layoutComponent.js ***!
+  \*********************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return LayoutComponent; });
+class LayoutComponent {
+  constructor(seed, dimensions) {
+    this.seed = seed;
+    this.boundBox = {};
+    this.boundBox.height = dimensions.height;
+    this.boundBox.width = dimensions.width;
+    this.boundBox.top = null;
+    this.boundBox.left = null;
+    this.chartComponent = null;
+    this.renderAt = null;
+  }
+
+  getLogicalSpace() {
+    throw new Error('getLogicalSpace is not defined');
+  }
+
+  setSpatialConfig(conf) {
+    throw new Error('setSpatialSpace is not defined');
+  }
+
+  draw() {
+    throw new Error('draw is not defined');
+  }
+}
+
+/***/ }),
+
 /***/ "./layout-definition/index.js":
 /*!************************************!*\
   !*** ./layout-definition/index.js ***!
   \************************************/
-/*! exports provided: LayoutModel, DummyComponent */
+/*! exports provided: LayoutModel */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _layout_model__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./layout-model */ "./layout-definition/layout-model/index.js");
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "LayoutModel", function() { return _layout_model__WEBPACK_IMPORTED_MODULE_0__["default"]; });
-
-/* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./utils */ "./layout-definition/utils/index.js");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "DummyComponent", function() { return _utils__WEBPACK_IMPORTED_MODULE_1__["DummyComponent"]; });
-
 
 
 
@@ -610,105 +726,27 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./layout-definition/utils/dummy-component/dummy-component.js":
-/*!********************************************************************!*\
-  !*** ./layout-definition/utils/dummy-component/dummy-component.js ***!
-  \********************************************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* eslint-disable require-jsdoc */
-
-/* eslint no-undef: "off" */
-
-class DummyComponent {
-  constructor(seed, dimensions) {
-    this.seed = seed;
-    this.dimensions = dimensions;
-    this.position = null;
-    this.renderAt = null;
-  }
-
-  getLogicalSpace() {
-    return {
-      width: this.dimensions.width - 2 * this.seed,
-      height: this.dimensions.height - 2 * this.seed
-    };
-  }
-
-  setSpatialConfig(conf) {
-    this.position = {
-      top: conf.y,
-      left: conf.x
-    };
-    this.newDimensions = {
-      width: conf.width,
-      height: conf.height
-    };
-    this.renderAt = conf.renderAt;
-  }
-
-  draw() {
-    let doc = document.getElementById(this.renderAt);
-    let div = document.createElement('div');
-    let width = Math.max(this.dimensions.width, this.newDimensions.width);
-    let height = Math.max(this.dimensions.height, this.newDimensions.height);
-
-    div.style.backgroundColor = '#fab1a0'; // getColor();
-
-    div.style.width = `${width - this.seed * 2}px`;
-    div.style.height = `${height - this.seed * 2}px`;
-
-    doc.appendChild(div);
-  }
-}
-
-/* harmony default export */ __webpack_exports__["default"] = (DummyComponent);
-
-/***/ }),
-
-/***/ "./layout-definition/utils/dummy-component/index.js":
-/*!**********************************************************!*\
-  !*** ./layout-definition/utils/dummy-component/index.js ***!
-  \**********************************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _dummy_component__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./dummy-component */ "./layout-definition/utils/dummy-component/dummy-component.js");
-
-
-/* harmony default export */ __webpack_exports__["default"] = (_dummy_component__WEBPACK_IMPORTED_MODULE_0__["default"]);
-
-/***/ }),
-
 /***/ "./layout-definition/utils/index.js":
 /*!******************************************!*\
   !*** ./layout-definition/utils/index.js ***!
   \******************************************/
-/*! exports provided: DummyComponent, isEqual, getNodeId, yExtraSpace, xExtraSpace, determineBoundBox, getColor */
+/*! exports provided: isEqual, getNodeId, yExtraSpace, xExtraSpace, determineBoundBox, getColor */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _dummy_component__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./dummy-component */ "./layout-definition/utils/dummy-component/index.js");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "DummyComponent", function() { return _dummy_component__WEBPACK_IMPORTED_MODULE_0__["default"]; });
+/* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./utils */ "./layout-definition/utils/utils.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "isEqual", function() { return _utils__WEBPACK_IMPORTED_MODULE_0__["isEqual"]; });
 
-/* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./utils */ "./layout-definition/utils/utils.js");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "isEqual", function() { return _utils__WEBPACK_IMPORTED_MODULE_1__["isEqual"]; });
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "getNodeId", function() { return _utils__WEBPACK_IMPORTED_MODULE_0__["getNodeId"]; });
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "getNodeId", function() { return _utils__WEBPACK_IMPORTED_MODULE_1__["getNodeId"]; });
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "yExtraSpace", function() { return _utils__WEBPACK_IMPORTED_MODULE_0__["yExtraSpace"]; });
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "yExtraSpace", function() { return _utils__WEBPACK_IMPORTED_MODULE_1__["yExtraSpace"]; });
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "xExtraSpace", function() { return _utils__WEBPACK_IMPORTED_MODULE_0__["xExtraSpace"]; });
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "xExtraSpace", function() { return _utils__WEBPACK_IMPORTED_MODULE_1__["xExtraSpace"]; });
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "determineBoundBox", function() { return _utils__WEBPACK_IMPORTED_MODULE_0__["determineBoundBox"]; });
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "determineBoundBox", function() { return _utils__WEBPACK_IMPORTED_MODULE_1__["determineBoundBox"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "getColor", function() { return _utils__WEBPACK_IMPORTED_MODULE_1__["getColor"]; });
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "getColor", function() { return _utils__WEBPACK_IMPORTED_MODULE_0__["getColor"]; });
 
 
 

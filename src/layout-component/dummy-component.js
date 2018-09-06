@@ -2,27 +2,26 @@
 
 /* eslint no-undef: "off" */
 
-class DummyComponent {
+import LayoutComponent from './layoutComponent'
+
+class DummyComponent extends LayoutComponent {
   constructor (seed, dimensions) {
+    super(seed, dimensions)
     this.seed = seed
-    this.dimensions = dimensions
-    this.position = null
-    this.renderAt = null
   }
 
   getLogicalSpace () {
     return {
-      width: this.dimensions.width - (2 * this.seed),
-      height: this.dimensions.height - (2 * this.seed)
+      width: this.boundBox.width - (2 * this.seed),
+      height: this.boundBox.height - (2 * this.seed)
     }
   }
 
   setSpatialConfig (conf) {
-    this.position = {
-      top: conf.y,
-      left: conf.x
-    }
-    this.newDimensions = {
+    this.boundBox.top = conf.y
+    this.boundBox.left = conf.x
+
+    this.boundBox.newDimensions = {
       width: conf.width,
       height: conf.height
     }
@@ -32,8 +31,8 @@ class DummyComponent {
   draw () {
     let doc = document.getElementById(this.renderAt)
     let div = document.createElement('div')
-    let width = Math.max(this.dimensions.width, this.newDimensions.width)
-    let height = Math.max(this.dimensions.height, this.newDimensions.height)
+    let width = Math.max(this.boundBox.width, this.boundBox.newDimensions.width)
+    let height = Math.max(this.boundBox.height, this.boundBox.newDimensions.height)
 
     div.style.backgroundColor = '#fab1a0' // getColor();
 

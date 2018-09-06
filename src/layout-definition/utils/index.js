@@ -1,4 +1,4 @@
-import DummyComponent from './dummy-component'
+
 import {
   isEqual,
   getNodeId,
@@ -9,7 +9,6 @@ import {
 } from './utils'
 
 export {
-  DummyComponent,
   isEqual,
   getNodeId,
   yExtraSpace,
