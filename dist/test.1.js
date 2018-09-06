@@ -1,5 +1,5 @@
 const {
-  Layout,
+  LayoutManager,
   DummyComponent
 } = layout
 
@@ -77,7 +77,7 @@ const layoutDefinition = {
 
 const renderAt = 'board'
 
-const fancyGridLayout = new Layout({
+const fancyGridLayout = new LayoutManager({
   renderAt,
   layoutDefinition,
   width,

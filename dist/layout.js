@@ -142,58 +142,6 @@ const LAYOUT_NAME = 'fusionBoardLayout';
 
 /***/ }),
 
-/***/ "./controller/controller.js":
-/*!**********************************!*\
-  !*** ./controller/controller.js ***!
-  \**********************************/
-/*! exports provided: Controller */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* WEBPACK VAR INJECTION */(function(global) {/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Controller", function() { return Controller; });
-/* harmony import */ var _renderers_html_renderer__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../renderers/html-renderer */ "./renderers/html-renderer.js");
-/* harmony import */ var _utils_utils__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../utils/utils */ "./utils/utils.js");
-
-
-
-class Controller {
-  constructor(data, renderer, container) {
-    this.data = data;
-    this.renderer = renderer;
-    global.__renderer = renderer; // TODO change global into diff place
-    this.renderer_id = !_utils_utils__WEBPACK_IMPORTED_MODULE_1__["Utils"].isDOMElement(container) ? container : _utils_utils__WEBPACK_IMPORTED_MODULE_1__["Utils"].getID(container);
-  }
-
-  render() {
-    switch (this.renderer) {
-      case 'html':
-        this.renderHTML();
-        break;
-    }
-  }
-
-  renderHTML() {
-    let renderer = new _renderers_html_renderer__WEBPACK_IMPORTED_MODULE_0__["HTMLRenderer"](this.data);
-    renderer.createhtml(this.renderer_id);
-  }
-
-  customiseNode(node, borderColor, borderWidth) {
-    if (_utils_utils__WEBPACK_IMPORTED_MODULE_1__["Utils"].isDOMElement(node)) {
-      _utils_utils__WEBPACK_IMPORTED_MODULE_1__["Utils"].highLightNode(node, borderColor, borderWidth);
-    } else {
-      _utils_utils__WEBPACK_IMPORTED_MODULE_1__["Utils"].highLightNode(document.getElementById(node), borderColor, borderWidth);
-    }
-  }
-
-  resetNode(container) {
-    _utils_utils__WEBPACK_IMPORTED_MODULE_1__["Utils"].unHighLightNode(_utils_utils__WEBPACK_IMPORTED_MODULE_1__["Utils"].isDOMElement(container) ? container : document.getElementById(container));
-  }
-}
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./../../node_modules/webpack/buildin/global.js */ "../node_modules/webpack/buildin/global.js")))
-
-/***/ }),
-
 /***/ "./data-adapters/data-parser.js":
 /*!**************************************!*\
   !*** ./data-adapters/data-parser.js ***!
@@ -256,80 +204,55 @@ class HTMLDataAdapter extends _data_parser__WEBPACK_IMPORTED_MODULE_0__["DataPar
 
 /***/ }),
 
-/***/ "./highlighter/highlighter.js":
-/*!************************************!*\
-  !*** ./highlighter/highlighter.js ***!
-  \************************************/
-/*! exports provided: default */
+/***/ "./drawing-manager/drawingManager.js":
+/*!*******************************************!*\
+  !*** ./drawing-manager/drawingManager.js ***!
+  \*******************************************/
+/*! exports provided: DrawingManager */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-class Highligher {
-  constructor() {
-    this.overlay = document.createElement('div');
-    this.addStyleToOverlay();
-    this.overlayContent = document.createElement('div');
-    this.addStyleToOverlayContent();
-    this.overlay.appendChild(this.overlayContent);
+/* WEBPACK VAR INJECTION */(function(global) {/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "DrawingManager", function() { return DrawingManager; });
+/* harmony import */ var _renderers_html_renderer__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../renderers/html-renderer */ "./renderers/html-renderer.js");
+/* harmony import */ var _utils_utils__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../utils/utils */ "./utils/utils.js");
+
+
+
+class DrawingManager {
+  constructor(data, renderer, container) {
+    this.data = data;
+    this.renderer = renderer;
+    global.__renderer = renderer; // TODO change global into diff place
+    this.renderer_id = !_utils_utils__WEBPACK_IMPORTED_MODULE_1__["Utils"].isDOMElement(container) ? container : _utils_utils__WEBPACK_IMPORTED_MODULE_1__["Utils"].getID(container);
   }
 
-  addStyleToOverlay() {
-    let overlayStyle = this.overlay.style;
-    overlayStyle.backgroundColor = 'rgba(104, 182, 255, 0.35)';
-    overlayStyle.position = 'fixed';
-    overlayStyle.zIndex = '99999999999999';
-    overlayStyle.pointerEvents = 'none';
-    overlayStyle.display = 'flex';
-    overlayStyle.alignItems = 'center';
-    overlayStyle.justifyContent = 'center';
-    overlayStyle.borderRadius = '3px';
-  }
-
-  addStyleToOverlayContent() {
-    let overlayContentStyle = this.overlayContent.style;
-    overlayContentStyle.backgroundColor = 'rgba(104, 182, 255, 0.9)';
-    overlayContentStyle.fontFamily = 'monospace';
-    overlayContentStyle.fontSize = '11px';
-    overlayContentStyle.padding = '2px 3px';
-    overlayContentStyle.borderRadius = '3px';
-    overlayContentStyle.color = 'white';
-  }
-
-  showOverlay({
-    width = 0,
-    height = 0,
-    top = 0,
-    left = 0
-  }, content = '') {
-    let overlayStyle = this.overlay.style;
-    overlayStyle.width = ~~width + 'px';
-    overlayStyle.height = ~~height + 'px';
-    overlayStyle.top = ~~top + 'px';
-    overlayStyle.left = ~~left + 'px';
-    if (content) {
-      this.overlayContent.innerHTML = content;
+  draw() {
+    switch (this.renderer) {
+      case 'html':
+        this.renderHTML();
+        break;
     }
-    document.body.appendChild(this.overlay);
   }
 
-  highlight(instance, highlightText) {
-    let content = '';
-    let rect = instance.getBoundingClientRect();
-    if (highlightText) {
-      content = `<span style="opacity: .6;">[</span>${highlightText}<span style="opacity: .6;">]</span>`;
-    }
-    this.showOverlay(rect, content);
+  renderHTML() {
+    let renderer = new _renderers_html_renderer__WEBPACK_IMPORTED_MODULE_0__["HTMLRenderer"](this.data);
+    renderer.createhtml(this.renderer_id);
   }
 
-  unHighlight() {
-    if (this.overlay.parentNode) {
-      document.body.removeChild(this.overlay);
+  customiseNode(node, borderColor, borderWidth) {
+    if (_utils_utils__WEBPACK_IMPORTED_MODULE_1__["Utils"].isDOMElement(node)) {
+      _utils_utils__WEBPACK_IMPORTED_MODULE_1__["Utils"].highLightNode(node, borderColor, borderWidth);
+    } else {
+      _utils_utils__WEBPACK_IMPORTED_MODULE_1__["Utils"].highLightNode(document.getElementById(node), borderColor, borderWidth);
     }
+  }
+
+  resetNode(container) {
+    _utils_utils__WEBPACK_IMPORTED_MODULE_1__["Utils"].unHighLightNode(_utils_utils__WEBPACK_IMPORTED_MODULE_1__["Utils"].isDOMElement(container) ? container : document.getElementById(container));
   }
 }
-
-/* harmony default export */ __webpack_exports__["default"] = (Highligher);
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./../../node_modules/webpack/buildin/global.js */ "../node_modules/webpack/buildin/global.js")))
 
 /***/ }),
 
@@ -337,7 +260,7 @@ class Highligher {
 /*!******************!*\
   !*** ./index.js ***!
   \******************/
-/*! exports provided: Layout, DummyComponent */
+/*! exports provided: LayoutManager, DummyComponent */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -345,8 +268,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _layout_definition__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./layout-definition */ "./layout-definition/index.js");
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "DummyComponent", function() { return _layout_definition__WEBPACK_IMPORTED_MODULE_0__["DummyComponent"]; });
 
-/* harmony import */ var _layout_layout__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./layout/layout */ "./layout/layout.js");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Layout", function() { return _layout_layout__WEBPACK_IMPORTED_MODULE_1__["default"]; });
+/* harmony import */ var _layout_manager_layoutManager__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./layout-manager/layoutManager */ "./layout-manager/layoutManager.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "LayoutManager", function() { return _layout_manager_layoutManager__WEBPACK_IMPORTED_MODULE_1__["default"]; });
 
 
 
@@ -922,10 +845,10 @@ function determineBoundBox(bb, i, arr, instance) {
 
 /***/ }),
 
-/***/ "./layout/layout-def.js":
-/*!******************************!*\
-  !*** ./layout/layout-def.js ***!
-  \******************************/
+/***/ "./layout-manager/layout-def.js":
+/*!**************************************!*\
+  !*** ./layout-manager/layout-def.js ***!
+  \**************************************/
 /*! exports provided: LayoutDef */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -971,10 +894,10 @@ class LayoutDef {
 
 /***/ }),
 
-/***/ "./layout/layout.js":
-/*!**************************!*\
-  !*** ./layout/layout.js ***!
-  \**************************/
+/***/ "./layout-manager/layoutManager.js":
+/*!*****************************************!*\
+  !*** ./layout-manager/layoutManager.js ***!
+  \*****************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -982,10 +905,9 @@ class LayoutDef {
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _layout_definition__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../layout-definition */ "./layout-definition/index.js");
 /* harmony import */ var _constants_defaults__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../constants/defaults */ "./constants/defaults.js");
-/* harmony import */ var _highlighter_highlighter__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../highlighter/highlighter */ "./highlighter/highlighter.js");
-/* harmony import */ var _controller_controller__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../controller/controller */ "./controller/controller.js");
-/* harmony import */ var _utils_utils__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../utils/utils */ "./utils/utils.js");
-/* harmony import */ var _layout_def__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./layout-def */ "./layout/layout-def.js");
+/* harmony import */ var _drawing_manager_drawingManager__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../drawing-manager/drawingManager */ "./drawing-manager/drawingManager.js");
+/* harmony import */ var _utils_utils__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../utils/utils */ "./utils/utils.js");
+/* harmony import */ var _layout_def__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./layout-def */ "./layout-manager/layout-def.js");
 
 
 
@@ -994,26 +916,23 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-
-class Layout {
+class LayoutManager {
   constructor(conf) {
     this.renderAt = conf.renderAt;
     this.width = conf.width || _constants_defaults__WEBPACK_IMPORTED_MODULE_1__["DEFAULT_WIDTH"];
     this.height = conf.height || _constants_defaults__WEBPACK_IMPORTED_MODULE_1__["DEFAULT_HEIGHT"];
     this.skeletonType = conf.skeletonType || 'html';
     this.layoutDefinition = conf.layoutDefinition;
-    this.layoutDef = new _layout_def__WEBPACK_IMPORTED_MODULE_5__["LayoutDef"](conf.layoutDefinition);
-    if (_utils_utils__WEBPACK_IMPORTED_MODULE_4__["Utils"].isDOMElement(this.renderAt)) {
+    this.layoutDef = new _layout_def__WEBPACK_IMPORTED_MODULE_4__["LayoutDef"](conf.layoutDefinition);
+    if (_utils_utils__WEBPACK_IMPORTED_MODULE_3__["Utils"].isDOMElement(this.renderAt)) {
       this.renderAt._layout = this;
     } else {
       document.getElementById(this.renderAt)._layout = this;
     }
-
-    this.highlighter = new _highlighter_highlighter__WEBPACK_IMPORTED_MODULE_2__["default"]();
   }
 
   compute() {
-    _utils_utils__WEBPACK_IMPORTED_MODULE_4__["Utils"].removeDiv(_constants_defaults__WEBPACK_IMPORTED_MODULE_1__["LAYOUT_NAME"]);
+    _utils_utils__WEBPACK_IMPORTED_MODULE_3__["Utils"].removeDiv(_constants_defaults__WEBPACK_IMPORTED_MODULE_1__["LAYOUT_NAME"]);
     this.layoutDefinition = this.layoutDef.getSanitizedDefinition();
     this._layout = new _layout_definition__WEBPACK_IMPORTED_MODULE_0__["LayoutModel"]({
       width: this.width,
@@ -1021,19 +940,8 @@ class Layout {
     }, this.layoutDefinition);
     this.tree = this._layout.negotiate().tree();
     this._layout.broadcast();
-    this.con = new _controller_controller__WEBPACK_IMPORTED_MODULE_3__["Controller"](this.tree, this.skeletonType, this.renderAt);
-    this.con.render();
-  }
-
-  highlight(nodeId, highlightText) {
-    let instance = document.getElementById(nodeId);
-    if (instance) {
-      this.highlighter.highlight(instance, highlightText);
-    }
-  }
-
-  unHighlight() {
-    this.highlighter.unHighlight();
+    this.manager = new _drawing_manager_drawingManager__WEBPACK_IMPORTED_MODULE_2__["DrawingManager"](this.tree, this.skeletonType, this.renderAt);
+    this.manager.draw();
   }
 
   addComponent(componentId, component) {
@@ -1061,7 +969,7 @@ class Layout {
   }
 }
 
-/* harmony default export */ __webpack_exports__["default"] = (Layout);
+/* harmony default export */ __webpack_exports__["default"] = (LayoutManager);
 
 /***/ }),
 

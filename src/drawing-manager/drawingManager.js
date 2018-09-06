@@ -1,7 +1,7 @@
 
 import { HTMLRenderer } from '../renderers/html-renderer'
 import { Utils } from '../utils/utils'
-export class Controller {
+export class DrawingManager {
   constructor (data, renderer, container) {
     this.data = data
     this.renderer = renderer
@@ -9,7 +9,7 @@ export class Controller {
     this.renderer_id = !Utils.isDOMElement(container) ? container : Utils.getID(container)
   }
 
-  render () {
+  draw () {
     switch (this.renderer) {
       case 'html' :
         this.renderHTML()

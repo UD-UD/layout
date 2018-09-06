@@ -8,12 +8,11 @@ import {
   LAYOUT_NAME
 } from '../constants/defaults'
 
-import Highlighter from '../highlighter/highlighter'
-import { Controller } from '../controller/controller'
+import { DrawingManager } from '../drawing-manager/drawingManager'
 import { Utils } from '../utils/utils'
 import { LayoutDef } from './layout-def'
 
-class Layout {
+class LayoutManager {
   constructor (conf) {
     this.renderAt = conf.renderAt
     this.width = conf.width || DEFAULT_WIDTH
@@ -26,8 +25,6 @@ class Layout {
     } else {
       document.getElementById(this.renderAt)._layout = this
     }
-
-    this.highlighter = new Highlighter()
   }
 
   compute () {
@@ -41,19 +38,8 @@ class Layout {
     )
     this.tree = this._layout.negotiate().tree()
     this._layout.broadcast()
-    this.con = new Controller(this.tree, this.skeletonType, this.renderAt)
-    this.con.render()
-  }
-
-  highlight (nodeId, highlightText) {
-    let instance = document.getElementById(nodeId)
-    if (instance) {
-      this.highlighter.highlight(instance, highlightText)
-    }
-  }
-
-  unHighlight () {
-    this.highlighter.unHighlight()
+    this.manager = new DrawingManager(this.tree, this.skeletonType, this.renderAt)
+    this.manager.draw()
   }
 
   addComponent (componentId, component) {
@@ -81,4 +67,4 @@ class Layout {
   }
 }
 
-export default Layout
+export default LayoutManager

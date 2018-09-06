@@ -1,4 +1,4 @@
 import { DummyComponent } from './layout-definition'
-import Layout from './layout/layout'
+import LayoutManager from './layout-manager/layoutManager'
 
-export { Layout, DummyComponent }
+export { LayoutManager, DummyComponent }
