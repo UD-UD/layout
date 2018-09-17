@@ -19,8 +19,8 @@ class LayoutManager {
     this.width = conf.width || DEFAULT_WIDTH
     this.height = conf.height || DEFAULT_HEIGHT
     this.skeletonType = conf.skeletonType || 'html'
-    this.layoutDefinition = conf.layoutDefinition
-    this.layoutDef = new LayoutDef(conf.layoutDefinition)
+    this.layoutDefinition = null
+    this.layoutDef = new LayoutDef()
     if (Utils.isDOMElement(this.renderAt)) {
       this.renderAt._layout = this
     } else {
@@ -30,6 +30,7 @@ class LayoutManager {
 
   compute () {
     Utils.removeDiv(LAYOUT_NAME)
+    this.calLayOutDef()
     this.layoutDefinition = this.layoutDef.getSanitizedDefinition()
     this._layout = new LayoutModel({
       width: this.width,
@@ -45,6 +46,10 @@ class LayoutManager {
     this.manager.draw()
   }
 
+  // this will auto generate the layout definition
+  calLayOutDef () {
+
+  }
   addComponent (component) {
     this.layoutDef.addComponent(component)
   }
@@ -81,6 +86,8 @@ class LayoutManager {
       let dummy = new DummyComponent(0, container.component.getLogicalSpace())
       dummy.component = container.component
       dummy.componentName = container.name
+      dummy.target = 'canvas'
+      dummy.position = container.component.position
       layoutComponents.push(dummy)
     })
     this.registerComponents(layoutComponents)

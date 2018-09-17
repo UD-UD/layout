@@ -1,11 +1,19 @@
 export class LayoutDef {
-  constructor (layoutDefinition) {
+  constructor () {
     this.componentMap = new Map()
-    this.layoutDefinition = layoutDefinition
+    this.layoutDefinition = null
   }
 
   addComponent (component) {
     this.componentMap.set(component.name, component)
+  }
+
+  set layoutDefinition (def) {
+    this._layoutDefinition = def
+  }
+
+  get layoutDefinition () {
+    return this._layoutDefinition
   }
 
   addMultipleComponent (componentArray) {
