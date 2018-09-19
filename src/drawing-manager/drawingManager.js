@@ -9,12 +9,27 @@ export class DrawingManager {
     this.renderer_id = !Utils.isDOMElement(container) ? container : Utils.getID(container)
   }
 
-  draw () {
+  _drawLayout () {
     switch (this.renderer) {
       case 'html' :
         this.renderHTML()
         break
     }
+  }
+
+  _drawComponent (componentData) {
+    componentData.children.forEach(node => {
+      let componentHolder = document.getElementById(node._id)
+      if (node.model && node.model.host) {
+        node.model.host.component.mount(componentHolder)
+      }
+      this._drawComponent(node)
+    })
+  }
+
+  draw () {
+    this._drawLayout()
+    this._drawComponent(this.data)
   }
 
   renderHTML () {

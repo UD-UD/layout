@@ -4,8 +4,8 @@ export class LayoutDef {
     this.layoutDefinition = null
   }
 
-  addComponent (component) {
-    this.componentMap.set(component.name, component)
+  addComponent (name, component) {
+    this.componentMap.set(name, component)
   }
 
   set layoutDefinition (def) {
@@ -18,7 +18,7 @@ export class LayoutDef {
 
   addMultipleComponent (componentArray) {
     componentArray.forEach(comp => {
-      this.addComponent(comp.name, comp)
+      this.addComponent(comp.componentName, comp)
     })
   }
 

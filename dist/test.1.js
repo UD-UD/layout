@@ -32,7 +32,8 @@ const component1 = {
     return { width: 150,
       height: 150}
   },
-  mount: (at) => { at.append('<span>This is title</span>') }
+  mount: (at) => { at.append('<span>This is title</span>'); console.log('component1') },
+  position: 'top'
 }
 
 const component2 = {
@@ -40,21 +41,24 @@ const component2 = {
     return { width: 150,
       height: 150}
   },
-  mount: (at) => { at.append('<span>This is one more title</span>') }
+  mount: (at) => { at.append('<span>This is one more title</span>'); console.log('component1') },
+  position: 'bottom'
 }
 const component3 = {
   getLogicalSpace: () => {
     return { width: 150,
       height: 150}
   },
-  mount: (at) => { at.append('<span>This is again title</span>') }
+  mount: (at) => { at.append('<span>This is again title</span>'); console.log('component1') },
+  position: 'left'
 }
 const component4 = {
   getLogicalSpace: () => {
     return { width: 150,
       height: 150}
   },
-  mount: (at) => { at.append('<span>This is so many title</span>') }
+  mount: (at) => { at.append('<span>This is so many title</span>'); console.log('component1') },
+  position: 'right'
 }
 
 const layoutDefinition = {
@@ -117,10 +121,10 @@ const fancyGridLayout = new LayoutManager({
 
 fancyGridLayout._createLayoutComponents(
   [
-    {name: 'tittle', component: component1},
-    {name: 'tittle-a', component: component2},
-    {name: 'tittle-b', component: component3},
-    {name: 'tittle-c', component: component4}
+    {name: 'title', component: component1},
+    {name: 'subtitle', component: component2},
+    {name: 'colorLegend', component: component3},
+    {name: 'sizeLegend', component: component4}
   ])
 
 // fancyGridLayout.addMultipleComponent([

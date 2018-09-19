@@ -227,12 +227,27 @@ class DrawingManager {
     this.renderer_id = !_utils_utils__WEBPACK_IMPORTED_MODULE_1__["Utils"].isDOMElement(container) ? container : _utils_utils__WEBPACK_IMPORTED_MODULE_1__["Utils"].getID(container);
   }
 
-  draw() {
+  _drawLayout() {
     switch (this.renderer) {
       case 'html':
         this.renderHTML();
         break;
     }
+  }
+
+  _drawComponent(componentData) {
+    componentData.children.forEach(node => {
+      let componentHolder = document.getElementById(node._id);
+      if (node.model && node.model.host) {
+        node.model.host.component.mount(componentHolder);
+      }
+      this._drawComponent(node);
+    });
+  }
+
+  draw() {
+    this._drawLayout();
+    this._drawComponent(this.data);
   }
 
   renderHTML() {
@@ -390,6 +405,8 @@ class LayoutComponent {
     this.boundBox.left = null;
     this.chartComponent = null;
     this.renderAt = null;
+    this.target = null;
+    this.position = null;
     this.componentName = null;
   }
 
@@ -405,6 +422,232 @@ class LayoutComponent {
     throw new Error('draw is not defined');
   }
 }
+
+/***/ }),
+
+/***/ "./layout-definition/definition-manager/definitionModel.js":
+/*!*****************************************************************!*\
+  !*** ./layout-definition/definition-manager/definitionModel.js ***!
+  \*****************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return DefinitionModel; });
+class DefinitionModel {
+  constructor(host, cut, ratioWeight, preferred, lanes) {
+    this.host = host || null;
+    this.cut = cut | 'h';
+    this.ratioWeight = ratioWeight || 1;
+    this.preferred = preferred || false;
+    this.lanes = lanes || [];
+    this._remainingHeight = 0;
+    this._remainingWidth = 0;
+  }
+  // get host () {
+  //   return this._host
+  // }
+
+  // set host (host) {
+  //   this._host = host
+  //   return this
+  // }
+  // get cut () {
+  //   return this._cut
+  // }
+
+  // set cut (cut) {
+  //   this._cut = cut
+  //   return this
+  // }
+  // get ratioWeight () {
+  //   return this._ratioWeight
+  // }
+
+  // set ratioWeight (ratioWeight) {
+  //   this._ratioWeight = ratioWeight
+  //   return this
+  // }
+  // get preferred () {
+  //   return this._preferred
+  // }
+
+  // set preferred (preferred) {
+  //   this._preferred = preferred
+  //   return this
+  // }
+  // get lanes () {
+  //   return this._lanes
+  // }
+
+  // set lanes (lanes) {
+  //   this._lanes = lanes
+  //   return this
+  // }
+
+  // set _remainingHeight (h) {
+  //   this.__remainingHeight = h
+  // }
+
+  // get _remainingHeight () {
+  //   return this.__remainingHeight
+  // }
+
+  // set _remainingWidth (w) {
+  //   this.__remainingWidth = w
+  // }
+
+  // get _remainingWidth () {
+  //   return this.__remainingWidth
+  // }
+}
+
+/***/ }),
+
+/***/ "./layout-definition/definition-manager/defintionManager.js":
+/*!******************************************************************!*\
+  !*** ./layout-definition/definition-manager/defintionManager.js ***!
+  \******************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return DefinitionManager; });
+/* harmony import */ var _definitionModel__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./definitionModel */ "./layout-definition/definition-manager/definitionModel.js");
+
+
+class DefinitionManager {
+  constructor(componentMap, totalHeight, totalWidth) {
+    this.componentMap = componentMap;
+    this.totalHeight = totalHeight;
+    this.totalWidth = totalWidth;
+  }
+
+  // prepares the targetComponent Map for target Mapping ie. where a component should lie
+  _prepareTargetComponentMap() {
+    this.targetComponentMap = new Map();
+    this.componentMap.forEach((value, key) => {
+      if (this.targetComponentMap.has(value.target)) {
+        this.targetComponentMap.get(value.target).push(value);
+      } else {
+        let temp = [];
+        temp.push(value);
+        this.targetComponentMap.set(value.target, temp);
+      }
+    });
+  }
+
+  // create the config model
+  generateConfigModel() {
+    this._prepareTargetComponentMap();
+    let canvasComponent = this.targetComponentMap.get('canvas');
+    let definitionModel = new _definitionModel__WEBPACK_IMPORTED_MODULE_0__["default"]();
+    let tempDefModel = definitionModel;
+    definitionModel._remainingHeight = this.totalHeight;
+    definitionModel._remainingWidth = this.totalWidth;
+
+    let componentRef = null;
+
+    // insert title
+    componentRef = this._getComponent(canvasComponent, 'title');
+    tempDefModel = this._placeComponent(tempDefModel, componentRef);
+
+    // insert Subtitle
+    componentRef = this._getComponent(canvasComponent, 'subtitle');
+    tempDefModel = this._placeComponent(tempDefModel, componentRef);
+
+    // insert color legend
+    componentRef = this._getComponent(canvasComponent, 'colorLegend');
+    tempDefModel = this._placeComponent(tempDefModel, componentRef);
+
+    // insert shape legend
+    componentRef = this._getComponent(canvasComponent, 'shapeLegend');
+    tempDefModel = this._placeComponent(tempDefModel, componentRef);
+
+    // insert size legend
+    componentRef = this._getComponent(canvasComponent, 'sizeLegend');
+    tempDefModel = this._placeComponent(tempDefModel, componentRef);
+
+    // insert chart
+    componentRef = this._getComponent(canvasComponent, 'chart');
+    tempDefModel = this._placeComponent(tempDefModel, componentRef);
+    console.log(tempDefModel);
+    return definitionModel;
+  }
+
+  _getComponent(canvasComponent, componentName) {
+    let comp = canvasComponent.find(component => component.componentName === componentName);
+    return comp !== -1 ? comp : null;
+  }
+
+  /**
+   * @TODO : provide %age support
+   * @TODO : provide support for nested placement such as logo in a title
+   *
+   * @param {DefinitionModel} definitionModel
+   * @param {LayoutComponent} component
+   */
+  _placeComponent(definitionModel, component) {
+    if (component == null) {
+      return definitionModel;
+    }
+    let componentDimension = component.getLogicalSpace();
+    let componentHeight = componentDimension.height;
+    let componentWidth = componentDimension.width;
+    let cut = '';
+    let componentRatioWidth = 1;
+    let leftOvercomponentRationWidth = 1;
+    let leftHeight = 0;
+    let leftWidth = 0;
+    if (component.position === 'top' || component.position === 'bottom') {
+      cut = 'h';
+      componentRatioWidth = componentHeight / definitionModel._remainingHeight;
+      leftHeight = definitionModel._remainingHeight - componentHeight;
+      leftWidth = definitionModel._remainingWidth;
+    } else {
+      cut = 'v';
+      componentRatioWidth = componentWidth / definitionModel._remainingWidth;
+      leftWidth = definitionModel._remainingHeight - componentWidth;
+      leftHeight = definitionModel._remainingHeight;
+    }
+    leftOvercomponentRationWidth = 1 - componentRatioWidth;
+
+    // update parentModel
+    definitionModel.cut = cut;
+
+    let firstLane = new _definitionModel__WEBPACK_IMPORTED_MODULE_0__["default"](component.componentName, null, componentRatioWidth, false, []);
+    firstLane._remainingHeight = componentHeight;
+    firstLane._remainingWidth = componentWidth;
+    let secondLane = new _definitionModel__WEBPACK_IMPORTED_MODULE_0__["default"](null, null, leftOvercomponentRationWidth, true, []);
+    secondLane._remainingHeight = leftHeight;
+    secondLane._remainingWidth = leftWidth;
+
+    if (component.position === 'top' || component.position === 'left') {
+      definitionModel.lanes = [firstLane, secondLane];
+    } else {
+      definitionModel.lanes = [secondLane, firstLane];
+    }
+    return secondLane;
+  }
+}
+
+/***/ }),
+
+/***/ "./layout-definition/definition-manager/index.js":
+/*!*******************************************************!*\
+  !*** ./layout-definition/definition-manager/index.js ***!
+  \*******************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _defintionManager__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./defintionManager */ "./layout-definition/definition-manager/defintionManager.js");
+
+
+/* harmony default export */ __webpack_exports__["default"] = (_defintionManager__WEBPACK_IMPORTED_MODULE_0__["default"]);
 
 /***/ }),
 
@@ -904,18 +1147,26 @@ function determineBoundBox(bb, i, arr, instance) {
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "LayoutDef", function() { return LayoutDef; });
 class LayoutDef {
-  constructor(layoutDefinition) {
+  constructor() {
     this.componentMap = new Map();
-    this.layoutDefinition = layoutDefinition;
+    this.layoutDefinition = null;
   }
 
-  addComponent(component) {
-    this.componentMap.set(component.name, component);
+  addComponent(name, component) {
+    this.componentMap.set(name, component);
+  }
+
+  set layoutDefinition(def) {
+    this._layoutDefinition = def;
+  }
+
+  get layoutDefinition() {
+    return this._layoutDefinition;
   }
 
   addMultipleComponent(componentArray) {
     componentArray.forEach(comp => {
-      this.addComponent(comp.name, comp);
+      this.addComponent(comp.componentName, comp);
     });
   }
 
@@ -952,11 +1203,14 @@ class LayoutDef {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _layout_definition__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../layout-definition */ "./layout-definition/index.js");
-/* harmony import */ var _constants_defaults__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../constants/defaults */ "./constants/defaults.js");
-/* harmony import */ var _drawing_manager_drawingManager__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../drawing-manager/drawingManager */ "./drawing-manager/drawingManager.js");
-/* harmony import */ var _utils_utils__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../utils/utils */ "./utils/utils.js");
-/* harmony import */ var _layout_def__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./layout-def */ "./layout-manager/layout-def.js");
-/* harmony import */ var _layout_component__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../layout-component */ "./layout-component/index.js");
+/* harmony import */ var _layout_definition_definition_manager__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../layout-definition/definition-manager */ "./layout-definition/definition-manager/index.js");
+/* harmony import */ var _constants_defaults__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../constants/defaults */ "./constants/defaults.js");
+/* harmony import */ var _drawing_manager_drawingManager__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../drawing-manager/drawingManager */ "./drawing-manager/drawingManager.js");
+/* harmony import */ var _utils_utils__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../utils/utils */ "./utils/utils.js");
+/* harmony import */ var _layout_def__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./layout-def */ "./layout-manager/layout-def.js");
+/* harmony import */ var _layout_component__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../layout-component */ "./layout-component/index.js");
+
+
 
 
 
@@ -969,12 +1223,12 @@ __webpack_require__.r(__webpack_exports__);
 class LayoutManager {
   constructor(conf) {
     this.renderAt = conf.renderAt;
-    this.width = conf.width || _constants_defaults__WEBPACK_IMPORTED_MODULE_1__["DEFAULT_WIDTH"];
-    this.height = conf.height || _constants_defaults__WEBPACK_IMPORTED_MODULE_1__["DEFAULT_HEIGHT"];
+    this.width = conf.width || _constants_defaults__WEBPACK_IMPORTED_MODULE_2__["DEFAULT_WIDTH"];
+    this.height = conf.height || _constants_defaults__WEBPACK_IMPORTED_MODULE_2__["DEFAULT_HEIGHT"];
     this.skeletonType = conf.skeletonType || 'html';
-    this.layoutDefinition = conf.layoutDefinition;
-    this.layoutDef = new _layout_def__WEBPACK_IMPORTED_MODULE_4__["LayoutDef"](conf.layoutDefinition);
-    if (_utils_utils__WEBPACK_IMPORTED_MODULE_3__["Utils"].isDOMElement(this.renderAt)) {
+    this.layoutDefinition = null;
+    this.layoutDef = new _layout_def__WEBPACK_IMPORTED_MODULE_5__["LayoutDef"]();
+    if (_utils_utils__WEBPACK_IMPORTED_MODULE_4__["Utils"].isDOMElement(this.renderAt)) {
       this.renderAt._layout = this;
     } else {
       document.getElementById(this.renderAt)._layout = this;
@@ -982,7 +1236,9 @@ class LayoutManager {
   }
 
   compute() {
-    _utils_utils__WEBPACK_IMPORTED_MODULE_3__["Utils"].removeDiv(_constants_defaults__WEBPACK_IMPORTED_MODULE_1__["LAYOUT_NAME"]);
+    _utils_utils__WEBPACK_IMPORTED_MODULE_4__["Utils"].removeDiv(_constants_defaults__WEBPACK_IMPORTED_MODULE_2__["LAYOUT_NAME"]);
+    this.layoutDefinition = this.calLayOutDef();
+    this.layoutDef.layoutDefinition = this.layoutDefinition;
     this.layoutDefinition = this.layoutDef.getSanitizedDefinition();
     this._layout = new _layout_definition__WEBPACK_IMPORTED_MODULE_0__["LayoutModel"]({
       width: this.width,
@@ -990,12 +1246,18 @@ class LayoutManager {
     }, this.layoutDefinition);
     this.tree = this._layout.negotiate().tree();
     this._layout.broadcast();
-    this.manager = new _drawing_manager_drawingManager__WEBPACK_IMPORTED_MODULE_2__["DrawingManager"](this.tree, this.skeletonType, this.renderAt);
+    this.manager = new _drawing_manager_drawingManager__WEBPACK_IMPORTED_MODULE_3__["DrawingManager"](this.tree, this.skeletonType, this.renderAt);
 
     // this will draw all the components by calling their draw method
     this.manager.draw();
   }
 
+  // this will auto generate the layout definition
+  calLayOutDef() {
+    let defManager = new _layout_definition_definition_manager__WEBPACK_IMPORTED_MODULE_1__["default"](this.layoutDef.getComponentMap(), this.height, this.width);
+    let genLayoutdef = defManager.generateConfigModel();
+    return genLayoutdef;
+  }
   addComponent(component) {
     this.layoutDef.addComponent(component);
   }
@@ -1029,9 +1291,11 @@ class LayoutManager {
     let layoutComponents = [];
     // create dummy components and add them
     rawComponentsContainer.forEach(container => {
-      let dummy = new _layout_component__WEBPACK_IMPORTED_MODULE_5__["DummyComponent"](0, container.component.getLogicalSpace());
+      let dummy = new _layout_component__WEBPACK_IMPORTED_MODULE_6__["DummyComponent"](0, container.component.getLogicalSpace());
       dummy.component = container.component;
       dummy.componentName = container.name;
+      dummy.target = 'canvas';
+      dummy.position = container.component.position;
       layoutComponents.push(dummy);
     });
     this.registerComponents(layoutComponents);
@@ -1041,7 +1305,9 @@ class LayoutManager {
   * This function takes the LayoutComponents and Register them in component store
   * @param {Array<LayoutComponent>} layoutComponents
   */
-  registerComponents(layoutComponents) {}
+  registerComponents(layoutComponents) {
+    this.addMultipleComponent(layoutComponents);
+  }
 }
 
 /* harmony default export */ __webpack_exports__["default"] = (LayoutManager);

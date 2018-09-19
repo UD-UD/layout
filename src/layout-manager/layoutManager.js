@@ -2,6 +2,8 @@ import {
   LayoutModel
 } from '../layout-definition'
 
+import DefinitionManager from '../layout-definition/definition-manager'
+
 import {
   DEFAULT_WIDTH,
   DEFAULT_HEIGHT,
@@ -30,7 +32,8 @@ class LayoutManager {
 
   compute () {
     Utils.removeDiv(LAYOUT_NAME)
-    this.calLayOutDef()
+    this.layoutDefinition = this.calLayOutDef()
+    this.layoutDef.layoutDefinition = this.layoutDefinition
     this.layoutDefinition = this.layoutDef.getSanitizedDefinition()
     this._layout = new LayoutModel({
       width: this.width,
@@ -48,7 +51,9 @@ class LayoutManager {
 
   // this will auto generate the layout definition
   calLayOutDef () {
-
+    let defManager = new DefinitionManager(this.layoutDef.getComponentMap(), this.height, this.width)
+    let genLayoutdef = defManager.generateConfigModel()
+    return genLayoutdef
   }
   addComponent (component) {
     this.layoutDef.addComponent(component)
