@@ -635,7 +635,7 @@ class DefinitionManager {
 
     // insert chart
     componentRef = this._getComponent(canvasComponent, 'chart');
-    tempDefModel = this._placeComponent(tempDefModel, componentRef);
+    tempDefModel = this._placeComponent(tempDefModel, componentRef, true);
     console.log(tempDefModel);
     return definitionModel;
   }
@@ -652,7 +652,7 @@ class DefinitionManager {
    * @param {DefinitionModel} definitionModel
    * @param {LayoutComponent} component
    */
-  _placeComponent(definitionModel, component) {
+  _placeComponent(definitionModel, component, isPreferred = false) {
     if (component == null) {
       return definitionModel;
     }
@@ -672,7 +672,7 @@ class DefinitionManager {
     } else {
       cut = 'v';
       componentRatioWidth = componentWidth / definitionModel._remainingWidth;
-      leftWidth = definitionModel._remainingHeight - componentWidth;
+      leftWidth = definitionModel._remainingWidth - componentWidth;
       leftHeight = definitionModel._remainingHeight;
     }
     leftOvercomponentRationWidth = 1 - componentRatioWidth;
@@ -680,17 +680,20 @@ class DefinitionManager {
     // update parentModel
     definitionModel.cut = cut;
 
-    let firstLane = new _definitionModel__WEBPACK_IMPORTED_MODULE_0__["default"](component.componentName, null, componentRatioWidth, false, []);
+    let firstLane = new _definitionModel__WEBPACK_IMPORTED_MODULE_0__["default"](component.componentName, null, componentRatioWidth, isPreferred, []);
     firstLane._remainingHeight = componentHeight;
     firstLane._remainingWidth = componentWidth;
-    let secondLane = new _definitionModel__WEBPACK_IMPORTED_MODULE_0__["default"](null, null, leftOvercomponentRationWidth, true, []);
+    let secondLane = new _definitionModel__WEBPACK_IMPORTED_MODULE_0__["default"](null, null, leftOvercomponentRationWidth, !isPreferred, []);
     secondLane._remainingHeight = leftHeight;
     secondLane._remainingWidth = leftWidth;
-
-    if (component.position === 'top' || component.position === 'left') {
-      definitionModel.lanes = [firstLane, secondLane];
+    if (isPreferred) {
+      definitionModel.lanes = [firstLane];
     } else {
-      definitionModel.lanes = [secondLane, firstLane];
+      if (component.position === 'top' || component.position === 'left') {
+        definitionModel.lanes = [firstLane, secondLane];
+      } else {
+        definitionModel.lanes = [secondLane, firstLane];
+      }
     }
     return secondLane;
   }
