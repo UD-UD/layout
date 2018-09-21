@@ -221,7 +221,8 @@ __webpack_require__.r(__webpack_exports__);
 
 class DrawingManager {
   constructor(data, renderer, container) {
-    this.data = data;
+    this.data = data.tree;
+    this.componentMap = data.componentMap;
     this.renderer = renderer;
     global.__renderer = renderer; // TODO change global into diff place
     this.renderer_id = !_utils_utils__WEBPACK_IMPORTED_MODULE_1__["Utils"].isDOMElement(container) ? container : _utils_utils__WEBPACK_IMPORTED_MODULE_1__["Utils"].getID(container);
@@ -237,9 +238,8 @@ class DrawingManager {
 
   _drawComponent(componentData) {
     componentData.children.forEach(node => {
-      let componentHolder = document.getElementById(node._id);
       if (node.model && node.model.host) {
-        node.model.host.component.mount(componentHolder);
+        node.model.host.draw();
       }
       this._drawComponent(node);
     });
@@ -247,12 +247,73 @@ class DrawingManager {
 
   draw() {
     this._drawLayout();
+    // resolve alingment
+    /**
+     * alignwith :
+     * alignment : left | right | hCenter | vCenter |default
+     * logic if Alignment is need search the div ,
+     * create a child div according to alignment,
+     * set the measurements and append it as child,
+     * (check if alignment possible)
+     * replace node id of parent with child
+     */
+    this._resolveAligment(this.data);
     this._drawComponent(this.data);
   }
 
+  _resolveAligment(componentData) {
+    componentData.children.forEach(component => {
+      if (component.model && component.model.host && component.model.host.alignWidth) {
+        let childNode;
+        let node = this._findNode(component._id);
+        let refNode = this._findNode(this.componentMap.get(component.model.host.alignWidth).renderAt);
+        switch (component.model.host.alignment) {
+          case 'left':
+            childNode = this._getChildNode(node.top, refNode.left, node.height, Math.abs(node.width - Math.abs(refNode.left - node.left)), node._id);
+            break;
+          case 'right':
+            childNode = this._getChildNode(node.top, node.left, node.height, Math.abs(node.width - Math.abs(node.left + node.width - (refNode.left + refNode.width))), node._id);
+            break;
+          case 'top':
+            childNode = this._getChildNode(refNode.top, node.left, Math.abs(node.height - Math.abs(refNode.top - node.top)), node.width, node._id);
+            break;
+          case 'bottom':
+            childNode = this._getChildNode(node.top, node.left, Math.abs(node.top - refNode.top + refNode.height), node.width, node._id);
+            break;
+          case 'h-center':
+            childNode = this._getChildNode(node.top, refNode.left, node.height, refNode.width, node._id);
+            break;
+          case 'v-center':
+            childNode = this._getChildNode(refNode.top, node.left, refNode.height, node.width, node._id);
+            break;
+        }
+        // check if model in parent component
+        this.componentMap.get(component.model.host.componentName).renderAt = `${component._id}-holder`;
+        this.componentRenderer.parentDiv.appendChild(childNode);
+      }
+      this._resolveAligment(component);
+    });
+  }
+
+  _getChildNode(top, left, height, width, _id) {
+    let childNodeDim = {};
+    childNodeDim.top = top;
+    childNodeDim.left = left;
+    childNodeDim.height = height;
+    childNodeDim.width = width;
+    childNodeDim._id = `${_id}-holder`;
+    return this.componentRenderer.createAndPositionDiv(childNodeDim);
+  }
+
+  _findNode(nodeID) {
+    return this.componentRenderer.coordinates.find(node => {
+      return node._id === nodeID;
+    });
+  }
+
   renderHTML() {
-    let renderer = new _renderers_html_renderer__WEBPACK_IMPORTED_MODULE_0__["HTMLRenderer"](this.data);
-    renderer.createhtml(this.renderer_id);
+    this.componentRenderer = new _renderers_html_renderer__WEBPACK_IMPORTED_MODULE_0__["HTMLRenderer"](this.data);
+    this.componentRenderer.createhtml(this.renderer_id);
   }
 
   customiseNode(node, borderColor, borderWidth) {
@@ -405,6 +466,8 @@ class LayoutComponent {
     this.boundBox.left = null;
     this.chartComponent = null;
     this.renderAt = null;
+    this.alignWidth = null;
+    this.alignment = null;
     this.target = null;
     this.position = null;
     this.componentName = null;
@@ -1246,7 +1309,7 @@ class LayoutManager {
     }, this.layoutDefinition);
     this.tree = this._layout.negotiate().tree();
     this._layout.broadcast();
-    this.manager = new _drawing_manager_drawingManager__WEBPACK_IMPORTED_MODULE_3__["DrawingManager"](this.tree, this.skeletonType, this.renderAt);
+    this.manager = new _drawing_manager_drawingManager__WEBPACK_IMPORTED_MODULE_3__["DrawingManager"]({ 'tree': this.tree, 'componentMap': this.layoutDef.getComponentMap() }, this.skeletonType, this.renderAt);
 
     // this will draw all the components by calling their draw method
     this.manager.draw();
@@ -1296,6 +1359,8 @@ class LayoutManager {
       dummy.componentName = container.name;
       dummy.target = 'canvas';
       dummy.position = container.component.position;
+      dummy.alignment = container.component.alignment;
+      dummy.alignWidth = container.component.alignWidth;
       layoutComponents.push(dummy);
     });
     this.registerComponents(layoutComponents);
@@ -1366,11 +1431,11 @@ class HTMLRenderer extends _renderer__WEBPACK_IMPORTED_MODULE_2__["Renderer"] {
   createhtml(id) {
     let mainDiv = document.getElementById(id);
     super.initRenderer(mainDiv, this.data); // Initialise node with layout id
-    let parentDiv = this.createAndCustomiseParent();
+    this.parentDiv = this.createAndCustomiseParent();
     this.coordinates.forEach(node => {
-      parentDiv.appendChild(this.createAndPositionDiv(node));
+      this.parentDiv.appendChild(this.createAndPositionDiv(node));
     });
-    mainDiv.appendChild(parentDiv);
+    mainDiv.appendChild(this.parentDiv);
   }
 
   createAndPositionDiv(node) {
@@ -1380,7 +1445,7 @@ class HTMLRenderer extends _renderer__WEBPACK_IMPORTED_MODULE_2__["Renderer"] {
     div.style.top = node.top + 'px';
     div.style.height = node.height + 'px';
     div.style.width = node.width + 'px';
-    // div.style.border = '1px dotted red'
+    div.style.border = '1px dotted red';
     // Utils.hoverHandler(div)
     div.id = node._id;
     return div;

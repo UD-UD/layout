@@ -33,7 +33,9 @@ const component1 = {
       height: 150}
   },
   mount: (at) => { at.append('<span>This is title</span>'); console.log('component1') },
-  position: 'top'
+  position: 'top',
+  alignWidth: 'chart',
+  alignment: 'h-center'
 }
 
 const component2 = {
@@ -58,6 +60,15 @@ const component4 = {
       height: 150}
   },
   mount: (at) => { at.append('<span>This is so many title</span>'); console.log('component1') },
+  position: 'right'
+}
+
+const component5 = {
+  getLogicalSpace: () => {
+    return { width: 300,
+      height: 300}
+  },
+  mount: (at) => { at.append('<span>This is so many charts</span>'); console.log('component1') },
   position: 'right'
 }
 
@@ -124,7 +135,8 @@ fancyGridLayout._createLayoutComponents(
     {name: 'title', component: component1},
     {name: 'subtitle', component: component2},
     {name: 'colorLegend', component: component3},
-    {name: 'sizeLegend', component: component4}
+    {name: 'sizeLegend', component: component4},
+    {name: 'chart', component: component5}
   ])
 
 // fancyGridLayout.addMultipleComponent([

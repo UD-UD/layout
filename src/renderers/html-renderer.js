@@ -12,11 +12,11 @@ export class HTMLRenderer extends Renderer {
   createhtml (id) {
     let mainDiv = document.getElementById(id)
     super.initRenderer(mainDiv, this.data) // Initialise node with layout id
-    let parentDiv = this.createAndCustomiseParent()
+    this.parentDiv = this.createAndCustomiseParent()
     this.coordinates.forEach(node => {
-      parentDiv.appendChild(this.createAndPositionDiv(node))
+      this.parentDiv.appendChild(this.createAndPositionDiv(node))
     })
-    mainDiv.appendChild(parentDiv)
+    mainDiv.appendChild(this.parentDiv)
   }
 
   createAndPositionDiv (node) {
@@ -26,7 +26,7 @@ export class HTMLRenderer extends Renderer {
     div.style.top = node.top + 'px'
     div.style.height = node.height + 'px'
     div.style.width = node.width + 'px'
-    // div.style.border = '1px dotted red'
+    div.style.border = '1px dotted red'
     // Utils.hoverHandler(div)
     div.id = node._id
     return div

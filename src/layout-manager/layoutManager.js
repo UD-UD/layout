@@ -43,7 +43,8 @@ class LayoutManager {
     )
     this.tree = this._layout.negotiate().tree()
     this._layout.broadcast()
-    this.manager = new DrawingManager(this.tree, this.skeletonType, this.renderAt)
+    this.manager = new DrawingManager({'tree': this.tree, 'componentMap': this.layoutDef.getComponentMap()},
+      this.skeletonType, this.renderAt)
 
     // this will draw all the components by calling their draw method
     this.manager.draw()
@@ -93,6 +94,8 @@ class LayoutManager {
       dummy.componentName = container.name
       dummy.target = 'canvas'
       dummy.position = container.component.position
+      dummy.alignment = container.component.alignment
+      dummy.alignWidth = container.component.alignWidth
       layoutComponents.push(dummy)
     })
     this.registerComponents(layoutComponents)

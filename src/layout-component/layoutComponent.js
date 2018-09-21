@@ -8,6 +8,8 @@ export default class LayoutComponent {
     this.boundBox.left = null
     this.chartComponent = null
     this.renderAt = null
+    this.alignWidth = null
+    this.alignment = null
     this.target = null
     this.position = null
     this.componentName = null
