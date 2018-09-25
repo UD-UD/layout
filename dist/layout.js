@@ -136,10 +136,6 @@ const LAYOUT_NAME = 'fusionBoardLayout';
 
 
 
-/**
- * Hello
- */
-
 /***/ }),
 
 /***/ "./data-adapters/data-parser.js":
@@ -152,7 +148,7 @@ const LAYOUT_NAME = 'fusionBoardLayout';
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "DataParser", function() { return DataParser; });
-/* harmony import */ var _models_data_point__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../models/data-point */ "./models/data-point.js");
+/* harmony import */ var _data_point__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./data-point */ "./data-adapters/data-point.js");
 
 
 
@@ -168,11 +164,35 @@ class DataParser {
   }
 
   getnodePoints(node, nodepoints) {
-    let datapoint = new _models_data_point__WEBPACK_IMPORTED_MODULE_0__["DataPoint"](node);
+    let datapoint = new _data_point__WEBPACK_IMPORTED_MODULE_0__["DataPoint"](node);
     nodepoints.push(datapoint);
     node.children.forEach(child => {
       this.getnodePoints(child, nodepoints);
     });
+  }
+}
+
+/***/ }),
+
+/***/ "./data-adapters/data-point.js":
+/*!*************************************!*\
+  !*** ./data-adapters/data-point.js ***!
+  \*************************************/
+/*! exports provided: DataPoint */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "DataPoint", function() { return DataPoint; });
+
+class DataPoint {
+  constructor(node) {
+    this.top = node.boundBox.top;
+    this.left = node.boundBox.left;
+    this.width = node.boundBox.width;
+    this.height = node.boundBox.height;
+    this._id = node._id;
+    this.parent = node.parent;
   }
 }
 
@@ -316,17 +336,18 @@ class DrawingManager {
     this.componentRenderer.createhtml(this.renderer_id);
   }
 
-  customiseNode(node, borderColor, borderWidth) {
-    if (_utils_utils__WEBPACK_IMPORTED_MODULE_1__["Utils"].isDOMElement(node)) {
-      _utils_utils__WEBPACK_IMPORTED_MODULE_1__["Utils"].highLightNode(node, borderColor, borderWidth);
-    } else {
-      _utils_utils__WEBPACK_IMPORTED_MODULE_1__["Utils"].highLightNode(document.getElementById(node), borderColor, borderWidth);
-    }
-  }
+  // customiseNode (node, borderColor, borderWidth) {
+  //   if (Utils.isDOMElement(node)) {
+  //     Utils.highLightNode(node, borderColor, borderWidth)
+  //   } else {
+  //     Utils.highLightNode(document.getElementById(node), borderColor, borderWidth)
+  //   }
+  // }
 
-  resetNode(container) {
-    _utils_utils__WEBPACK_IMPORTED_MODULE_1__["Utils"].unHighLightNode(_utils_utils__WEBPACK_IMPORTED_MODULE_1__["Utils"].isDOMElement(container) ? container : document.getElementById(container));
-  }
+  // resetNode (container) {
+  //   Utils.unHighLightNode(Utils.isDOMElement(container) ? container
+  //     : document.getElementById(container))
+  // }
 }
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./../../node_modules/webpack/buildin/global.js */ "../node_modules/webpack/buildin/global.js")))
 
@@ -1361,6 +1382,7 @@ class LayoutManager {
       dummy.component = container.component;
       dummy.componentName = container.name;
       dummy.target = 'canvas';
+      dummy.seed = 10;
       dummy.position = container.component.position;
       dummy.alignment = container.component.alignment;
       dummy.alignWidth = container.component.alignWidth;
@@ -1379,30 +1401,6 @@ class LayoutManager {
 }
 
 /* harmony default export */ __webpack_exports__["default"] = (LayoutManager);
-
-/***/ }),
-
-/***/ "./models/data-point.js":
-/*!******************************!*\
-  !*** ./models/data-point.js ***!
-  \******************************/
-/*! exports provided: DataPoint */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "DataPoint", function() { return DataPoint; });
-
-class DataPoint {
-  constructor(node) {
-    this.top = node.boundBox.top;
-    this.left = node.boundBox.left;
-    this.width = node.boundBox.width;
-    this.height = node.boundBox.height;
-    this._id = node._id;
-    this.parent = node.parent;
-  }
-}
 
 /***/ }),
 

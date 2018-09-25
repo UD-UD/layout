@@ -35,7 +35,7 @@ const component1 = {
   mount: (at) => { at.append('<span>This is title</span>'); console.log('component1') },
   position: 'top',
   alignWidth: 'chart',
-  alignment: 'h-center'
+  alignment: 'left'
 }
 
 const component2 = {

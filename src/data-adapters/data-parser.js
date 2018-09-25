@@ -1,5 +1,5 @@
 
-import { DataPoint } from '../models/data-point'
+import { DataPoint } from './data-point'
 
 export class DataParser {
   constructor (data) {

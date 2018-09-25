@@ -122,16 +122,16 @@ export class DrawingManager {
     this.componentRenderer.createhtml(this.renderer_id)
   }
 
-  customiseNode (node, borderColor, borderWidth) {
-    if (Utils.isDOMElement(node)) {
-      Utils.highLightNode(node, borderColor, borderWidth)
-    } else {
-      Utils.highLightNode(document.getElementById(node), borderColor, borderWidth)
-    }
-  }
+  // customiseNode (node, borderColor, borderWidth) {
+  //   if (Utils.isDOMElement(node)) {
+  //     Utils.highLightNode(node, borderColor, borderWidth)
+  //   } else {
+  //     Utils.highLightNode(document.getElementById(node), borderColor, borderWidth)
+  //   }
+  // }
 
-  resetNode (container) {
-    Utils.unHighLightNode(Utils.isDOMElement(container) ? container
-      : document.getElementById(container))
-  }
+  // resetNode (container) {
+  //   Utils.unHighLightNode(Utils.isDOMElement(container) ? container
+  //     : document.getElementById(container))
+  // }
 }
